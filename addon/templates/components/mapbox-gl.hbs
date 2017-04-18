@@ -1,11 +1,8 @@
 {{#if map}}
-  {{!--{{yield (hash
-    call=(component 'mapbox-gl-call' obj=map)
-    event=(component 'mapbox-gl-event' eventSource=map)
+  {{yield (hash
     layer=(component 'mapbox-gl-layer' map=map)
     marker=(component 'mapbox-gl-marker' map=map)
     popup=(component 'mapbox-gl-popup' map=map)
-    set=(component 'mapbox-gl-set' setTarget=map)
     source=(component 'mapbox-gl-source' map=map)
-  )}}--}}
+  )}}
 {{/if}}

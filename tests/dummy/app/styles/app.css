@@ -2,3 +2,12 @@
   height: 100vh;
   width: 100vw;
 }
+
+.mapboxgl-marker {
+  border-radius: 100px;
+  box-shadow: 0 0 0 3px white, 0 0 0 5px black;
+  background-color: blue;
+  width: 15px;
+  height: 15px;
+  cursor: pointer;
+}
