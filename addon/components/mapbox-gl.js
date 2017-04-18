@@ -21,6 +21,7 @@ export default Component.extend({
     this._super(...arguments);
 
     this.map = null;
+    this.glSupported = MapboxGl.supported();
 
     const mbglConfig = getOwner(this).resolveRegistration('config:environment')['mapbox-gl'];
     assert('mapbox-gl config is required in config/environment', mbglConfig);
@@ -32,7 +33,9 @@ export default Component.extend({
   didInsertElement() {
     this._super(...arguments);
 
-    run.scheduleOnce('afterRender', this, this._setup);
+    if (this.glSupported) {
+      run.scheduleOnce('afterRender', this, this._setup);
+    }
   },
 
   willDestroy() {
