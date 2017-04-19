@@ -9,5 +9,9 @@
         This is where you are!
       {{/marker.popup}}
     {{/map.marker}}
+
+    {{map.call 'easeTo' (hash center=curLocation)}}
   {{/if}}
+
+  {{map.on 'click' (action 'onClick')}}
 {{/mapbox-gl}}
