@@ -3,8 +3,7 @@ import Ember from 'ember';
 const {
   assert,
   Component,
-  getProperties,
-  isPresent
+  getProperties
 } = Ember;
 
 const MapboxGlCallComponent = Component.extend({
@@ -14,12 +13,13 @@ const MapboxGlCallComponent = Component.extend({
   func: null,
   args: null,
   onResp: null,
+  params: null,
 
   didReceiveAttrs() {
     this._super(...arguments);
 
     let { obj, func, args, params } = getProperties(this, 'obj', 'func', 'args', 'params');
-    if (params) {
+    if (params !== null) {
       if (func) {
         args = params;
       } else {
@@ -27,9 +27,11 @@ const MapboxGlCallComponent = Component.extend({
       }
     }
 
-    assert('mapbox-gl-call obj is required', isPresent(obj));
+    assert('mapbox-gl-call obj is required', typeof obj === 'object' && obj !== null);
     assert('mapbox-gl-call func is required and must be a string', typeof func === 'string');
     assert(`mapbox-gl-call ${func} must be a function on ${obj}`, typeof obj[func] === 'function');
+
+    console.log('MapboxGlCallComponent args', args);
 
     this.sendAction('onResp', obj[func].apply(obj, args));
   }
