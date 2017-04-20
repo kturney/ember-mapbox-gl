@@ -6,55 +6,41 @@ moduleForComponent('mapbox-gl-call', 'Integration | Component | mapbox gl call',
 });
 
 test('it calls the function on the object', function(assert) {
-  let calledArgs = null;
-  let calledContext = null;
-  let receivedResp = null;
-
+  const passedArgs = [ 'a', 1, 'z' ];
   const expectedResp = 'kyle turney';
   const obj = {
     func(...args) {
-      calledArgs = args;
-      calledContext = this;
+      assert.deepEqual(args, passedArgs, 'should pass on args');
+      assert.equal(this, obj, 'should set the context to the obj');
+
       return expectedResp;
     }
   };
-  const passedArgs = [ 'a', 1, 'z' ];
 
   this.set('obj', obj);
   this.set('args', passedArgs);
   this.on('onResp', (resp) => {
-    receivedResp = resp;
+    assert.equal(resp, expectedResp, 'should call the onResp action with the obj.func result');
   });
 
   this.render(hbs`{{mapbox-gl-call obj=obj func='func' args=args onResp=(action 'onResp')}}`);
-
-  assert.deepEqual(calledArgs, passedArgs, 'should pass on args');
-  assert.equal(calledContext, obj, 'should set the context to the obj');
-  assert.equal(receivedResp, expectedResp, 'should call the onResp action with the obj.func result');
 });
 
 test('it works with positionalParams', function(assert) {
-  let calledArgs = null;
-  let calledContext = null;
-  let receivedResp = null;
-
   const expectedResp = 'kyle turney';
   const obj = {
     func(...args) {
-      calledArgs = args;
-      calledContext = this;
+      assert.deepEqual(args, [ 'a', 1, 'z' ], 'should pass on args');
+      assert.equal(this, obj, 'should set the context to the obj');
+
       return expectedResp;
     }
   };
 
   this.set('obj', obj);
   this.on('onResp', (resp) => {
-    receivedResp = resp;
+    assert.equal(resp, expectedResp, 'should call the onResp action with the obj.func result');
   });
 
   this.render(hbs`{{mapbox-gl-call 'func' 'a' 1 'z' obj=obj onResp=(action 'onResp')}}`);
-
-  assert.deepEqual(calledArgs, [ 'a', 1, 'z' ], 'should pass on args');
-  assert.equal(calledContext, obj, 'should set the context to the obj');
-  assert.equal(receivedResp, expectedResp, 'should call the onResp action with the obj.func result');
 });
