@@ -6,11 +6,10 @@ moduleForComponent('mapbox-gl-call', 'Integration | Component | mapbox gl call',
 });
 
 test('it calls the function on the object', function(assert) {
-  const passedArgs = [ 'a', 1, 'z' ];
   const expectedResp = 'kyle turney';
   const obj = {
     func(...args) {
-      assert.propEqual(args, passedArgs, 'should pass on args');
+      assert.deepEqual(args, [ 'a', 1, 'z' ], 'should pass on args');
       assert.equal(this, obj, 'should set the context to the obj');
 
       return expectedResp;
@@ -18,7 +17,7 @@ test('it calls the function on the object', function(assert) {
   };
 
   this.set('obj', obj);
-  this.set('args', passedArgs);
+  this.set('args', [ 'a', 1, 'z' ]);
   this.on('onResp', (resp) => {
     assert.equal(resp, expectedResp, 'should call the onResp action with the obj.func result');
   });
@@ -30,7 +29,7 @@ test('it works with positionalParams', function(assert) {
   const expectedResp = 'kyle turney';
   const obj = {
     func(...args) {
-      assert.propEqual(args, [ 'a', 1, 'z' ], 'should pass on args');
+      assert.deepEqual(args, [ 'a', 1, 'z' ], 'should pass on args');
       assert.equal(this, obj, 'should set the context to the obj');
 
       return expectedResp;
