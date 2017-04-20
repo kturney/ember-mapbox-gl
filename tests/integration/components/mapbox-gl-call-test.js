@@ -10,7 +10,7 @@ test('it calls the function on the object', function(assert) {
   const expectedResp = 'kyle turney';
   const obj = {
     func(...args) {
-      assert.deepEqual(args, passedArgs, 'should pass on args');
+      assert.propEqual(args, passedArgs, 'should pass on args');
       assert.equal(this, obj, 'should set the context to the obj');
 
       return expectedResp;
@@ -30,7 +30,7 @@ test('it works with positionalParams', function(assert) {
   const expectedResp = 'kyle turney';
   const obj = {
     func(...args) {
-      assert.deepEqual(args, [ 'a', 1, 'z' ], 'should pass on args');
+      assert.propEqual(args, [ 'a', 1, 'z' ], 'should pass on args');
       assert.equal(this, obj, 'should set the context to the obj');
 
       return expectedResp;
