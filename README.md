@@ -1,27 +1,42 @@
 # ember-mapbox-gl
 
-This README outlines the details of collaborating on this Ember addon.
+[![Latest NPM release][npm-badge]][npm-badge-url]
+[![TravisCI Build Status][travis-badge]][travis-badge-url]
+[![Ember Observer Score][ember-observer-badge]][ember-observer-url]
+
+[npm-badge]: https://img.shields.io/npm/v/ember-mapbox-gl.svg
+[npm-badge-url]: https://www.npmjs.com/package/ember-mapbox-gl
+[travis-badge]: https://img.shields.io/travis/kturney/ember-mapbox-gl/master.svg
+[travis-badge-url]: https://travis-ci.org/kturney/ember-mapbox-gl
+[ember-observer-badge]: http://emberobserver.com/badges/ember-mapbox-gl.svg
+[ember-observer-url]: http://emberobserver.com/addons/ember-mapbox-gl
+
+Ember integration with [mapbox-gl-js](https://www.mapbox.com/mapbox-gl-js/api/).
 
 ## Installation
 
-* `git clone <repository-url>` this repository
-* `cd ember-mapbox-gl`
-* `npm install`
-* `bower install`
+```sh
+ember install ember-mapbox-gl
+```
 
-## Running
+## Example
 
-* `ember serve`
-* Visit your app at [http://localhost:4200](http://localhost:4200).
+```handlebars
+{{#mapbox-gl as |map|}}
+  {{#map.source data=wanderDrone as |source|}}
+    {{source.layer layerType='symbol' layoutOptions=(hash icon-image='rocket-15')}}
+  {{/map.source}}
 
-## Running Tests
+  {{#if curLocation}}
+    {{#map.marker lngLat=curLocation as |marker|}}
+      {{#marker.popup}}
+        This is where you are!
+      {{/marker.popup}}
+    {{/map.marker}}
 
-* `npm test` (Runs `ember try:each` to test your addon against multiple Ember versions)
-* `ember test`
-* `ember test --server`
+    {{map.call 'easeTo' (hash center=curLocation)}}
+  {{/if}}
 
-## Building
-
-* `ember build`
-
-For more information on using ember-cli, visit [https://ember-cli.com/](https://ember-cli.com/).
+  {{map.on 'click' (action 'onClick')}}
+{{/mapbox-gl}}
+```
