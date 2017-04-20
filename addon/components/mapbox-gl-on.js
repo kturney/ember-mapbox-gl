@@ -6,6 +6,7 @@ const {
   computed,
   get,
   getProperties,
+  isPresent,
   run
 } = Ember;
 
@@ -37,8 +38,8 @@ const MapboxGlOnComponent = Component.extend({
     const { eventSource, _normalizedEvent, _prevEvent, action } =
       getProperties(this, 'eventSource', '_normalizedEvent', '_prevEvent', 'action');
 
-    assert('mapbox-gl-event requires an eventSource', eventSource);
-    assert('mapbox-gl-event requires an action', action);
+    assert('mapbox-gl-event requires an eventSource', isPresent(eventSource));
+    assert('mapbox-gl-event requires an action', isPresent(action));
 
     if (_normalizedEvent !== _prevEvent) {
       if (_prevEvent) {

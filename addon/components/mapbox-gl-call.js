@@ -3,7 +3,8 @@ import Ember from 'ember';
 const {
   assert,
   Component,
-  getProperties
+  getProperties,
+  isPresent
 } = Ember;
 
 const MapboxGlCallComponent = Component.extend({
@@ -26,8 +27,8 @@ const MapboxGlCallComponent = Component.extend({
       }
     }
 
-    assert('mapbox-gl-call obj is required', obj);
-    assert('mapbox-gl-call func is required', func);
+    assert('mapbox-gl-call obj is required', isPresent(obj));
+    assert('mapbox-gl-call func is required and must be a string', typeof func === 'string');
     assert(`mapbox-gl-call ${func} must be a function on ${obj}`, typeof obj[func] === 'function');
 
     this.sendAction('onResp', obj[func].apply(obj, args));
