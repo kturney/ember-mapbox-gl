@@ -1,5 +1,4 @@
 import Ember from 'ember';
-import layout from '../templates/components/mapbox-gl-layer';
 
 const {
   assign,
@@ -11,7 +10,6 @@ const {
 } = Ember;
 
 export default Component.extend({
-  layout,
   tagName: '',
 
   map: null,
