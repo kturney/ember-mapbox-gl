@@ -1,4 +1,6 @@
 export default class FakeMap {
+  addControl() {}
+  removeControl() {}
   addLayer() {}
   removeLayer() {}
   setPopup() {}
