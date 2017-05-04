@@ -42,7 +42,8 @@ export default Component.extend({
     this._super(...arguments);
 
     if (this.map !== null) {
-      this.map.remove();
+      // some map users may be late doing cleanup (seen with mapbox-draw-gl), so don't remove the map until the next tick
+      run.next(this.map, this.map.remove);
     }
   },
 
