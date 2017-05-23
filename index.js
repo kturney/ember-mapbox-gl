@@ -21,7 +21,7 @@ module.exports = {
   },
 
   included() {
-    this._super.included(...arguments);
+    this._super.included.apply(this, arguments);
 
     this.import('vendor/mapbox-gl.js', {
       using: [
