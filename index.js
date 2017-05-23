@@ -8,27 +8,48 @@ const Path = require('path');
 module.exports = {
   name: 'ember-mapbox-gl',
 
-  treeForVendor(vendorTree) {
-    const mapboxGlTree = new Funnel(Path.dirname(require.resolve('mapbox-gl/dist/mapbox-gl.js')), {
-      files: [ 'mapbox-gl.js', 'mapbox-gl.css' ],
+  treeForStyles(tree) {
+    const mapboxGlTree = new Funnel(Path.dirname(require.resolve('mapbox-gl')), {
+      files: [ 'mapbox-gl.css' ],
+      destDir: 'app/styles'
     });
 
-    if (vendorTree) {
-      return new MergeTrees([ vendorTree, mapboxGlTree ]);
+    if (tree) {
+      return new MergeTrees([ tree, mapboxGlTree ]);
     }
 
     return mapboxGlTree;
   },
 
-  included() {
+  treeForVendor(tree) {
+    const mapboxGlTree = new Funnel(Path.dirname(require.resolve('mapbox-gl')), {
+      files: [
+        'mapbox-gl.js',
+        'mapbox-gl-dev.js'
+      ],
+      destDir: '/mapbox-gl'
+    });
+
+    if (tree) {
+      return new MergeTrees([ tree, mapboxGlTree ]);
+    }
+
+    return mapboxGlTree;
+  },
+
+  included(app) {
     this._super.included.apply(this, arguments);
 
-    this.import('vendor/mapbox-gl.js', {
+    const srcFile = process.env.EMBER_ENV === 'production'
+      ? 'vendor/mapbox-gl/mapbox-gl.js'
+      : 'vendor/mapbox-gl/mapbox-gl-dev.js';
+
+    app.import(srcFile, {
       using: [
         { transformation: 'amd', as: 'mapbox-gl' }
       ]
     });
 
-    this.import('vendor/mapbox-gl.css');
+    app.import('app/styles/mapbox-gl.css');
   }
 };
