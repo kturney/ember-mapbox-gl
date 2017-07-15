@@ -25,6 +25,7 @@ module.exports = {
     const mapboxGlTree = new Funnel(Path.dirname(require.resolve('mapbox-gl')), {
       files: [
         'mapbox-gl.js',
+        'mapbox-gl.js.map',
         'mapbox-gl-dev.js'
       ],
       destDir: '/mapbox-gl'
