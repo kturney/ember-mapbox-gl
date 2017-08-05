@@ -19,6 +19,16 @@ Ember integration with [mapbox-gl-js](https://www.mapbox.com/mapbox-gl-js/api/).
 ember install ember-mapbox-gl
 ```
 
+Then, add your Mapbox access token: 
+```javascript
+module.exports = function(environment) {
+  let ENV = {
+    'mapbox-gl': {
+      accessToken: 'ACCESS TOKEN HERE'
+    },
+}
+```
+
 ## Example
 
 ```handlebars
