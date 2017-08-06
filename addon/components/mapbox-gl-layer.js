@@ -11,6 +11,9 @@ const {
 
 export default Component.extend({
   tagName: '',
+  id: Ember.computed(function() {
+    return guidFor(this);
+  }),
 
   map: null,
   coordinates: null,
@@ -19,29 +22,33 @@ export default Component.extend({
 
   layerType: 'line',
   sourceId: null,
+  before: null,
 
   init() {
     this._super(...arguments);
-
-    this.layerId = guidFor(this);
-    const { layerType, sourceId } = getProperties(this, 'layerType', 'sourceId');
+    const { layerType, sourceId, id } = getProperties(this, 'layerType', 'sourceId', 'id');
 
     const layerConfig = get(
       getOwner(this).resolveRegistration('config:environment'),
       `mapbox-gl.${layerType}`) || {};
 
-    this.map.addLayer({
-      id: this.layerId,
+    const options = {
+      id: id,
       type: layerType,
       source: sourceId,
       layout: assign({}, layerConfig.layout, get(this, 'layoutOptions')),
       paint: assign({}, layerConfig.paint, get(this, 'paintOptions')),
-    });
+      minZoom: 8,
+    };
+    
+    const before = this.get('before');
+
+    this.map.addLayer(options, before);
   },
 
   willDestroy() {
     this._super(...arguments);
 
-    this.map.removeLayer(this.layerId);
+    this.map.removeLayer(this.id);
   }
 });
