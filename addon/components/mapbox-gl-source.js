@@ -17,6 +17,8 @@ export default Component.extend({
   dataType: 'geojson',
   data: null,
 
+  options: null,
+
   sourceId: computed({
     get() {
       return guidFor(this);
@@ -31,9 +33,17 @@ export default Component.extend({
     this._super(...arguments);
 
     const { sourceId, dataType, data } = getProperties(this, 'sourceId', 'dataType', 'data');
+    let options = get(this, 'options') || {};
 
+    if (dataType) {
+      options.type = dataType;
+    }
 
-    this.map.addSource(sourceId, { type: dataType, data });
+    if (data) {
+      options.data = data;
+    }
+
+    this.map.addSource(sourceId, options);
   },
 
   didUpdateAttrs() {

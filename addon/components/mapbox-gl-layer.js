@@ -17,33 +17,57 @@ export default Component.extend({
 
   map: null,
   coordinates: null,
+
+  options: null,
+
+  /**
+  * @deprecated in favor of `options` hash
+  */
+  layerType: 'line',
+
+  /**
+  * @deprecated in favor of `options` hash
+  */
   layoutOptions: null,
+
+  /**
+  * @deprecated in favor of `options` hash
+  */
   paintOptions: null,
 
-  layerType: 'line',
   sourceId: null,
   before: null,
 
   init() {
     this._super(...arguments);
-    const { layerType, sourceId, id } = getProperties(this, 'layerType', 'sourceId', 'id');
+
+    this.layerId = this.get('id');
+
+    let options = get(this, 'options') || {};
+
+    const {
+      sourceId,
+      layerType,
+      layoutOptions,
+      paintOptions
+    } = getProperties(this, 'sourceId', 'layerType', 'layoutOptions', 'paintOptions');
 
     const layerConfig = get(
       getOwner(this).resolveRegistration('config:environment'),
-      `mapbox-gl.${layerType}`) || {};
+      `mapbox-gl.${options.type ? options.type : layerType}`) || {};
 
-    const options = {
-      id: id,
-      type: layerType,
-      source: sourceId,
-      layout: assign({}, layerConfig.layout, get(this, 'layoutOptions')),
-      paint: assign({}, layerConfig.paint, get(this, 'paintOptions')),
-      minZoom: 8,
-    };
+    options = {
+      id: options.id ? options.id : this.layerId,
+      type: options.type ? options.type : layerType,
+      source: options.source ? options.source : sourceId,
+      layout: assign({}, layerConfig.layout, options.layout ? options.layout : layoutOptions),
+      paint: assign({}, layerConfig.paint, options.paint ? options.paint : paintOptions),
+    }
     
     const before = this.get('before');
 
-    this.map.addLayer(options, before);
+    this.map.addLayer(options);
+
   },
 
   willDestroy() {
