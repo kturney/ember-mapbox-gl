@@ -14,29 +14,53 @@ export default Component.extend({
 
   map: null,
   coordinates: null,
+
+  options: null,
+
+  /**
+  * @deprecated in favor of `options` hash
+  */
+  layerType: 'line',
+
+  /**
+  * @deprecated in favor of `options` hash
+  */
   layoutOptions: null,
+
+  /**
+  * @deprecated in favor of `options` hash
+  */
   paintOptions: null,
 
-  layerType: 'line',
   sourceId: null,
 
   init() {
     this._super(...arguments);
 
     this.layerId = guidFor(this);
-    const { layerType, sourceId } = getProperties(this, 'layerType', 'sourceId');
+
+    let options = get(this, 'options') || {};
+
+    const {
+      sourceId,
+      layerType,
+      layoutOptions,
+      paintOptions
+    } = getProperties(this, 'sourceId', 'layerType', 'layoutOptions', 'paintOptions');
 
     const layerConfig = get(
       getOwner(this).resolveRegistration('config:environment'),
-      `mapbox-gl.${layerType}`) || {};
+      `mapbox-gl.${options.type ? options.type : layerType}`) || {};
 
-    this.map.addLayer({
-      id: this.layerId,
-      type: layerType,
-      source: sourceId,
-      layout: assign({}, layerConfig.layout, get(this, 'layoutOptions')),
-      paint: assign({}, layerConfig.paint, get(this, 'paintOptions')),
-    });
+    options = {
+      id: options.id ? options.id : this.layerId,
+      type: options.type ? options.type : layerType,
+      source: options.source ? options.source : sourceId,
+      layout: assign({}, layerConfig.layout, options.layout ? options.layout : layoutOptions),
+      paint: assign({}, layerConfig.paint, options.paint ? options.paint : paintOptions),
+    }
+
+    this.map.addLayer(options);
   },
 
   willDestroy() {
