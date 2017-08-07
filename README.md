@@ -29,6 +29,9 @@ module.exports = function(environment) {
 }
 ```
 
+## BEWARE - API CHANGES HAPPENING
+We are currently modifying the api to more closely resemble the Mapbox api. We aim to make this update seamless to any existing users, with warnings of deprecations. You can follow along on this issue: https://github.com/kturney/ember-mapbox-gl/issues/2
+
 ## Example
 
 ```handlebars
