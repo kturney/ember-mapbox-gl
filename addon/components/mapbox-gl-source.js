@@ -35,7 +35,7 @@ export default Component.extend({
     const { sourceId, dataType, data } = getProperties(this, 'sourceId', 'dataType', 'data');
     let options = get(this, 'options') || {};
 
-    if (dataType) {
+    if (!options.type) {
       options.type = dataType;
     }
 
