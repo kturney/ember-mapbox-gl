@@ -11,6 +11,9 @@ const {
 
 export default Component.extend({
   tagName: '',
+  id: Ember.computed(function() {
+    return guidFor(this);
+  }),
 
   map: null,
   coordinates: null,
@@ -33,11 +36,12 @@ export default Component.extend({
   paintOptions: null,
 
   sourceId: null,
+  before: null,
 
   init() {
     this._super(...arguments);
 
-    this.layerId = guidFor(this);
+    this.layerId = this.get('id');
 
     let options = get(this, 'options') || {};
 
@@ -59,13 +63,16 @@ export default Component.extend({
       layout: assign({}, layerConfig.layout, options.layout ? options.layout : layoutOptions),
       paint: assign({}, layerConfig.paint, options.paint ? options.paint : paintOptions),
     }
+    
+    const before = this.get('before');
 
     this.map.addLayer(options);
+
   },
 
   willDestroy() {
     this._super(...arguments);
 
-    this.map.removeLayer(this.layerId);
+    this.map.removeLayer(this.id);
   }
 });
