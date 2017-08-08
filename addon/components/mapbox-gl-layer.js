@@ -3,6 +3,7 @@ import Ember from 'ember';
 const {
   assign,
   Component,
+  computed,
   deprecate,
   get,
   getOwner,
@@ -49,60 +50,64 @@ export default Component.extend({
   */
   sourceId: null,
 
+  _layerId: computed('layer.id', function() {
+    return get(this, 'layer.id') || guidFor(this);
+  }),
+
   init() {
     this._super(...arguments);
 
-    // All of these properties are deprecated, but remain for backwards compatibility
     const {
+      _layerId,
+      layer,
+      before,
+
+      // All of these properties are deprecated, but remain for backwards compatibility
       sourceId,
       layerType,
       layoutOptions,
       paintOptions
-    } = getProperties(this, 'sourceId', 'layerType', 'layoutOptions', 'paintOptions');
+    } = getProperties(this, '_layerId', 'layer', 'before', 'sourceId', 'layerType', 'layoutOptions', 'paintOptions');
 
-    deprecate('Use of `sourceId` is deprecated in favor of `layer.source`', !sourceId, {
+    deprecate('Use of `sourceId` is deprecated in favor of `layer.source`', sourceId === null, {
       id: 'ember-mapbox-gl.mapbox-gl-layer',
       until: '1.0.0'
     });
 
-    deprecate('Use of `layerType` is deprecated in favor of `layer.type`', !layerType, {
+    deprecate('Use of `layerType` is deprecated in favor of `layer.type`', layerType === null, {
       id: 'ember-mapbox-gl.mapbox-gl-layer',
       until: '1.0.0'
     });
 
-    deprecate('Use of `layoutOptions` is deprecated in favor of `layer.layout`', !layoutOptions, {
+    deprecate('Use of `layoutOptions` is deprecated in favor of `layer.layout`', layoutOptions === null, {
       id: 'ember-mapbox-gl.mapbox-gl-layer',
       until: '1.0.0'
     });
 
-    deprecate('Use of `paintOptions` is deprecated in favor of `layer.paint`', !paintOptions, {
+    deprecate('Use of `paintOptions` is deprecated in favor of `layer.paint`', paintOptions === null, {
       id: 'ember-mapbox-gl.mapbox-gl-layer',
       until: '1.0.0'
     });
 
-    let layer = get(this, 'layer') || {};
-    const before = get(this, 'before');
-
-    this.layerId = guidFor(this);
+    const lType = (layer && layer.type) || layerType || 'line';
 
     // Check for config from evironment
-    const envConfig = get(
-      getOwner(this).resolveRegistration('config:environment'),
-      `mapbox-gl.${layer.type ? layer.type : layerType}`) || {};
+    const envConfig = get(getOwner(this).resolveRegistration('config:environment'), `mapbox-gl.${lType}`) || {};
 
-    // Set properties on layer if deprecated attributes are used instead of `layer` hash
-    layer.id = layer.id ? layer.id : this.layerId;
-    layer.type = layer.type ? layer.type : layerType ? layerType : 'line';
-    layer.source = layer.source ? layer.source : sourceId;
-    layer.layout = assign({}, envConfig.layout, layer.layout ? layer.layout : layoutOptions);
-    layer.paint = assign({}, envConfig.paint, layer.paint ? layer.paint : paintOptions);
+    const combinedLayer = {
+      id: _layerId,
+      type: lType,
+      source: (layer && layer.source) || sourceId,
+      layout: assign({}, envConfig.layout, (layer && layer.layout) || layoutOptions),
+      paint: assign({}, envConfig.paint, (layer && layer.paint) || paintOptions)
+    };
 
-    this.map.addLayer(layer, before);
+    this.map.addLayer(combinedLayer, before);
   },
 
   willDestroy() {
     this._super(...arguments);
 
-    this.map.removeLayer(this.layerId);
+    this.map.removeLayer(get(this, '_layerId'));
   }
 });
