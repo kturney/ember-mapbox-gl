@@ -3,6 +3,8 @@ import Ember from 'ember';
 const {
   assign,
   Component,
+  computed,
+  deprecate,
   get,
   getOwner,
   getProperties,
@@ -13,59 +15,99 @@ export default Component.extend({
   tagName: '',
 
   map: null,
-  coordinates: null,
-
-  options: null,
 
   /**
-  * @deprecated in favor of `options` hash
+   * @param object
+   * @description The style layer to add, conforming to the Mapbox Style Specification's layer definition.
+   * {@link https://www.mapbox.com/mapbox-gl-js/api/#map#addlayer Mapbox}
   */
-  layerType: 'line',
+  layer: null,
 
   /**
-  * @deprecated in favor of `options` hash
+   * @param string
+   * @description The ID of an existing layer to insert the new layer before. If this argument is omitted, the layer will be appended to the end of the layers array.
+   * {@link https://www.mapbox.com/mapbox-gl-js/api/#map#addlayer Mapbox}
+  */
+  before: null,
+
+  /**
+    * @deprecated in favor of `layer.type`
+  */
+  layerType: null,
+
+  /**
+    * @deprecated in favor of `layer.layout`
   */
   layoutOptions: null,
 
   /**
-  * @deprecated in favor of `options` hash
+    * @deprecated in favor of `layer.paint`
   */
   paintOptions: null,
 
+  /**
+    * @deprecated in favor of `layer.source`
+  */
   sourceId: null,
+
+  _layerId: computed('layer.id', function() {
+    return get(this, 'layer.id') || guidFor(this);
+  }),
 
   init() {
     this._super(...arguments);
 
-    this.layerId = guidFor(this);
-
-    let options = get(this, 'options') || {};
-
     const {
+      _layerId,
+      layer,
+      before,
+
+      // All of these properties are deprecated, but remain for backwards compatibility
       sourceId,
       layerType,
       layoutOptions,
       paintOptions
-    } = getProperties(this, 'sourceId', 'layerType', 'layoutOptions', 'paintOptions');
+    } = getProperties(this, '_layerId', 'layer', 'before', 'sourceId', 'layerType', 'layoutOptions', 'paintOptions');
 
-    const layerConfig = get(
-      getOwner(this).resolveRegistration('config:environment'),
-      `mapbox-gl.${options.type ? options.type : layerType}`) || {};
+    deprecate('Use of `sourceId` is deprecated in favor of `layer.source`', sourceId === null, {
+      id: 'ember-mapbox-gl.mapbox-gl-layer',
+      until: '1.0.0'
+    });
 
-    options = {
-      id: options.id ? options.id : this.layerId,
-      type: options.type ? options.type : layerType,
-      source: options.source ? options.source : sourceId,
-      layout: assign({}, layerConfig.layout, options.layout ? options.layout : layoutOptions),
-      paint: assign({}, layerConfig.paint, options.paint ? options.paint : paintOptions),
-    }
+    deprecate('Use of `layerType` is deprecated in favor of `layer.type`', layerType === null, {
+      id: 'ember-mapbox-gl.mapbox-gl-layer',
+      until: '1.0.0'
+    });
 
-    this.map.addLayer(options);
+    deprecate('Use of `layoutOptions` is deprecated in favor of `layer.layout`', layoutOptions === null, {
+      id: 'ember-mapbox-gl.mapbox-gl-layer',
+      until: '1.0.0'
+    });
+
+    deprecate('Use of `paintOptions` is deprecated in favor of `layer.paint`', paintOptions === null, {
+      id: 'ember-mapbox-gl.mapbox-gl-layer',
+      until: '1.0.0'
+    });
+
+    const lType = (layer && layer.type) || layerType || 'line';
+
+    // Check for config from evironment
+    const envConfig = get(getOwner(this).resolveRegistration('config:environment'), `mapbox-gl.${lType}`) || {};
+
+    const combinedLayer = {
+      id: _layerId,
+      type: lType,
+      source: (layer && layer.source) || sourceId,
+      layout: assign({}, envConfig.layout, (layer && layer.layout) || layoutOptions),
+      paint: assign({}, envConfig.paint, (layer && layer.paint) || paintOptions)
+    };
+
+    this.map.addLayer(combinedLayer, before);
   },
 
   willDestroy() {
     this._super(...arguments);
 
-    this.map.removeLayer(this.layerId);
+    this.map.removeLayer(get(this, '_layerId'));
   }
 });
