@@ -2,7 +2,6 @@ import Ember from 'ember';
 
 const {
   Component,
-  get,
   getProperties
 } = Ember;
 
@@ -17,6 +16,7 @@ const MapboxGlControlComponent = Component.extend({
     this._super(...arguments);
 
     this.hasAdded = false;
+    this._prevControl = null;
   },
 
   didReceiveAttrs() {
@@ -24,19 +24,23 @@ const MapboxGlControlComponent = Component.extend({
 
     const { control, position } = getProperties(this, 'control', 'position');
 
-    if (this.hasAdded) {
-      this.map.removeControl(control);
+    if (this._prevControl !== null) {
+      this.map.removeControl(this._prevControl);
     }
 
-    this.map.addControl(control, position);
-    this.hasAdded = true;
+    if (control) {
+      this.map.addControl(control, position);
+      this._prevControl = control;
+    } else {
+      this._prevControl = null;
+    }
   },
 
   willDestroy() {
     this._super(...arguments);
 
-    if (this.hasAdded) {
-      this.map.removeControl(get(this, 'control'));
+    if (this._prevControl !== null) {
+      this.map.removeControl(this._prevControl);
     }
   }
 });
