@@ -41,8 +41,16 @@ export default function create() {
       return [ 200, { 'content-type': 'application/json' }, Terrain ];
     });
 
+    this.get('https://api.mapbox.com/styles/v1/mapbox/streets-v9/sprite.json', function() {
+      return [ 200, { 'content-type': 'application/json' }, Sprites ];
+    });
+
     this.get('https://api.mapbox.com/styles/v1/mapbox/streets-v9/sprite@2x.json', function() {
       return [ 200, { 'content-type': 'application/json' }, Sprites ];
+    });
+
+    this.get('https://api.mapbox.com/styles/v1/mapbox/streets-v9/sprite.png', function() {
+      return [ 200, {}, SpritesPng ];
     });
 
     this.get('https://api.mapbox.com/styles/v1/mapbox/streets-v9/sprite@2x.png', function() {
