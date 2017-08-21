@@ -4,7 +4,6 @@ import Ember from 'ember';
 import hbs from 'htmlbars-inline-precompile';
 import MapboxGl from 'mapbox-gl';
 import Sinon from 'sinon';
-import wait from 'ember-test-helpers/wait';
 
 moduleForComponent('mapbox-gl-layer', 'Integration | Component | mapbox gl layer', {
   integration: true,
@@ -80,8 +79,7 @@ test('it continues to work with the deprecated options', async function(assert) 
     assert.expectDeprecation(/Use of `layoutOptions` is deprecated in favor of `layer.layout`/);
     assert.expectDeprecation(/Use of `paintOptions` is deprecated in favor of `layer.paint`/);
 
-    Ember.run(() => this.container.destroy());
-    await wait();
+    this.clearRender();
   } finally {
     this.map.removeSource(expectedLayer.source);
   }
@@ -122,8 +120,7 @@ test('it takes a layer object', async function(assert) {
     assert.ok(addLayerSpy.calledOnce, 'addLayer called once');
     assert.deepEqual(addLayerSpy.firstCall.args[0], this.layer, 'layer is passed through correctly');
 
-    Ember.run(() => this.container.destroy());
-    await wait();
+    this.clearRender();
   } finally {
     this.map.removeSource(this.layer.source);
   }
@@ -185,9 +182,7 @@ test('it generates a layer.id if needed', async function(assert) {
   assert.ok(addLayerSpy.calledOnce, 'addLayer called once');
   assert.ok(addLayerSpy.firstCall.args[0].id, 'layer has a generated id');
 
-  Ember.run(() => this.container.destroy()); // this causes the component to be destroyed
-
-  await wait();
+  this.clearRender();
 
   assert.ok(removeLayerSpy.calledOnce, 'removeLayer called once');
   assert.equal(removeLayerSpy.firstCall.args[0], addLayerSpy.firstCall.args[0].id, 'removes correct layer');

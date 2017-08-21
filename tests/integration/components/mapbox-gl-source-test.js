@@ -4,7 +4,6 @@ import Ember from 'ember';
 import hbs from 'htmlbars-inline-precompile';
 import MapboxGl from 'mapbox-gl';
 import Sinon from 'sinon';
-import wait from 'ember-test-helpers/wait';
 
 const {
   assign
@@ -69,9 +68,7 @@ test('it accepts a sourceId, dataType, and data', async function(assert) {
   assert.equal(addSourceSpy.firstCall.args[0], this.sourceId, 'correct sourceId is added');
   assert.deepEqual(addSourceSpy.firstCall.args[1], sourceOptions, 'correct source options');
 
-  Ember.run(() => this.container.destroy());
-
-  await wait();
+  this.clearRender();
 
   assert.ok(removeSourceSpy.calledOnce, 'removeSource called once');
   assert.equal(removeSourceSpy.firstCall.args[0], this.sourceId, 'correct sourceId is removed');
@@ -86,9 +83,7 @@ test('it creates a sourceId if one is not provided', async function(assert) {
   assert.ok(addSourceSpy.calledOnce, 'addSource called once');
   assert.ok(addSourceSpy.firstCall.args[0], 'a sourceId is added');
 
-  Ember.run(() => this.container.destroy());
-
-  await wait();
+  this.clearRender();
 
   assert.ok(removeSourceSpy.calledOnce, 'removeSource called once');
   assert.equal(removeSourceSpy.firstCall.args[0], addSourceSpy.firstCall.args[0], 'correct sourceId is removed');
@@ -127,9 +122,7 @@ test('it accepts source options as an options object', async function(assert) {
   assert.equal(addSourceSpy.firstCall.args[0], this.sourceId, 'correct sourceId is added');
   assert.deepEqual(addSourceSpy.firstCall.args[1], sourceOptions, 'correct source options');
 
-  Ember.run(() => this.container.destroy());
-
-  await wait();
+  this.clearRender();
 
   assert.ok(removeSourceSpy.calledOnce, 'removeSource called once');
   assert.equal(removeSourceSpy.firstCall.args[0], this.sourceId, 'correct sourceId is removed');
