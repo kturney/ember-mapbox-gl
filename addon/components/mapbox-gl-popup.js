@@ -58,9 +58,12 @@ export default Component.extend({
     this._super(...arguments);
 
     this.popup.off('close', this._onClose);
+    const marker = get(this, 'marker');
 
-    if (this.marker !== null) {
+    if (marker === null) {
       this.popup.remove();
+    } else {
+      marker.setPopup(null);
     }
   }
 });
