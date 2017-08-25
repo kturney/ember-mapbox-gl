@@ -56,5 +56,7 @@ export default function create() {
     this.get('https://api.mapbox.com/styles/v1/mapbox/streets-v9/sprite@2x.png', function() {
       return [ 200, {}, SpritesPng ];
     });
+
+    this.post('/write-coverage', this.passthrough);
   });
 }
