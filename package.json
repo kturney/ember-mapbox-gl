@@ -23,8 +23,7 @@
     "broccoli-merge-trees": "^2.0.0",
     "ember-cli-babel": "^6.3.0",
     "ember-cli-htmlbars": "^2.0.1",
-    "ember-wormhole": "^0.5.1",
-    "mapbox-gl": "^0.38.0"
+    "ember-wormhole": "^0.5.1"
   },
   "devDependencies": {
     "ember-cli": "~2.14.2",
@@ -44,7 +43,11 @@
     "ember-resolver": "^4.0.0",
     "ember-sinon": "^0.7.0",
     "ember-source": "~2.14.1",
-    "loader.js": "^4.2.3"
+    "loader.js": "^4.2.3",
+    "mapbox-gl": "^0.39.0"
+  },
+  "peerDependencies": {
+    "mapbox-gl": ">=0.38"
   },
   "engines": {
     "node": ">= 6.4.0"

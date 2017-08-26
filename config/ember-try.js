@@ -80,6 +80,14 @@ module.exports = {
       npm: {
         devDependencies: {}
       }
+    },
+    {
+      name: 'ember-default-mapbox-gl-0.38',
+      npm: {
+        devDependencies: {
+          'mapbox-gl': '^0.38.0'
+        }
+      }
     }
   ]
 };
