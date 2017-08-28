@@ -276,3 +276,20 @@ test('it passes updated coordinates on to the source via the options property', 
   assert.ok(setCoordinatesSpy.calledOnce, 'source#setCoordinates called once');
   assert.deepEqual(setCoordinatesSpy.firstCall.args[0], updatedCoordinates, 'correct coordinates is updated');
 });
+
+test('it passes on its sourceId to its layers', async function (assert) {
+  const addLayerSpy = this.sandbox.spy(this.map, 'addLayer');
+
+  this.sourceId = 'guvvguvguugvu';
+
+  this.render(hbs`
+    {{#mapbox-gl-source map=map sourceId=sourceId as |source|}}
+      {{source.layer layer=(hash type='symbol' layout=(hash icon-image='rocket-15'))}}
+    {{/mapbox-gl-source}}
+  `);
+
+  assert.ok(addLayerSpy.calledOnce, 'addLayer called once');
+  assert.equal(addLayerSpy.firstCall.args[0].source, this.sourceId, 'correct sourceId is used');
+
+  assert.expectNoDeprecation();
+});

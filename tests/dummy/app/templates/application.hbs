@@ -1,6 +1,6 @@
 {{#mapbox-gl as |map|}}
-  {{#map.source data=wanderDrone as |source|}}
-    {{source.layer layerType='symbol' layoutOptions=(hash icon-image='rocket-15')}}
+  {{#map.source options=(hash data=wanderDrone) as |source|}}
+    {{source.layer layer=(hash type='symbol' layout=(hash icon-image='rocket-15'))}}
   {{/map.source}}
 
   {{#if curLocation}}

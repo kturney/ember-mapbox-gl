@@ -50,6 +50,16 @@ export default Component.extend({
   */
   sourceId: null,
 
+  /**
+   * @private for use by mapbox-gl-source to pass in its sourceId
+   */
+  _sourceId: computed('layer.source', 'sourceId', function() {
+    return get(this, 'layer.source') || get(this, 'sourceId');
+  }),
+
+  /**
+   * @private
+   */
   _layerId: computed('layer.id', function() {
     return get(this, 'layer.id') || guidFor(this);
   }),
@@ -59,6 +69,7 @@ export default Component.extend({
 
     const {
       _layerId,
+      _sourceId,
       layer,
       before,
 
@@ -67,7 +78,7 @@ export default Component.extend({
       layerType,
       layoutOptions,
       paintOptions
-    } = getProperties(this, '_layerId', 'layer', 'before', 'sourceId', 'layerType', 'layoutOptions', 'paintOptions');
+    } = getProperties(this, '_layerId', '_sourceId', 'layer', 'before', 'sourceId', 'layerType', 'layoutOptions', 'paintOptions');
 
     deprecate('Use of `sourceId` is deprecated in favor of `layer.source`', sourceId === null, {
       id: 'ember-mapbox-gl.mapbox-gl-layer',
@@ -97,7 +108,7 @@ export default Component.extend({
     const combinedLayer = {
       id: _layerId,
       type: lType,
-      source: (layer && layer.source) || sourceId,
+      source: _sourceId,
       layout: assign({}, envConfig.layout, (layer && layer.layout) || layoutOptions),
       paint: assign({}, envConfig.paint, (layer && layer.paint) || paintOptions)
     };
