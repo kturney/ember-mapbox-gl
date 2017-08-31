@@ -4,22 +4,6 @@ module.exports = {
 
   scenarios: [
     {
-      name: 'ember-lts-2.4',
-      bower: {
-        dependencies: {
-          'ember': 'components/ember#lts-2-4'
-        },
-        resolutions: {
-          'ember': 'lts-2-4'
-        }
-      },
-      npm: {
-        devDependencies: {
-          'ember-source': null
-        }
-      }
-    },
-    {
       name: 'ember-lts-2.8',
       bower: {
         dependencies: {
@@ -32,6 +16,14 @@ module.exports = {
       npm: {
         devDependencies: {
           'ember-source': null
+        }
+      }
+    },
+    {
+      name: 'ember-lts-2.12',
+      npm: {
+        devDependencies: {
+          'ember-source': '~2.12.0'
         }
       }
     },
@@ -87,6 +79,14 @@ module.exports = {
       name: 'ember-default',
       npm: {
         devDependencies: {}
+      }
+    },
+    {
+      name: 'ember-default-mapbox-gl-0.38',
+      npm: {
+        devDependencies: {
+          'mapbox-gl': '^0.38.0'
+        }
       }
     }
   ]
