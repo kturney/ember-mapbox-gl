@@ -39,14 +39,8 @@ export default Component.extend({
    * @description The ID of the source to add. Must not conflict with existing sources.
    * {@link https://www.mapbox.com/mapbox-gl-js/api/#map#addsource Mapbox}
   */
-  sourceId: computed({
-    get() {
-      return guidFor(this);
-    },
-
-    set(key, val) {
-      return val;
-    }
+  sourceId: computed(function() {
+    return guidFor(this);
   }),
 
   init() {

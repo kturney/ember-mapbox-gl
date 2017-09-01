@@ -16,7 +16,7 @@
     "build": "ember build",
     "start": "ember server",
     "test": "ember try:each",
-    "test-cov": "COVERAGE=true ember test"
+    "test-cov": "COVERAGE=true ember test --launch chrome"
   },
   "dependencies": {
     "broccoli-funnel": "^2.0.0",
