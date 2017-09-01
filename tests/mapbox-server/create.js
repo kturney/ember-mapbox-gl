@@ -57,6 +57,10 @@ export default function create() {
       return [ 200, {}, SpritesPng ];
     });
 
+    this.get('https://api.mapbox.com/**', function() {
+      return [ 404 ];
+    });
+
     this.post('/write-coverage', this.passthrough);
   });
 }
