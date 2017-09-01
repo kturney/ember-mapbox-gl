@@ -3,14 +3,12 @@ language: node_js
 node_js:
   - "6"
 
-dist: trusty
 sudo: false
+dist: trusty
 
 addons:
-  firefox: 'latest'
-  apt:
-    packages:
-      - google-chrome-stable
+  firefox: latest
+  chrome: stable
 
 cache:
   yarn: true
@@ -30,7 +28,7 @@ matrix:
     - env: EMBER_TRY_SCENARIO=ember-canary
 
 install:
-  - yarn install --no-lockfile
+  - yarn install --pure-lockfile
 
 before_script:
   - "export DISPLAY=:99.0"
