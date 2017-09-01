@@ -8,7 +8,8 @@ const {
   deprecate,
   get,
   getProperties,
-  guidFor
+  guidFor,
+  run: { bind }
 } = Ember;
 
 export default Component.extend({
@@ -67,7 +68,17 @@ export default Component.extend({
       computedOpts.data = data;
     }
 
-    this.map.addSource(sourceId, assign({}, computedOpts, options));
+    const combinedOpts = assign({}, computedOpts, options);
+
+    this.map.addSource(sourceId, combinedOpts);
+
+    if (combinedOpts.data) {
+      this._dataDone = bind(this, this._dataDone);
+      this.map.getSource(sourceId).on('data', this._dataDone);
+    }
+
+    this._dataAvailable = false;
+    this._dataInFlight = true;
   },
 
   didUpdateAttrs() {
@@ -77,18 +88,40 @@ export default Component.extend({
 
     const source = this.map.getSource(sourceId);
 
-    // TODO: should we just remove the existing source and replace it?
     const sourceData = (options && options.data) || data;
     if (sourceData) {
-      source.setData(sourceData);
+      this._dataAvailable = true;
+      this._syncData(source, sourceData);
     } else if (options && options.coordinates) {
       source.setCoordinates(options.coordinates);
     }
   },
 
+  _dataDone() {
+    this._dataInFlight = false;
+
+    const { sourceId, data, options } = getProperties(this, 'sourceId', 'data', 'options');
+
+    this._syncData(this.map.getSource(sourceId), (options && options.data) || data);
+  },
+
+  _syncData(source, data) {
+    if (this._dataInFlight === true || this._dataAvailable === false) {
+      return;
+    }
+
+    source.setData(data);
+
+    this._dataInFlight = true;
+    this._dataAvailable = false;
+  },
+
   willDestroy() {
     this._super(...arguments);
 
-    this.map.removeSource(get(this, 'sourceId'));
+    const sourceId = get(this, 'sourceId');
+
+    this.map.getSource(sourceId).off('data', this._dataDone);
+    this.map.removeSource(sourceId);
   }
 });

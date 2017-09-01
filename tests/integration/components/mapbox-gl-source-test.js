@@ -6,7 +6,8 @@ import MapboxGl from 'mapbox-gl';
 import Sinon from 'sinon';
 
 const {
-  assign
+  assign,
+  RSVP
 } = Ember;
 
 moduleForComponent('mapbox-gl-source', 'Integration | Component | mapbox gl source', {
@@ -128,7 +129,7 @@ test('it accepts source options as an options object', async function(assert) {
   assert.equal(removeSourceSpy.firstCall.args[0], this.sourceId, 'correct sourceId is removed');
 });
 
-test('it passes updated data on to the source via the data property', function(assert) {
+test('it passes updated data on to the source via the data property', async function(assert) {
   const sourceOptions = {
     type: 'geojson',
     data: {
@@ -171,15 +172,23 @@ test('it passes updated data on to the source via the data property', function(a
   assert.equal(addSourceSpy.firstCall.args[0], this.sourceId, 'correct sourceId is added');
   assert.deepEqual(addSourceSpy.firstCall.args[1], sourceOptions, 'correct source options');
 
-  const setDataSpy = this.sandbox.spy(this.map.getSource(this.sourceId), 'setData');
+  const source = this.map.getSource(this.sourceId);
+  const setDataSpy = this.sandbox.spy(source, 'setData');
 
   this.set('data', updatedData);
+
+  assert.notOk(setDataSpy.calledOnce, 'source#setData not called yet');
+
+  await new RSVP.Promise((resolve, reject) => {
+    source.once('data', resolve);
+    source.once('error', reject);
+  });
 
   assert.ok(setDataSpy.calledOnce, 'source#setData called once');
   assert.deepEqual(setDataSpy.firstCall.args[0], updatedData, 'correct data is updated');
 });
 
-test('it passes updated data on to the source via the options property', function(assert) {
+test('it passes updated data on to the source via the options property', async function(assert) {
   const origData = {
     type: 'FeatureCollection',
     features: [{
@@ -231,9 +240,17 @@ test('it passes updated data on to the source via the options property', functio
   assert.equal(addSourceSpy.firstCall.args[0], this.sourceId, 'correct sourceId is added');
   assert.deepEqual(addSourceSpy.firstCall.args[1], { type: 'geojson', data: origData }, 'correct source options');
 
-  const setDataSpy = this.sandbox.spy(this.map.getSource(this.sourceId), 'setData');
+  const source = this.map.getSource(this.sourceId);
+  const setDataSpy = this.sandbox.spy(source, 'setData');
 
   this.set('data', updatedData);
+
+  assert.notOk(setDataSpy.calledOnce, 'source#setData not called yet');
+
+  await new RSVP.Promise((resolve, reject) => {
+    source.once('data', resolve);
+    source.once('error', reject);
+  });
 
   assert.ok(setDataSpy.calledOnce, 'source#setData called once');
   assert.deepEqual(setDataSpy.firstCall.args[0], updatedData, 'correct data is updated');
