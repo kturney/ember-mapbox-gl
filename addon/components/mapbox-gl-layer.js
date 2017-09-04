@@ -62,15 +62,43 @@ export default Component.extend({
    */
   _layerId: computed('layer.id', function() {
     return get(this, 'layer.id') || guidFor(this);
-  }),
+  }).readOnly(),
+
+  /**
+   * @private
+   */
+  _layerType: computed('layer.type', 'layerType', function() {
+    return get(this, 'layer.type') || get(this, 'layerType') || 'line';
+  }).readOnly(),
+
+  _envConfig: computed('_layerType', function() {
+    const layerType = get(this, '_layerType');
+    return get(getOwner(this).resolveRegistration('config:environment'), `mapbox-gl.${layerType}`);
+  }).readOnly(),
+
+  _layout: computed('_envConfig.layout', 'layer.layout', 'layoutOptions', function() {
+    return assign({},
+      get(this, '_envConfig.layout'),
+      get(this, 'layer.layout'),
+      get(this, 'layoutOptions'));
+  }).readOnly(),
+
+  _paint: computed('_envConfig.paint', 'layer.paint', 'paintOptions', function() {
+    return assign({},
+      get(this, '_envConfig.paint'),
+      get(this, 'layer.paint'),
+      get(this, 'paintOptions'));
+  }).readOnly(),
 
   init() {
     this._super(...arguments);
 
     const {
       _layerId,
+      _layerType,
       _sourceId,
-      layer,
+      _layout,
+      _paint,
       before,
 
       // All of these properties are deprecated, but remain for backwards compatibility
@@ -78,7 +106,7 @@ export default Component.extend({
       layerType,
       layoutOptions,
       paintOptions
-    } = getProperties(this, '_layerId', '_sourceId', 'layer', 'before', 'sourceId', 'layerType', 'layoutOptions', 'paintOptions');
+    } = getProperties(this, '_layerId', '_layerType', '_sourceId', '_layout', '_paint', 'before', 'sourceId', 'layerType', 'layoutOptions', 'paintOptions');
 
     deprecate('Use of `sourceId` is deprecated in favor of `layer.source`', sourceId === null, {
       id: 'ember-mapbox-gl.mapbox-gl-layer',
@@ -100,20 +128,33 @@ export default Component.extend({
       until: '1.0.0'
     });
 
-    const lType = (layer && layer.type) || layerType || 'line';
-
-    // Check for config from evironment
-    const envConfig = get(getOwner(this).resolveRegistration('config:environment'), `mapbox-gl.${lType}`) || {};
-
-    const combinedLayer = {
+    const layer = {
       id: _layerId,
-      type: lType,
+      type: _layerType,
       source: _sourceId,
-      layout: assign({}, envConfig.layout, (layer && layer.layout) || layoutOptions),
-      paint: assign({}, envConfig.paint, (layer && layer.paint) || paintOptions)
+      layout: _layout,
+      paint: _paint
     };
 
-    this.map.addLayer(combinedLayer, before);
+    this.map.addLayer(layer, before);
+  },
+
+  didUpdateAttrs() {
+    this._super(...arguments);
+
+    const {
+      _layerId,
+      _layout,
+      _paint
+    } = getProperties(this, '_layerId', '_layout', '_paint');
+
+    for (const k in _layout) {
+      this.map.setLayoutProperty(_layerId, k, _layout[k]);
+    }
+
+    for (const k in _paint) {
+      this.map.setPaintProperty(_layerId, k, _paint[k]);
+    }
   },
 
   willDestroy() {

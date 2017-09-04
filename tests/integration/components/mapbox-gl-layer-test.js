@@ -237,3 +237,65 @@ test('it defaults layer.type to "line" if layer is provided', function (assert) 
   assert.equal(addLayerSpy.firstCall.args[0].id, this.layer.id, 'layer id is passed through');
   assert.equal(addLayerSpy.firstCall.args[0].type, 'line', 'default layer.type is line');
 });
+
+test('it updates layer layout properties', function(assert) {
+  this.set('layer', {
+    id: 'uhhvvuvgvvhjln vgu',
+    type: 'circle',
+    source: {
+      type: 'geojson',
+      data: {
+        type: 'Feature',
+        geometry: {
+          type: 'Point',
+          coordinates: [
+            -76.53063297271729,
+            39.18174077994108
+          ]
+        }
+      }
+    },
+    layout: {
+      visibility: 'none'
+    }
+  });
+
+  this.render(hbs`{{mapbox-gl-layer map=map layer=layer}}`);
+
+  assert.equal(this.map.getLayoutProperty(this.layer.id, 'visibility'), 'none', 'layout property was set');
+
+  this.set('layer', Ember.assign({}, this.layer, { layout: { visibility: 'visible' } }));
+
+  assert.equal(this.map.getLayoutProperty(this.layer.id, 'visibility'), 'visible', 'layout property was updated');
+});
+
+test('it updates layer paint properties', function(assert) {
+  this.set('layer', {
+    id: 'u3qfgoljknjklm',
+    type: 'circle',
+    source: {
+      type: 'geojson',
+      data: {
+        type: 'Feature',
+        geometry: {
+          type: 'Point',
+          coordinates: [
+            -76.53063297271729,
+            39.18174077994108
+          ]
+        }
+      }
+    },
+    paint: {
+      'circle-color': 'white'
+    }
+  });
+
+  this.render(hbs`{{mapbox-gl-layer map=map layer=layer}}`);
+
+  assert.equal(this.map.getPaintProperty(this.layer.id, 'circle-color'), 'white', 'paint property was set');
+
+  this.set('layer', Ember.assign({}, this.layer, { paint: { 'circle-color': 'black' } }));
+
+  assert.equal(this.map.getPaintProperty(this.layer.id, 'circle-color'), 'black', 'paint property was updated');
+});
