@@ -61,6 +61,7 @@ export default function create() {
       return [ 404 ];
     });
 
+    this.get('/assets/**', this.passthrough);
     this.post('/write-coverage', this.passthrough);
   });
 }
