@@ -90,6 +90,10 @@ export default Component.extend({
       get(this, 'paintOptions'));
   }).readOnly(),
 
+  _filter: computed('_envConfig.filter', 'layer.filter', function() {
+    return get(this, 'layer.filter') || null;
+  }).readOnly(),
+
   init() {
     this._super(...arguments);
 
@@ -99,6 +103,7 @@ export default Component.extend({
       _sourceId,
       _layout,
       _paint,
+      _filter,
       before,
 
       // All of these properties are deprecated, but remain for backwards compatibility
@@ -106,7 +111,7 @@ export default Component.extend({
       layerType,
       layoutOptions,
       paintOptions
-    } = getProperties(this, '_layerId', '_layerType', '_sourceId', '_layout', '_paint', 'before', 'sourceId', 'layerType', 'layoutOptions', 'paintOptions');
+    } = getProperties(this, '_layerId', '_layerType', '_sourceId', '_layout', '_paint', '_filter', 'before', 'sourceId', 'layerType', 'layoutOptions', 'paintOptions');
 
     deprecate('Use of `sourceId` is deprecated in favor of `layer.source`', sourceId === null, {
       id: 'ember-mapbox-gl.mapbox-gl-layer',
@@ -136,6 +141,10 @@ export default Component.extend({
       paint: _paint
     };
 
+    if (_filter !== null) {
+      layer.filter = _filter;
+    }
+
     this.map.addLayer(layer, before);
   },
 
@@ -145,8 +154,9 @@ export default Component.extend({
     const {
       _layerId,
       _layout,
-      _paint
-    } = getProperties(this, '_layerId', '_layout', '_paint');
+      _paint,
+      _filter
+    } = getProperties(this, '_layerId', '_layout', '_paint', '_filter');
 
     for (const k in _layout) {
       this.map.setLayoutProperty(_layerId, k, _layout[k]);
@@ -155,6 +165,8 @@ export default Component.extend({
     for (const k in _paint) {
       this.map.setPaintProperty(_layerId, k, _paint[k]);
     }
+
+    this.map.setFilter(_layerId, _filter);
   },
 
   willDestroy() {
