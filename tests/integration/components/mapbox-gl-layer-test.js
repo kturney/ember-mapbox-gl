@@ -299,3 +299,61 @@ test('it updates layer paint properties', function(assert) {
 
   assert.equal(this.map.getPaintProperty(this.layer.id, 'circle-color'), 'black', 'paint property was updated');
 });
+
+test('it passes layer.filter on', function(assert) {
+  this.set('layer', {
+    id: 'vbttbbb',
+    type: 'circle',
+    filter: [ '==', '$type', 'Point' ],
+    source: {
+      type: 'geojson',
+      data: {
+        type: 'Feature',
+        geometry: {
+          type: 'Point',
+          coordinates: [
+            -76.53063297271729,
+            39.18174077994108
+          ]
+        }
+      }
+    }
+  });
+
+  this.render(hbs`{{mapbox-gl-layer map=map layer=layer}}`);
+
+  assert.deepEqual(this.map.getFilter(this.layer.id), this.layer.filter, 'filter was set');
+});
+
+test('it updates filter', function(assert) {
+  this.set('layer', {
+    id: 'rveilqbyveqpivhbeq',
+    type: 'circle',
+    filter: [ '==', '$type', 'Point' ],
+    source: {
+      type: 'geojson',
+      data: {
+        type: 'Feature',
+        geometry: {
+          type: 'Point',
+          coordinates: [
+            -76.53063297271729,
+            39.18174077994108
+          ]
+        }
+      }
+    }
+  });
+
+  this.render(hbs`{{mapbox-gl-layer map=map layer=layer}}`);
+
+  assert.deepEqual(this.map.getFilter(this.layer.id), this.layer.filter, 'filter was set');
+
+  this.set('layer', Ember.assign({}, this.layer, { filter: [ '!=', '$type', 'LineString' ] }));
+
+  assert.deepEqual(this.map.getFilter(this.layer.id), this.layer.filter, 'filter was updated');
+
+  this.set('layer', Ember.assign({}, this.layer, { filter: null }));
+
+  assert.equal(this.map.getFilter(this.layer.id), null, 'filter was cleared');
+});
