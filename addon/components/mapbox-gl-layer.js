@@ -58,6 +58,14 @@ export default Component.extend({
   }),
 
   /**
+   * @private for use by mapbox-gl-source to pass in its source-layer
+   */
+  _sourceLayer: computed('layer', 'sourceLayer', function() {
+    const layer = this.get('layer');
+    return layer['source-layer'];
+  }),
+
+  /**
    * @private
    */
   _layerId: computed('layer.id', function() {
@@ -101,6 +109,7 @@ export default Component.extend({
       _layerId,
       _layerType,
       _sourceId,
+      _sourceLayer,
       _layout,
       _paint,
       _filter,
@@ -111,7 +120,7 @@ export default Component.extend({
       layerType,
       layoutOptions,
       paintOptions
-    } = getProperties(this, '_layerId', '_layerType', '_sourceId', '_layout', '_paint', '_filter', 'before', 'sourceId', 'layerType', 'layoutOptions', 'paintOptions');
+    } = getProperties(this, '_layerId', '_layerType', '_sourceId', '_sourceLayer', '_layout', '_paint', '_filter', 'before', 'sourceId', 'layerType', 'layoutOptions', 'paintOptions');
 
     deprecate('Use of `sourceId` is deprecated in favor of `layer.source`', sourceId === null, {
       id: 'ember-mapbox-gl.mapbox-gl-layer',
@@ -137,6 +146,7 @@ export default Component.extend({
       id: _layerId,
       type: _layerType,
       source: _sourceId,
+      'source-layer': _sourceLayer,
       layout: _layout,
       paint: _paint
     };
