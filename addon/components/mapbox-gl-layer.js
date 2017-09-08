@@ -90,20 +90,33 @@ export default Component.extend({
       get(this, 'paintOptions'));
   }).readOnly(),
 
-  _filter: computed('_envConfig.filter', 'layer.filter', function() {
-    return get(this, 'layer.filter') || null;
-  }).readOnly(),
+  _layer: computed('layer', '_layerId', '_layerType', '_sourceId', '_layout', '_paint', function() {
+    const {
+      layer,
+      _layerId,
+      _layerType,
+      _sourceId,
+      _layout,
+      _paint
+    } = getProperties(this, 'layer', '_layerId', '_layerType', '_sourceId', '_layout', '_paint');
+
+    const computedLayer = {
+      id: _layerId,
+      type: _layerType,
+      source: _sourceId,
+      layout: _layout,
+      paint: _paint
+    };
+
+    // do this to pick up other properties like filter, re, metadata, source-layer, minzoom, maxzoom, etc
+    return assign({}, layer, computedLayer);
+  }),
 
   init() {
     this._super(...arguments);
 
     const {
-      _layerId,
-      _layerType,
-      _sourceId,
-      _layout,
-      _paint,
-      _filter,
+      _layer,
       before,
 
       // All of these properties are deprecated, but remain for backwards compatibility
@@ -111,7 +124,7 @@ export default Component.extend({
       layerType,
       layoutOptions,
       paintOptions
-    } = getProperties(this, '_layerId', '_layerType', '_sourceId', '_layout', '_paint', '_filter', 'before', 'sourceId', 'layerType', 'layoutOptions', 'paintOptions');
+    } = getProperties(this, '_layer', 'before', 'sourceId', 'layerType', 'layoutOptions', 'paintOptions');
 
     deprecate('Use of `sourceId` is deprecated in favor of `layer.source`', sourceId === null, {
       id: 'ember-mapbox-gl.mapbox-gl-layer',
@@ -133,40 +146,27 @@ export default Component.extend({
       until: '1.0.0'
     });
 
-    const layer = {
-      id: _layerId,
-      type: _layerType,
-      source: _sourceId,
-      layout: _layout,
-      paint: _paint
-    };
-
-    if (_filter !== null) {
-      layer.filter = _filter;
-    }
-
-    this.map.addLayer(layer, before);
+    this.map.addLayer(_layer, before);
   },
 
   didUpdateAttrs() {
     this._super(...arguments);
 
-    const {
-      _layerId,
-      _layout,
-      _paint,
-      _filter
-    } = getProperties(this, '_layerId', '_layout', '_paint', '_filter');
+    const _layer = get(this, '_layer');
 
-    for (const k in _layout) {
-      this.map.setLayoutProperty(_layerId, k, _layout[k]);
+    for (const k in _layer.layout) {
+      this.map.setLayoutProperty(_layer.id, k, _layer.layout[k]);
     }
 
-    for (const k in _paint) {
-      this.map.setPaintProperty(_layerId, k, _paint[k]);
+    for (const k in _layer.paint) {
+      this.map.setPaintProperty(_layer.id, k, _layer.paint[k]);
     }
 
-    this.map.setFilter(_layerId, _filter);
+    if ('filter' in _layer) {
+      this.map.setFilter(_layer.id, _layer.filter);
+    }
+
+    this.map.setLayerZoomRange(_layer.id, _layer.minzoom, _layer.maxzoom);
   },
 
   willDestroy() {

@@ -357,3 +357,73 @@ test('it updates filter', function(assert) {
 
   assert.equal(this.map.getFilter(this.layer.id), null, 'filter was cleared');
 });
+
+test('it passes through other layer options', function(assert) {
+  this.set('layer', {
+    id: 'rwbwrnytwnnm',
+    type: 'circle',
+    metadata: { kyle: 'turney' },
+    'source-layer': 'some layer',
+    source: {
+      type: 'geojson',
+      data: {
+        type: 'Feature',
+        geometry: {
+          type: 'Point',
+          coordinates: [
+            -76.53063297271729,
+            39.18174077994108
+          ]
+        }
+      }
+    }
+  });
+
+  const addLayerSpy = this.sandbox.spy(this.map, 'addLayer');
+
+  this.render(hbs`{{mapbox-gl-layer map=map layer=layer}}`);
+
+  assert.ok(addLayerSpy.calledOnce, 'addLayer called once');
+  assert.deepEqual(addLayerSpy.firstCall.args[0].metadata, this.layer.metadata, 'metadata passed through');
+  assert.equal(addLayerSpy.firstCall.args[0]['source-layer'], this.layer['source-layer'], 'source-layer passed through');
+});
+
+test('it updates minzoom and maxzoom on the layer', function(assert) {
+  this.set('layer', {
+    id: 'biyrivbibvpobv',
+    type: 'circle',
+    minzoom: 5,
+    maxzoom: 10,
+    source: {
+      type: 'geojson',
+      data: {
+        type: 'Feature',
+        geometry: {
+          type: 'Point',
+          coordinates: [
+            -76.53063297271729,
+            39.18174077994108
+          ]
+        }
+      }
+    }
+  });
+
+  const addLayerSpy = this.sandbox.spy(this.map, 'addLayer');
+  const setLayerZoomRangeSpy = this.sandbox.spy(this.map, 'setLayerZoomRange');
+
+  this.render(hbs`{{mapbox-gl-layer map=map layer=layer}}`);
+
+  assert.ok(addLayerSpy.calledOnce, 'addLayer called once');
+  assert.equal(addLayerSpy.firstCall.args[0].minzoom, 5, 'minzoom passed through');
+  assert.equal(addLayerSpy.firstCall.args[0].maxzoom, 10, 'maxzoom passed through');
+  assert.notOk(setLayerZoomRangeSpy.calledOnce, 'setLayerZoomRange not called');
+
+  this.set('layer', Ember.assign({}, this.layer, { minzoom: 2, maxzoom: 15 }));
+
+  assert.ok(addLayerSpy.calledOnce, 'addLayer only called once');
+  assert.ok(setLayerZoomRangeSpy.calledOnce, 'setLayerZoomRange calledOnce');
+  assert.equal(setLayerZoomRangeSpy.firstCall.args[0], this.layer.id, 'setLayerZoomRange called with correct layerId');
+  assert.equal(setLayerZoomRangeSpy.firstCall.args[1], 2, 'setLayerZoomRange called with correct minzoom');
+  assert.equal(setLayerZoomRangeSpy.firstCall.args[2], 15, 'setLayerZoomRange called with correct maxzoom');
+});
