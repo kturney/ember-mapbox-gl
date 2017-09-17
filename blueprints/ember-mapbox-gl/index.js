@@ -8,6 +8,6 @@ module.exports = {
   },
 
   afterInstall() {
-    return this.addPackageToProject('mapbox-gl', '^0.39.0');
+    return this.addPackageToProject('mapbox-gl', '^0.40.0');
   }
 };

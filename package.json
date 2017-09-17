@@ -44,7 +44,7 @@
     "ember-sinon": "^1.0.0",
     "ember-source": "~2.15.0",
     "loader.js": "^4.2.3",
-    "mapbox-gl": "^0.39.0"
+    "mapbox-gl": "^0.40.0"
   },
   "peerDependencies": {
     "mapbox-gl": ">=0.38"
