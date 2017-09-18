@@ -82,7 +82,7 @@ test('it adds the image to the map', async function(assert) {
   assert.equal(removeImageSpy.firstCall.args[0], this.name, 'removes correct name');
 });
 
-test('it allows the image to be updates', async function(assert) {
+test('it allows the image to be updated', async function(assert) {
   const loadImageSpy = this.sandbox.spy(this.map, 'loadImage');
   const addImageSpy = this.sandbox.spy(this.map, 'addImage');
   const removeImageSpy = this.sandbox.spy(this.map, 'removeImage');
@@ -132,4 +132,28 @@ test('it allows the image to be updates', async function(assert) {
 
   assert.ok(removeImageSpy.calledTwice, 'removeImage called for updated');
   assert.equal(removeImageSpy.secondCall.args[0], this.name, 'removes updated name');
+});
+
+test('it allows options to not be passed', async function(assert) {
+  const loadImageSpy = this.sandbox.spy(this.map, 'loadImage');
+  const addImageSpy = this.sandbox.spy(this.map, 'addImage');
+
+  const defer = createDeferred();
+
+  this.setProperties({
+    name: 'logo',
+    image: '/assets/mapbox-logo.png',
+    onLoad: defer.resolve,
+    onError: defer.reject
+  });
+
+  this.render(hbs`{{mapbox-gl-image name image map=map onLoad=onLoad onError=onError}}`);
+
+  assert.ok(loadImageSpy.calledOnce, 'loadImage called');
+  assert.equal(loadImageSpy.firstCall.args[0], this.image, 'loads correct image');
+
+  await defer.promise;
+
+  assert.ok(addImageSpy.calledOnce, 'addImage called');
+  assert.equal(addImageSpy.firstCall.args[0], this.name, 'adds as correct name');
 });
