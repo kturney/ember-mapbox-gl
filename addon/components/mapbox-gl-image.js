@@ -71,7 +71,13 @@ const MapboxGlImageComponent = Component.extend({
 
     const { name, options } = getProperties(this, 'name', 'options');
 
-    this.map.addImage(name, image, options);
+    // map#addImage doesn't like null for options, only undefined or an object
+    if (options === null) {
+      this.map.addImage(name, image);
+    } else {
+      this.map.addImage(name, image, options);
+    }
+
     this._origName = name;
     this._imageSet = true;
 
