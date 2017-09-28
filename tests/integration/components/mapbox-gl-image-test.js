@@ -82,6 +82,58 @@ test('it adds the image to the map', async function(assert) {
   assert.equal(removeImageSpy.firstCall.args[0], this.name, 'removes correct name');
 });
 
+test('it only adds the latest image if image is updated before the previous image finishes loading', async function(assert) {
+  const loadImageSpy = this.sandbox.spy(this.map, 'loadImage');
+  const addImageSpy = this.sandbox.spy(this.map, 'addImage');
+
+  const defer = createDeferred();
+
+  this.setProperties({
+    name: 'logo',
+    image: '/assets/creativecommons-128.png',
+    options: {},
+    onLoad: defer.resolve,
+    onError: defer.reject
+  });
+
+  this.render(hbs`{{mapbox-gl-image name image options map=map onLoad=onLoad onError=onError}}`);
+
+  assert.ok(loadImageSpy.calledOnce, 'loadImage called');
+  assert.equal(loadImageSpy.firstCall.args[0], this.image, 'loads correct image');
+
+  this.set('image', '/assets/mapbox-logo.png')
+
+  assert.ok(loadImageSpy.calledTwice, 'loadImage called');
+  assert.equal(loadImageSpy.secondCall.args[0], this.image, 'loads correct image');
+
+  await defer.promise;
+
+  assert.ok(addImageSpy.calledOnce, 'addImage called');
+  assert.equal(addImageSpy.firstCall.args[0], this.name, 'adds as correct name');
+  assert.equal(addImageSpy.firstCall.args[2], this.options, 'adds with correct options');
+});
+
+test('it doesn\'t load the image if the component is destroyed before the image has loaded', async function(assert) {
+  const loadImageSpy = this.sandbox.spy(this.map, 'loadImage');
+  const addImageSpy = this.sandbox.spy(this.map, 'addImage');
+
+  this.setProperties({
+    name: 'logo',
+    image: '/assets/creativecommons-128.png'
+  });
+
+  this.render(hbs`{{mapbox-gl-image name image map=map}}`);
+
+  assert.ok(loadImageSpy.calledOnce, 'loadImage called');
+  assert.equal(loadImageSpy.firstCall.args[0], this.image, 'loads correct image');
+
+  this.clearRender();
+
+  await new Ember.RSVP.Promise((resolve) => setTimeout(resolve, 100));
+
+  assert.notOk(addImageSpy.calledOnce, 'addImage not called');
+});
+
 test('it allows the image to be updated', async function(assert) {
   const loadImageSpy = this.sandbox.spy(this.map, 'loadImage');
   const addImageSpy = this.sandbox.spy(this.map, 'addImage');
@@ -156,4 +208,75 @@ test('it allows options to not be passed', async function(assert) {
 
   assert.ok(addImageSpy.calledOnce, 'addImage called');
   assert.equal(addImageSpy.firstCall.args[0], this.name, 'adds as correct name');
+});
+
+test('it allows svgs to be added', async function(assert) {
+  const addImageSpy = this.sandbox.spy(this.map, 'addImage');
+
+  const defer = createDeferred();
+
+  this.setProperties({
+    name: 'marker',
+    image: '/assets/marker.svg',
+    onLoad: defer.resolve,
+    onError: defer.reject
+  });
+
+  this.render(hbs`{{mapbox-gl-image name image map=map onLoad=onLoad onError=onError}}`);
+
+  await defer.promise;
+
+  assert.ok(addImageSpy.calledOnce, 'addImage called');
+  assert.equal(addImageSpy.firstCall.args[0], this.name, 'adds as correct name');
+  assert.ok(addImageSpy.firstCall.args[1], 'adds image data');
+  assert.ok(addImageSpy.firstCall.args[1].width, 'image has width');
+  assert.ok(addImageSpy.firstCall.args[1].height, 'image has height');
+  assert.ok(addImageSpy.firstCall.args[1].data, 'image has data');
+});
+
+test('it allows svgs to be added with custom width and height', async function(assert) {
+  const addImageSpy = this.sandbox.spy(this.map, 'addImage');
+
+  const defer = createDeferred();
+
+  this.setProperties({
+    name: 'marker-custom-width',
+    image: '/assets/marker.svg',
+    width: 64,
+    height: 64,
+    onLoad: defer.resolve,
+    onError: defer.reject
+  });
+
+  this.render(hbs`{{mapbox-gl-image name image width=width height=height map=map onLoad=onLoad onError=onError}}`);
+
+  await defer.promise;
+
+  assert.ok(addImageSpy.calledOnce, 'addImage called');
+  assert.equal(addImageSpy.firstCall.args[0], this.name, 'adds as correct name');
+  assert.ok(addImageSpy.firstCall.args[1], 'adds image data');
+  assert.equal(addImageSpy.firstCall.args[1].width, this.width, 'image has width');
+  assert.equal(addImageSpy.firstCall.args[1].height, this.height, 'image has height');
+  assert.ok(addImageSpy.firstCall.args[1].data, 'image has data');
+});
+
+test('it sends out an error if provided a bad svg', async function(assert) {
+  const defer = createDeferred();
+
+  this.setProperties({
+    name: 'bad-marker',
+    image: '/assets/bad-marker.svg',
+    onLoad: defer.resolve,
+    onError: defer.reject
+  });
+
+  this.render(hbs`{{mapbox-gl-image name image map=map onLoad=onLoad onError=onError}}`);
+
+  try {
+    await defer.promise;
+    assert.ok(false, 'should have gotten error');
+  } catch (err) {
+    assert.equal(err.message, 'failed to load svg');
+    assert.ok(err.ev, 'should have original error event attached');
+  }
 });

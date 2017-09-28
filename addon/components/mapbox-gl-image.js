@@ -2,6 +2,7 @@ import Ember from 'ember';
 
 const {
   Component,
+  computed,
   get,
   getProperties,
   run
@@ -16,18 +17,23 @@ const MapboxGlImageComponent = Component.extend({
   image: null,
   options: null,
 
+  width: null,
+  height: null,
+
   onLoad() {},
   onError() {},
 
   _origName: null,
-  _latestImage: null,
   _imageSet: false,
 
-  init() {
-    this._super(...arguments);
+  isSvg: computed('name', function() {
+    const image = get(this, 'image');
+    if (image === null || typeof image !== 'string') {
+      return false;
+    }
 
-    this._onImage = run.bind(this, this._onImage);
-  },
+    return /\.svg$/.test(image);
+  }),
 
   didReceiveAttrs() {
     this._super(...arguments);
@@ -38,14 +44,27 @@ const MapboxGlImageComponent = Component.extend({
       this._imageSet = false;
     }
 
-    const image = get(this, 'image');
+    const { image, isSvg, width, height } = getProperties(this, 'image', 'isSvg', 'width', 'height');
     if (image === null) {
       return;
     }
 
-    this._latestImage = image;
+    if (isSvg) {
+      const img = new Image();
+      if (width !== null) {
+        img.width = width;
+      }
 
-    this.map.loadImage(image, this._onImage);
+      if (height !== null) {
+        img.height = height;
+      }
+
+      img.onload = run.bind(this, this._onSvgLoad, image, img);
+      img.onerror = run.bind(this, this._onSvgErr, image);
+      img.src = image;
+    } else {
+      this.map.loadImage(image, run.bind(this, this._onImage, image));
+    }
   },
 
   willDestroy() {
@@ -56,17 +75,17 @@ const MapboxGlImageComponent = Component.extend({
     }
   },
 
-  _onImage(err, image) {
+  _onImage(imageName, err, image) {
     if (this.isDestroyed || this.isDestroying) {
+      return;
+    }
+
+    if (get(this, 'image') !== imageName) { // image has changed since we started loading
       return;
     }
 
     if (err) {
       return this.onError(err);
-    }
-
-    if (get(this, 'image') !== this._latestImage) { // image has changed since we started loading
-      return;
     }
 
     const { name, options } = getProperties(this, 'name', 'options');
@@ -82,6 +101,18 @@ const MapboxGlImageComponent = Component.extend({
     this._imageSet = true;
 
     this.onLoad();
+  },
+
+  _onSvgLoad(imageName, img) {
+    const context = document.createElement('canvas').getContext('2d');
+    context.drawImage(img, 0, 0);
+    this._onImage(imageName, null, context.getImageData(0, 0, img.width, img.height));
+  },
+
+  _onSvgErr(imageName, ev) {
+    const err = new Error('failed to load svg');
+    err.ev = ev;
+    this._onImage(imageName, err);
   }
 });
 
