@@ -59,7 +59,7 @@ const MapboxGlImageComponent = Component.extend({
         img.height = height;
       }
 
-      img.onload = run.bind(this, this._onSvgLoad, image, img);
+      img.onload = run.bind(this, this._onImage, image, null, img);
       img.onerror = run.bind(this, this._onSvgErr, image);
       img.src = image;
     } else {
@@ -101,12 +101,6 @@ const MapboxGlImageComponent = Component.extend({
     this._imageSet = true;
 
     this.onLoad();
-  },
-
-  _onSvgLoad(imageName, img) {
-    const context = document.createElement('canvas').getContext('2d');
-    context.drawImage(img, 0, 0);
-    this._onImage(imageName, null, context.getImageData(0, 0, img.width, img.height));
   },
 
   _onSvgErr(imageName, ev) {

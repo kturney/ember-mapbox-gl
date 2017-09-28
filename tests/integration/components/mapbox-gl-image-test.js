@@ -228,10 +228,7 @@ test('it allows svgs to be added', async function(assert) {
 
   assert.ok(addImageSpy.calledOnce, 'addImage called');
   assert.equal(addImageSpy.firstCall.args[0], this.name, 'adds as correct name');
-  assert.ok(addImageSpy.firstCall.args[1], 'adds image data');
-  assert.ok(addImageSpy.firstCall.args[1].width, 'image has width');
-  assert.ok(addImageSpy.firstCall.args[1].height, 'image has height');
-  assert.ok(addImageSpy.firstCall.args[1].data, 'image has data');
+  assert.ok(addImageSpy.firstCall.args[1] instanceof Image, 'adds image');
 });
 
 test('it allows svgs to be added with custom width and height', async function(assert) {
@@ -254,10 +251,9 @@ test('it allows svgs to be added with custom width and height', async function(a
 
   assert.ok(addImageSpy.calledOnce, 'addImage called');
   assert.equal(addImageSpy.firstCall.args[0], this.name, 'adds as correct name');
-  assert.ok(addImageSpy.firstCall.args[1], 'adds image data');
+  assert.ok(addImageSpy.firstCall.args[1] instanceof Image, 'adds image');
   assert.equal(addImageSpy.firstCall.args[1].width, this.width, 'image has width');
   assert.equal(addImageSpy.firstCall.args[1].height, this.height, 'image has height');
-  assert.ok(addImageSpy.firstCall.args[1].data, 'image has data');
 });
 
 test('it sends out an error if provided a bad svg', async function(assert) {
