@@ -4,7 +4,7 @@ const {
   assert,
   Component,
   getProperties,
-  run: { scheduleOnce }
+  run: { cancel, scheduleOnce }
 } = Ember;
 
 const MapboxGlCallComponent = Component.extend({
@@ -15,6 +15,8 @@ const MapboxGlCallComponent = Component.extend({
   args: null,
   onResp: null,
   params: null,
+
+  _scheduledCall: null,
 
   didReceiveAttrs() {
     this._super(...arguments);
@@ -32,9 +34,21 @@ const MapboxGlCallComponent = Component.extend({
     assert('mapbox-gl-call func is required and must be a string', typeof func === 'string');
     assert(`mapbox-gl-call ${func} must be a function on ${obj}`, typeof obj[func] === 'function');
 
-    scheduleOnce('afterRender', () => {
-      this.sendAction('onResp', obj[func].apply(obj, args));
-    });
+    this._scheduledCall = scheduleOnce('afterRender', this, this._call, obj, func, args);
+  },
+
+  willDestroy() {
+    this._super(...arguments);
+
+    if (this._scheduledCall !== null) {
+      cancel(this._scheduledCall);
+    }
+  },
+
+  _call(obj, func, args) {
+    this._scheduledCall = null;
+
+    this.sendAction('onResp', obj[func].apply(obj, args));
   }
 });
 
