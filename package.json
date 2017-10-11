@@ -42,6 +42,7 @@
     "ember-resolver": "^4.0.0",
     "ember-sinon": "^1.0.0",
     "ember-source": "~2.16.0",
+    "eslint-plugin-ember": "^4.5.0",
     "loader.js": "^4.2.3",
     "mapbox-gl": "^0.40.1"
   },

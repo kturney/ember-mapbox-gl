@@ -1,9 +1,9 @@
 import { assign } from '@ember/polyfills';
-import Component from '@ember/component';
 import { deprecate } from '@ember/application/deprecations';
 import { getOwner } from '@ember/application';
 import { getProperties, get, computed } from '@ember/object';
 import { guidFor } from '@ember/object/internals';
+import Component from '@ember/component';
 
 export default Component.extend({
   tagName: '',

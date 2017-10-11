@@ -1,9 +1,9 @@
 import { assert } from '@ember/debug';
 import { assign } from '@ember/polyfills';
-import Component from '@ember/component';
 import { getOwner } from '@ember/application';
-import { getProperties, get } from '@ember/object';
+import { getProperties, get, set } from '@ember/object';
 import { run } from '@ember/runloop';
+import Component from '@ember/component';
 import layout from '../templates/components/mapbox-gl-marker';
 import MapboxGl from 'mapbox-gl';
 
@@ -58,6 +58,6 @@ export default Component.extend({
       .setLngLat(lngLat)
       .addTo(this.map);
 
-    this.set('marker', marker);
+    set(this, 'marker', marker);
   }
 });

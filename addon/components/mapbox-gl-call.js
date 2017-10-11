@@ -1,7 +1,7 @@
 import { assert } from '@ember/debug';
-import Component from '@ember/component';
 import { getProperties } from '@ember/object';
 import { scheduleOnce, cancel } from '@ember/runloop';
+import Component from '@ember/component';
 
 const MapboxGlCallComponent = Component.extend({
   tagName: '',
@@ -44,7 +44,7 @@ const MapboxGlCallComponent = Component.extend({
   _call(obj, func, args) {
     this._scheduledCall = null;
 
-    this.sendAction('onResp', obj[func].apply(obj, args));
+    this.sendAction('onResp', obj[func].apply(obj, args)); // eslint-disable-line ember/closure-actions
   }
 });
 

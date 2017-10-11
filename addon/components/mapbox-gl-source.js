@@ -1,9 +1,9 @@
 import { assign } from '@ember/polyfills';
-import Component from '@ember/component';
+import { bind } from '@ember/runloop';
 import { deprecate } from '@ember/application/deprecations';
 import { getProperties, get, computed } from '@ember/object';
 import { guidFor } from '@ember/object/internals';
-import { bind } from '@ember/runloop';
+import Component from '@ember/component';
 import layout from '../templates/components/mapbox-gl-source';
 
 export default Component.extend({

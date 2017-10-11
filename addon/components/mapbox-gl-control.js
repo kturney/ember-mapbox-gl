@@ -1,5 +1,5 @@
-import Component from '@ember/component';
 import { getProperties } from '@ember/object';
+import Component from '@ember/component';
 
 const MapboxGlControlComponent = Component.extend({
   tagName: '',

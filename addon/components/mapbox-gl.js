@@ -1,17 +1,18 @@
-import { assign } from '@ember/polyfills';
 import { assert } from '@ember/debug';
-import Component from '@ember/component';
-import { get } from '@ember/object';
+import { assign } from '@ember/polyfills';
+import { get, set } from '@ember/object';
 import { getOwner } from '@ember/application';
 import { run } from '@ember/runloop';
+import Component from '@ember/component';
 import layout from '../templates/components/mapbox-gl';
 import MapboxGl from 'mapbox-gl';
+import noop from 'ember-mapbox-gl/utils/noop';
 
 export default Component.extend({
   layout,
 
   initOptions: null,
-  mapLoaded() {},
+  mapLoaded: noop,
 
   init() {
     this._super(...arguments);
@@ -59,6 +60,6 @@ export default Component.extend({
 
     this.mapLoaded(map);
 
-    this.set('map', map);
+    set(this, 'map', map);
   }
 });
