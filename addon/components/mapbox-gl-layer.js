@@ -1,15 +1,9 @@
-import Ember from 'ember';
-
-const {
-  assign,
-  Component,
-  computed,
-  deprecate,
-  get,
-  getOwner,
-  getProperties,
-  guidFor
-} = Ember;
+import { assign } from '@ember/polyfills';
+import { deprecate } from '@ember/application/deprecations';
+import { getOwner } from '@ember/application';
+import { getProperties, get, computed } from '@ember/object';
+import { guidFor } from '@ember/object/internals';
+import Component from '@ember/component';
 
 export default Component.extend({
   tagName: '',

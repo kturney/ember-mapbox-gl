@@ -1,16 +1,10 @@
-import Ember from 'ember';
+import { assign } from '@ember/polyfills';
+import { bind } from '@ember/runloop';
+import { deprecate } from '@ember/application/deprecations';
+import { getProperties, get, computed } from '@ember/object';
+import { guidFor } from '@ember/object/internals';
+import Component from '@ember/component';
 import layout from '../templates/components/mapbox-gl-source';
-
-const {
-  assign,
-  Component,
-  computed,
-  deprecate,
-  get,
-  getProperties,
-  guidFor,
-  run: { bind }
-} = Ember;
 
 export default Component.extend({
   layout,

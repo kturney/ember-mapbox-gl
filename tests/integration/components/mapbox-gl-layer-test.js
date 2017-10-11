@@ -1,6 +1,7 @@
+import { assign } from '@ember/polyfills';
+import { Promise } from 'rsvp';
 import { moduleForComponent, test } from 'ember-qunit';
 import Config from '../../../config/environment';
-import Ember from 'ember';
 import hbs from 'htmlbars-inline-precompile';
 import MapboxGl from 'mapbox-gl';
 import Sinon from 'sinon';
@@ -12,7 +13,7 @@ moduleForComponent('mapbox-gl-layer', 'Integration | Component | mapbox gl layer
     MapboxGl.accessToken = Config['mapbox-gl'].accessToken;
     this.sandbox = Sinon.sandbox.create();
 
-    return new Ember.RSVP.Promise((resolve) => {
+    return new Promise((resolve) => {
       this.map = new MapboxGl.Map({
         container: document.createElement('div'),
         style: Config['mapbox-gl'].map.style
@@ -264,7 +265,7 @@ test('it updates layer layout properties', function(assert) {
 
   assert.equal(this.map.getLayoutProperty(this.layer.id, 'visibility'), 'none', 'layout property was set');
 
-  this.set('layer', Ember.assign({}, this.layer, { layout: { visibility: 'visible' } }));
+  this.set('layer', assign({}, this.layer, { layout: { visibility: 'visible' } }));
 
   assert.equal(this.map.getLayoutProperty(this.layer.id, 'visibility'), 'visible', 'layout property was updated');
 });
@@ -295,7 +296,7 @@ test('it updates layer paint properties', function(assert) {
 
   assert.equal(this.map.getPaintProperty(this.layer.id, 'circle-color'), 'white', 'paint property was set');
 
-  this.set('layer', Ember.assign({}, this.layer, { paint: { 'circle-color': 'black' } }));
+  this.set('layer', assign({}, this.layer, { paint: { 'circle-color': 'black' } }));
 
   assert.equal(this.map.getPaintProperty(this.layer.id, 'circle-color'), 'black', 'paint property was updated');
 });
@@ -349,11 +350,11 @@ test('it updates filter', function(assert) {
 
   assert.deepEqual(this.map.getFilter(this.layer.id), this.layer.filter, 'filter was set');
 
-  this.set('layer', Ember.assign({}, this.layer, { filter: [ '!=', '$type', 'LineString' ] }));
+  this.set('layer', assign({}, this.layer, { filter: [ '!=', '$type', 'LineString' ] }));
 
   assert.deepEqual(this.map.getFilter(this.layer.id), this.layer.filter, 'filter was updated');
 
-  this.set('layer', Ember.assign({}, this.layer, { filter: null }));
+  this.set('layer', assign({}, this.layer, { filter: null }));
 
   assert.equal(this.map.getFilter(this.layer.id), null, 'filter was cleared');
 });
@@ -419,7 +420,7 @@ test('it updates minzoom and maxzoom on the layer', function(assert) {
   assert.equal(addLayerSpy.firstCall.args[0].maxzoom, 10, 'maxzoom passed through');
   assert.notOk(setLayerZoomRangeSpy.calledOnce, 'setLayerZoomRange not called');
 
-  this.set('layer', Ember.assign({}, this.layer, { minzoom: 2, maxzoom: 15 }));
+  this.set('layer', assign({}, this.layer, { minzoom: 2, maxzoom: 15 }));
 
   assert.ok(addLayerSpy.calledOnce, 'addLayer only called once');
   assert.ok(setLayerZoomRangeSpy.calledOnce, 'setLayerZoomRange calledOnce');

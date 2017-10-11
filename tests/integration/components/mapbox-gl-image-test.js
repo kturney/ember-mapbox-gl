@@ -1,6 +1,6 @@
+import { Promise } from 'rsvp';
 import { moduleForComponent, test } from 'ember-qunit';
 import Config from '../../../config/environment';
-import Ember from 'ember';
 import hbs from 'htmlbars-inline-precompile';
 import MapboxGl from 'mapbox-gl';
 import Sinon from 'sinon';
@@ -8,7 +8,7 @@ import Sinon from 'sinon';
 const createDeferred = () => {
   const defer = {};
 
-  defer.promise = new Ember.RSVP.Promise((resolve, reject) => {
+  defer.promise = new Promise((resolve, reject) => {
     defer.resolve = resolve;
     defer.reject = reject;
   });
@@ -23,7 +23,7 @@ moduleForComponent('mapbox-gl-image', 'Integration | Component | mapbox gl image
     MapboxGl.accessToken = Config['mapbox-gl'].accessToken;
     this.sandbox = Sinon.sandbox.create();
 
-    return new Ember.RSVP.Promise((resolve) => {
+    return new Promise((resolve) => {
       this.map = new MapboxGl.Map({
         container: document.createElement('div'),
         style: Config['mapbox-gl'].map.style
@@ -129,7 +129,7 @@ test('it doesn\'t load the image if the component is destroyed before the image 
 
   this.clearRender();
 
-  await new Ember.RSVP.Promise((resolve) => setTimeout(resolve, 100));
+  await new Promise((resolve) => setTimeout(resolve, 100));
 
   assert.notOk(addImageSpy.calledOnce, 'addImage not called');
 });

@@ -1,14 +1,8 @@
-import Ember from 'ember';
-
-const {
-  assert,
-  Component,
-  computed,
-  get,
-  getProperties,
-  isPresent,
-  run
-} = Ember;
+import { assert } from '@ember/debug';
+import { getProperties, get, computed } from '@ember/object';
+import { isPresent } from '@ember/utils';
+import { run } from '@ember/runloop';
+import Component from '@ember/component';
 
 const MapboxGlOnComponent = Component.extend({
   tagName: '',
@@ -95,7 +89,7 @@ const MapboxGlOnComponent = Component.extend({
       return;
     }
 
-    this.sendAction('_action', ...arguments);
+    this.sendAction('_action', ...arguments); // eslint-disable-line ember/closure-actions
   }
 });
 

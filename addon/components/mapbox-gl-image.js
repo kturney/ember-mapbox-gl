@@ -1,12 +1,7 @@
-import Ember from 'ember';
-
-const {
-  Component,
-  computed,
-  get,
-  getProperties,
-  run
-} = Ember;
+import { getProperties, get, computed } from '@ember/object';
+import { run } from '@ember/runloop';
+import Component from '@ember/component';
+import noop from 'ember-mapbox-gl/utils/noop';
 
 const MapboxGlImageComponent = Component.extend({
   tagName: '',
@@ -20,8 +15,8 @@ const MapboxGlImageComponent = Component.extend({
   width: null,
   height: null,
 
-  onLoad() {},
-  onError() {},
+  onLoad: noop,
+  onError: noop,
 
   _origName: null,
   _imageSet: false,

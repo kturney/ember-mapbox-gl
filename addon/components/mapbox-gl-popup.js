@@ -1,15 +1,10 @@
-import Ember from 'ember';
+import { assign } from '@ember/polyfills';
+import { getOwner } from '@ember/application';
+import { getProperties, get } from '@ember/object';
+import { bind } from '@ember/runloop';
+import Component from '@ember/component';
 import layout from '../templates/components/mapbox-gl-popup';
 import MapboxGl from 'mapbox-gl';
-
-const {
-  assign,
-  Component,
-  get,
-  getProperties,
-  getOwner,
-  run
-} = Ember;
 
 export default Component.extend({
   layout,
@@ -28,7 +23,7 @@ export default Component.extend({
     const { initOptions, marker } = getProperties(this, 'initOptions', 'marker');
 
     this.domContent = document.createElement('div');
-    this._onClose = run.bind(this, this.sendAction, 'onClose');
+    this._onClose = bind(this, this.sendAction, 'onClose'); // eslint-disable-line ember/closure-actions
     const options = assign({},
       get(getOwner(this).resolveRegistration('config:environment'), 'mapbox-gl.popup'),
       initOptions);
