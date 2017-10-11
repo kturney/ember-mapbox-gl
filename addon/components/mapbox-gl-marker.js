@@ -1,16 +1,11 @@
-import Ember from 'ember';
+import { assert } from '@ember/debug';
+import { assign } from '@ember/polyfills';
+import Component from '@ember/component';
+import { getOwner } from '@ember/application';
+import { getProperties, get } from '@ember/object';
+import { run } from '@ember/runloop';
 import layout from '../templates/components/mapbox-gl-marker';
 import MapboxGl from 'mapbox-gl';
-
-const {
-  assert,
-  assign,
-  Component,
-  get,
-  getOwner,
-  getProperties,
-  run
-} = Ember;
 
 export default Component.extend({
   layout,

@@ -1,12 +1,6 @@
-import Ember from 'ember';
-
-const {
-  Component,
-  computed,
-  get,
-  getProperties,
-  run
-} = Ember;
+import Component from '@ember/component';
+import { getProperties, get, computed } from '@ember/object';
+import { run } from '@ember/runloop';
 
 const MapboxGlImageComponent = Component.extend({
   tagName: '',

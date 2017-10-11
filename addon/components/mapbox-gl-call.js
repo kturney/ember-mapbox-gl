@@ -1,11 +1,7 @@
-import Ember from 'ember';
-
-const {
-  assert,
-  Component,
-  getProperties,
-  run: { cancel, scheduleOnce }
-} = Ember;
+import { assert } from '@ember/debug';
+import Component from '@ember/component';
+import { getProperties } from '@ember/object';
+import { scheduleOnce, cancel } from '@ember/runloop';
 
 const MapboxGlCallComponent = Component.extend({
   tagName: '',

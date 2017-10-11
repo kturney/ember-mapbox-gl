@@ -1,9 +1,5 @@
-import Ember from 'ember';
-
-const {
-  Component,
-  getProperties
-} = Ember;
+import Component from '@ember/component';
+import { getProperties } from '@ember/object';
 
 const MapboxGlControlComponent = Component.extend({
   tagName: '',

@@ -1,14 +1,10 @@
+import { assign } from '@ember/polyfills';
+import RSVP, { Promise } from 'rsvp';
 import { moduleForComponent, test } from 'ember-qunit';
 import Config from '../../../config/environment';
-import Ember from 'ember';
 import hbs from 'htmlbars-inline-precompile';
 import MapboxGl from 'mapbox-gl';
 import Sinon from 'sinon';
-
-const {
-  assign,
-  RSVP
-} = Ember;
 
 moduleForComponent('mapbox-gl-source', 'Integration | Component | mapbox gl source', {
   integration: true,
@@ -17,7 +13,7 @@ moduleForComponent('mapbox-gl-source', 'Integration | Component | mapbox gl sour
     MapboxGl.accessToken = Config['mapbox-gl'].accessToken;
     this.sandbox = Sinon.sandbox.create();
 
-    return new Ember.RSVP.Promise((resolve) => {
+    return new Promise((resolve) => {
       this.map = new MapboxGl.Map({
         container: document.createElement('div'),
         style: Config['mapbox-gl'].map.style

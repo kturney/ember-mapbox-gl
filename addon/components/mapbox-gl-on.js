@@ -1,14 +1,8 @@
-import Ember from 'ember';
-
-const {
-  assert,
-  Component,
-  computed,
-  get,
-  getProperties,
-  isPresent,
-  run
-} = Ember;
+import { assert } from '@ember/debug';
+import Component from '@ember/component';
+import { getProperties, get, computed } from '@ember/object';
+import { isPresent } from '@ember/utils';
+import { run } from '@ember/runloop';
 
 const MapboxGlOnComponent = Component.extend({
   tagName: '',
