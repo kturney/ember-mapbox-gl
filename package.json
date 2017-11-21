@@ -44,7 +44,7 @@
     "ember-source": "~2.16.0",
     "eslint-plugin-ember": "^4.5.0",
     "loader.js": "^4.2.3",
-    "mapbox-gl": "^0.41.0"
+    "mapbox-gl": "^0.42.0"
   },
   "peerDependencies": {
     "mapbox-gl": ">=0.38"

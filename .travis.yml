@@ -27,6 +27,7 @@ env:
     - EMBER_TRY_SCENARIO=ember-default-mapbox-gl-0.38
     - EMBER_TRY_SCENARIO=ember-default-mapbox-gl-0.39
     - EMBER_TRY_SCENARIO=ember-default-mapbox-gl-0.40
+    - EMBER_TRY_SCENARIO=ember-default-mapbox-gl-0.41
 
 matrix:
   fast_finish: true

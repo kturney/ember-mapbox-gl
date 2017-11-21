@@ -104,6 +104,14 @@ module.exports = {
           'mapbox-gl': '^0.40.0'
         }
       }
+    },
+    {
+      name: 'ember-default-mapbox-gl-0.41',
+      npm: {
+        devDependencies: {
+          'mapbox-gl': '^0.41.0'
+        }
+      }
     }
   ]
 };
