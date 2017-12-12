@@ -6,14 +6,15 @@ module.exports = {
   },
   extends: [
     'eslint:recommended',
-    'plugin:ember/base'
+    'plugin:ember/recommended'
   ],
   env: {
     browser: true
   },
   rules: {
-    'ember/named-functions-in-promises': 'off',
-    'ember/new-module-imports': 'error',
-    'ember/no-jquery': 'error'
+    'ember/no-jquery': 'error',
+    'ember/no-observers': 'error',
+    'ember/order-in-components': 'error',
+    'ember/use-ember-get-and-set': 'error'
   }
 };

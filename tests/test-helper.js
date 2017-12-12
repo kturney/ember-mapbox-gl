@@ -1,10 +1,10 @@
-import { setResolver } from 'ember-qunit';
-import { start } from 'ember-cli-qunit';
+import { setApplication } from '@ember/test-helpers';
+import { start } from 'ember-qunit';
+import Application from '../app';
 import QUnit from 'qunit';
-import resolver from './helpers/resolver';
 
 QUnit.config.maxDepth = 10;
 
-setResolver(resolver);
+setApplication(Application.create({ autoboot: false }));
 
 start();
