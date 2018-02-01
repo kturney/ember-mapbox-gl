@@ -2,7 +2,6 @@ import { assign } from '@ember/polyfills';
 import { moduleForComponent, test } from 'ember-qunit';
 import createMap from '../../helpers/create-map';
 import hbs from 'htmlbars-inline-precompile';
-import RSVP from 'rsvp';
 import Sinon from 'sinon';
 import wait from 'ember-test-helpers/wait';
 
@@ -187,13 +186,6 @@ test('it passes updated data on to the source via the data property', async func
 
   this.set('data', updatedData);
 
-  assert.notOk(setDataSpy.calledOnce, 'source#setData not called yet');
-
-  await new RSVP.Promise((resolve, reject) => {
-    source.once('data', resolve);
-    source.once('error', reject);
-  });
-
   assert.ok(setDataSpy.calledOnce, 'source#setData called once');
   assert.deepEqual(setDataSpy.firstCall.args[0], updatedData, 'correct data is updated');
 });
@@ -254,13 +246,6 @@ test('it passes updated data on to the source via the options property', async f
   const setDataSpy = this.sandbox.spy(source, 'setData');
 
   this.set('data', updatedData);
-
-  assert.notOk(setDataSpy.calledOnce, 'source#setData not called yet');
-
-  await new RSVP.Promise((resolve, reject) => {
-    source.once('data', resolve);
-    source.once('error', reject);
-  });
 
   assert.ok(setDataSpy.calledOnce, 'source#setData called once');
   assert.deepEqual(setDataSpy.firstCall.args[0], updatedData, 'correct data is updated');
