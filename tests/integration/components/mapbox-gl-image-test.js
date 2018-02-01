@@ -1,8 +1,7 @@
-import { Promise } from 'rsvp';
 import { moduleForComponent, test } from 'ember-qunit';
-import Config from '../../../config/environment';
+import { Promise } from 'rsvp';
+import createMap from '../../helpers/create-map';
 import hbs from 'htmlbars-inline-precompile';
-import MapboxGl from 'mapbox-gl';
 import Sinon from 'sinon';
 
 const createDeferred = () => {
@@ -19,18 +18,10 @@ const createDeferred = () => {
 moduleForComponent('mapbox-gl-image', 'Integration | Component | mapbox gl image', {
   integration: true,
 
-  before() {
-    MapboxGl.accessToken = Config['mapbox-gl'].accessToken;
+  async before() {
     this.sandbox = Sinon.sandbox.create();
 
-    return new Promise((resolve) => {
-      this.map = new MapboxGl.Map({
-        container: document.createElement('div'),
-        style: Config['mapbox-gl'].map.style
-      });
-
-      this.map.style.once('data', resolve);
-    });
+    this.map = await createMap();
   },
 
   afterEach() {
