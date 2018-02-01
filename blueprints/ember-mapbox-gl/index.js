@@ -1,4 +1,3 @@
-/* eslint-env node */
 module.exports = {
   description: 'add mapbox-gl npm package',
 
@@ -8,6 +7,6 @@ module.exports = {
   },
 
   afterInstall() {
-    return this.addPackageToProject('mapbox-gl', '^0.42.0');
+    return this.addPackageToProject('mapbox-gl', '^0.44.0');
   }
 };

@@ -27,6 +27,8 @@ env:
     - EMBER_TRY_SCENARIO=ember-default-mapbox-gl-0.39
     - EMBER_TRY_SCENARIO=ember-default-mapbox-gl-0.40
     - EMBER_TRY_SCENARIO=ember-default-mapbox-gl-0.41
+    - EMBER_TRY_SCENARIO=ember-default-mapbox-gl-0.42
+    - EMBER_TRY_SCENARIO=ember-default-mapbox-gl-0.43
 
 matrix:
   fast_finish: true
@@ -42,6 +44,7 @@ before_script:
   - sleep 3 # give xvfb some time to start
 
 script:
+  - yarn lint:js
   # Usually, it's ok to finish the test scenario without reverting
   #  to the addon's original dependency state, skipping "cleanup".
   - node_modules/.bin/ember try:one $EMBER_TRY_SCENARIO --skip-cleanup

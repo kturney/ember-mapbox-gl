@@ -1,4 +1,3 @@
-/* eslint-env node */
 module.exports = {
   test_page: 'tests/index.html?hidepassed',
   browser_start_timeout: 180,
@@ -9,5 +8,13 @@ module.exports = {
   ],
   launch_in_dev: [
     'Chrome'
-  ]
+  ],
+  browser_args: {
+    Chrome: {
+      mode: 'ci',
+      args: [
+        '--no-sandbox'
+      ]
+    }
+  }
 };
