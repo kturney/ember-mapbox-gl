@@ -1,4 +1,3 @@
-/* eslint-env node */
 module.exports = {
   useYarn: true,
 
@@ -86,6 +85,22 @@ module.exports = {
       npm: {
         devDependencies: {
           'mapbox-gl': '^0.41.0'
+        }
+      }
+    },
+    {
+      name: 'ember-default-mapbox-gl-0.42',
+      npm: {
+        devDependencies: {
+          'mapbox-gl': '^0.42.0'
+        }
+      }
+    },
+    {
+      name: 'ember-default-mapbox-gl-0.43',
+      npm: {
+        devDependencies: {
+          'mapbox-gl': '^0.43.0'
         }
       }
     }
