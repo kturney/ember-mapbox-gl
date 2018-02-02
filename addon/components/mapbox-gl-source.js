@@ -1,5 +1,5 @@
 import { assign } from '@ember/polyfills';
-import { bind } from '@ember/runloop';
+import { bind, next } from '@ember/runloop';
 import { deprecate } from '@ember/application/deprecations';
 import { getProperties, get, computed } from '@ember/object';
 import { guidFor } from '@ember/object/internals';
@@ -116,6 +116,8 @@ export default Component.extend({
     const sourceId = get(this, 'sourceId');
 
     this.map.getSource(sourceId).off('data', this._dataDone);
-    this.map.removeSource(sourceId);
+
+    // wait for any layers to be removed before removing the source
+    next(() => this.map.removeSource(sourceId));
   }
 });

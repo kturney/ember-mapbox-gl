@@ -1,26 +1,18 @@
 import { assign } from '@ember/polyfills';
-import RSVP, { Promise } from 'rsvp';
 import { moduleForComponent, test } from 'ember-qunit';
-import Config from '../../../config/environment';
+import createMap from '../../helpers/create-map';
 import hbs from 'htmlbars-inline-precompile';
-import MapboxGl from 'mapbox-gl';
+import RSVP from 'rsvp';
 import Sinon from 'sinon';
+import wait from 'ember-test-helpers/wait';
 
 moduleForComponent('mapbox-gl-source', 'Integration | Component | mapbox gl source', {
   integration: true,
 
-  before() {
-    MapboxGl.accessToken = Config['mapbox-gl'].accessToken;
+  async before() {
     this.sandbox = Sinon.sandbox.create();
 
-    return new Promise((resolve) => {
-      this.map = new MapboxGl.Map({
-        container: document.createElement('div'),
-        style: Config['mapbox-gl'].map.style
-      });
-
-      this.map.style.once('data', resolve);
-    });
+    this.map = await createMap();
   },
 
   afterEach() {
@@ -67,20 +59,40 @@ test('it accepts a sourceId, dataType, and data', async function(assert) {
 
   this.clearRender();
 
+  await wait();
+
   assert.ok(removeSourceSpy.calledOnce, 'removeSource called once');
   assert.equal(removeSourceSpy.firstCall.args[0], this.sourceId, 'correct sourceId is removed');
 });
 
 test('it creates a sourceId if one is not provided', async function(assert) {
+  this.setProperties({
+    data: {
+      type: 'FeatureCollection',
+      features: [{
+          type: 'Feature',
+          geometry: {
+            type: 'Point',
+            coordinates: [
+              -76.53063297271729,
+              39.18174077994108
+            ]
+          }
+      }]
+    }
+  });
+
   const addSourceSpy = this.sandbox.spy(this.map, 'addSource');
   const removeSourceSpy = this.sandbox.spy(this.map, 'removeSource');
 
-  this.render(hbs`{{mapbox-gl-source map=map}}`);
+  this.render(hbs`{{mapbox-gl-source map=map options=(hash type='geojson' data=data)}}`);
 
   assert.ok(addSourceSpy.calledOnce, 'addSource called once');
   assert.ok(addSourceSpy.firstCall.args[0], 'a sourceId is added');
 
   this.clearRender();
+
+  await wait();
 
   assert.ok(removeSourceSpy.calledOnce, 'removeSource called once');
   assert.equal(removeSourceSpy.firstCall.args[0], addSourceSpy.firstCall.args[0], 'correct sourceId is removed');
@@ -120,6 +132,8 @@ test('it accepts source options as an options object', async function(assert) {
   assert.deepEqual(addSourceSpy.firstCall.args[1], sourceOptions, 'correct source options');
 
   this.clearRender();
+
+  await wait();
 
   assert.ok(removeSourceSpy.calledOnce, 'removeSource called once');
   assert.equal(removeSourceSpy.firstCall.args[0], this.sourceId, 'correct sourceId is removed');
@@ -291,12 +305,29 @@ test('it passes updated coordinates on to the source via the options property', 
 });
 
 test('it passes on its sourceId to its layers', async function (assert) {
+  this.setProperties({
+    sourceId: 'evewvrwvwrvw',
+    data: {
+      type: 'FeatureCollection',
+      features: [{
+          type: 'Feature',
+          geometry: {
+            type: 'Point',
+            coordinates: [
+              -76.53063297271729,
+              39.18174077994108
+            ]
+          }
+      }]
+    }
+  });
+
   const addLayerSpy = this.sandbox.spy(this.map, 'addLayer');
 
   this.sourceId = 'guvvguvguugvu';
 
   this.render(hbs`
-    {{#mapbox-gl-source map=map sourceId=sourceId as |source|}}
+    {{#mapbox-gl-source map=map sourceId=sourceId options=(hash type='geojson' data=data) as |source|}}
       {{source.layer layer=(hash type='symbol' layout=(hash icon-image='rocket-15'))}}
     {{/mapbox-gl-source}}
   `);

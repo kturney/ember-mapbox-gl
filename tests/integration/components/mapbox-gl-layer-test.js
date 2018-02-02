@@ -1,26 +1,16 @@
 import { assign } from '@ember/polyfills';
-import { Promise } from 'rsvp';
 import { moduleForComponent, test } from 'ember-qunit';
-import Config from '../../../config/environment';
+import createMap from '../../helpers/create-map';
 import hbs from 'htmlbars-inline-precompile';
-import MapboxGl from 'mapbox-gl';
 import Sinon from 'sinon';
 
 moduleForComponent('mapbox-gl-layer', 'Integration | Component | mapbox gl layer', {
   integration: true,
 
-  before() {
-    MapboxGl.accessToken = Config['mapbox-gl'].accessToken;
+  async before() {
     this.sandbox = Sinon.sandbox.create();
 
-    return new Promise((resolve) => {
-      this.map = new MapboxGl.Map({
-        container: document.createElement('div'),
-        style: Config['mapbox-gl'].map.style
-      });
-
-      this.map.style.once('data', resolve);
-    });
+    this.map = await createMap();
   },
 
   afterEach() {
@@ -149,12 +139,16 @@ test('it passes on the before option', function (assert) {
     }
   });
 
+  this.map.addLayer({ id: this.before, type: 'line', source: this.layer.source });
+
   const addLayerSpy = this.sandbox.spy(this.map, 'addLayer');
 
   this.render(hbs`{{mapbox-gl-layer map=map layer=layer before=before}}`);
 
   assert.ok(addLayerSpy.calledOnce, 'addLayer called once');
   assert.equal(addLayerSpy.firstCall.args[1], this.before, 'passes on correct before');
+
+  this.map.removeLayer(this.before);
 });
 
 test('it generates a layer.id if needed', async function(assert) {
@@ -364,19 +358,10 @@ test('it passes through other layer options', function(assert) {
     id: 'rwbwrnytwnnm',
     type: 'circle',
     metadata: { kyle: 'turney' },
-    'source-layer': 'some layer',
+    'source-layer': 'contour',
     source: {
-      type: 'geojson',
-      data: {
-        type: 'Feature',
-        geometry: {
-          type: 'Point',
-          coordinates: [
-            -76.53063297271729,
-            39.18174077994108
-          ]
-        }
-      }
+      type: 'vector',
+      url: 'mapbox://mapbox.mapbox-terrain-v2'
     }
   });
 
