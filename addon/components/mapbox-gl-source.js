@@ -1,6 +1,4 @@
-import { assign } from '@ember/polyfills';
 import { next } from '@ember/runloop';
-import { deprecate } from '@ember/application/deprecations';
 import { getProperties, get, computed } from '@ember/object';
 import { guidFor } from '@ember/object/internals';
 import Component from '@ember/component';
@@ -11,16 +9,6 @@ export default Component.extend({
   tagName: '',
 
   map: null,
-
-  /**
-    * @deprecated in favor of `options.type`
-  */
-  dataType: 'geojson',
-
-  /**
-    * @deprecated in favor of `options.data`
-  */
-  data: null,
 
   /**
    * @param string
@@ -41,44 +29,22 @@ export default Component.extend({
   init() {
     this._super(...arguments);
 
-    const { sourceId, dataType, data, options } = getProperties(this, 'sourceId', 'dataType', 'data', 'options');
+    const { sourceId, options } = getProperties(this, 'sourceId', 'options');
 
-    deprecate('Use of `dataType` is deprecated in favor of `options.type`', dataType === null || dataType === 'geojson', {
-      id: 'ember-mapbox-gl.mapbox-gl-source',
-      until: '1.0.0'
-    });
-
-    deprecate('Use of `data` is deprecated in favor of `options.data`', data === null, {
-      id: 'ember-mapbox-gl.mapbox-gl-source',
-      until: '1.0.0'
-    });
-
-    const computedOpts = {};
-    if (dataType) {
-      computedOpts.type = dataType;
-    }
-
-    if (data) {
-      computedOpts.data = data;
-    }
-
-    const combinedOpts = assign({}, computedOpts, options);
-
-    this.map.addSource(sourceId, combinedOpts);
+    this.map.addSource(sourceId, options);
   },
 
   didUpdateAttrs() {
     this._super(...arguments);
 
-    const { sourceId, data, options } = getProperties(this, 'sourceId', 'data', 'options');
+    const { sourceId, options } = getProperties(this, 'sourceId', 'options');
 
-    const source = this.map.getSource(sourceId);
-
-    const sourceData = (options && options.data) || data;
-    if (sourceData) {
-      source.setData(sourceData);
-    } else if (options && options.coordinates) {
-      source.setCoordinates(options.coordinates);
+    if (options) {
+      if (options.data) {
+        this.map.getSource(sourceId).setData(options.data);
+      } else if (options.coordinates) {
+        this.map.getSource(sourceId).setCoordinates(options.coordinates);
+      }
     }
   },
 

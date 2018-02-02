@@ -23,47 +23,6 @@ moduleForComponent('mapbox-gl-source', 'Integration | Component | mapbox gl sour
   }
 });
 
-test('it accepts a sourceId, dataType, and data', async function(assert) {
-  const sourceOptions = {
-    type: 'geojson',
-    data: {
-      type: 'FeatureCollection',
-      features: [{
-          type: 'Feature',
-          geometry: {
-            type: 'Point',
-            coordinates: [
-                -76.53063297271729,
-                39.18174077994108
-            ]
-          }
-      }]
-    }
-  };
-
-  const addSourceSpy = this.sandbox.spy(this.map, 'addSource');
-  const removeSourceSpy = this.sandbox.spy(this.map, 'removeSource');
-
-  this.setProperties({
-    sourceId: 'evewvrwvwrvw',
-    data: sourceOptions.data,
-    dataType: sourceOptions.type
-  });
-
-  this.render(hbs`{{mapbox-gl-source map=map sourceId=sourceId data=data dataType=dataType}}`);
-
-  assert.ok(addSourceSpy.calledOnce, 'addSource called once');
-  assert.equal(addSourceSpy.firstCall.args[0], this.sourceId, 'correct sourceId is added');
-  assert.deepEqual(addSourceSpy.firstCall.args[1], sourceOptions, 'correct source options');
-
-  this.clearRender();
-
-  await wait();
-
-  assert.ok(removeSourceSpy.calledOnce, 'removeSource called once');
-  assert.equal(removeSourceSpy.firstCall.args[0], this.sourceId, 'correct sourceId is removed');
-});
-
 test('it creates a sourceId if one is not provided', async function(assert) {
   this.setProperties({
     data: {
@@ -138,58 +97,6 @@ test('it accepts source options as an options object', async function(assert) {
   assert.equal(removeSourceSpy.firstCall.args[0], this.sourceId, 'correct sourceId is removed');
 });
 
-test('it passes updated data on to the source via the data property', async function(assert) {
-  const sourceOptions = {
-    type: 'geojson',
-    data: {
-      type: 'FeatureCollection',
-      features: [{
-          type: 'Feature',
-          geometry: {
-            type: 'Point',
-            coordinates: [
-              -76.53063297271729,
-              39.18174077994108
-            ]
-          }
-      }]
-    }
-  };
-
-  const updatedData = {
-    type: 'Feature',
-    geometry: {
-      type: 'Point',
-      coordinates: [
-        -76.53063297271729,
-        39.18174077994108
-      ]
-    }
-  };
-
-  const addSourceSpy = this.sandbox.spy(this.map, 'addSource');
-
-  this.setProperties({
-    sourceId: 'evewvrwvwrvw',
-    data: sourceOptions.data,
-    dataType: sourceOptions.type
-  });
-
-  this.render(hbs`{{mapbox-gl-source map=map sourceId=sourceId data=data dataType=dataType}}`);
-
-  assert.ok(addSourceSpy.calledOnce, 'addSource called once');
-  assert.equal(addSourceSpy.firstCall.args[0], this.sourceId, 'correct sourceId is added');
-  assert.deepEqual(addSourceSpy.firstCall.args[1], sourceOptions, 'correct source options');
-
-  const source = this.map.getSource(this.sourceId);
-  const setDataSpy = this.sandbox.spy(source, 'setData');
-
-  this.set('data', updatedData);
-
-  assert.ok(setDataSpy.calledOnce, 'source#setData called once');
-  assert.deepEqual(setDataSpy.firstCall.args[0], updatedData, 'correct data is updated');
-});
-
 test('it passes updated data on to the source via the options property', async function(assert) {
   const origData = {
     type: 'FeatureCollection',
@@ -240,7 +147,11 @@ test('it passes updated data on to the source via the options property', async f
 
   assert.ok(addSourceSpy.calledOnce, 'addSource called once');
   assert.equal(addSourceSpy.firstCall.args[0], this.sourceId, 'correct sourceId is added');
-  assert.deepEqual(addSourceSpy.firstCall.args[1], { type: 'geojson', data: origData }, 'correct source options');
+  assert.deepEqual(
+    Object.assign({}, addSourceSpy.firstCall.args[1]), // clone so comparison against ember empty object matches
+    { type: 'geojson', data: origData },
+    'correct source options'
+  );
 
   const source = this.map.getSource(this.sourceId);
   const setDataSpy = this.sandbox.spy(source, 'setData');
