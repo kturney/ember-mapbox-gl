@@ -1,5 +1,5 @@
 import { assign } from '@ember/polyfills';
-import { bind, next } from '@ember/runloop';
+import { next } from '@ember/runloop';
 import { deprecate } from '@ember/application/deprecations';
 import { getProperties, get, computed } from '@ember/object';
 import { guidFor } from '@ember/object/internals';
@@ -65,14 +65,6 @@ export default Component.extend({
     const combinedOpts = assign({}, computedOpts, options);
 
     this.map.addSource(sourceId, combinedOpts);
-
-    if (combinedOpts.data) {
-      this._dataDone = bind(this, this._dataDone);
-      this.map.getSource(sourceId).on('data', this._dataDone);
-    }
-
-    this._dataAvailable = false;
-    this._dataInFlight = true;
   },
 
   didUpdateAttrs() {
@@ -84,38 +76,16 @@ export default Component.extend({
 
     const sourceData = (options && options.data) || data;
     if (sourceData) {
-      this._dataAvailable = true;
-      this._syncData(source, sourceData);
+      source.setData(sourceData);
     } else if (options && options.coordinates) {
       source.setCoordinates(options.coordinates);
     }
-  },
-
-  _dataDone() {
-    this._dataInFlight = false;
-
-    const { sourceId, data, options } = getProperties(this, 'sourceId', 'data', 'options');
-
-    this._syncData(this.map.getSource(sourceId), (options && options.data) || data);
-  },
-
-  _syncData(source, data) {
-    if (this._dataInFlight === true || this._dataAvailable === false) {
-      return;
-    }
-
-    source.setData(data);
-
-    this._dataInFlight = true;
-    this._dataAvailable = false;
   },
 
   willDestroy() {
     this._super(...arguments);
 
     const sourceId = get(this, 'sourceId');
-
-    this.map.getSource(sourceId).off('data', this._dataDone);
 
     // wait for any layers to be removed before removing the source
     next(() => this.map.removeSource(sourceId));
