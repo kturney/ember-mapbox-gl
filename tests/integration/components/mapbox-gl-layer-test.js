@@ -22,60 +22,6 @@ moduleForComponent('mapbox-gl-layer', 'Integration | Component | mapbox gl layer
   }
 });
 
-test('it continues to work with the deprecated options', async function(assert) {
-  const expectedLayer = {
-    source: 'rtbt4q4bh4rh6',
-    type: 'circle',
-    layout: {
-      visibility: 'visible'
-    },
-    paint: {
-      'circle-color': '#00ffff'
-    }
-  };
-
-  this.map.addSource(expectedLayer.source, {
-    type: 'geojson',
-    data: {
-      type: 'Feature',
-      geometry: {
-        type: 'Point',
-        coordinates: [ -77.0323, 38.9131 ]
-      },
-    }
-  });
-
-  try {
-    this.set('sourceId', expectedLayer.source);
-    this.set('layerType', expectedLayer.type);
-    this.set('layoutOptions', expectedLayer.layout);
-    this.set('paintOptions', expectedLayer.paint);
-
-    const addLayerSpy = this.sandbox.spy(this.map, 'addLayer');
-
-    this.render(hbs`{{mapbox-gl-layer map=map
-      sourceId=sourceId
-      layerType=layerType
-      layoutOptions=layoutOptions
-      paintOptions=paintOptions}}`);
-
-    assert.ok(addLayerSpy.calledOnce, 'addLayer called once');
-    const addedLayer = addLayerSpy.firstCall.args[0];
-    for (const k in expectedLayer) {
-      assert.deepEqual(addedLayer[k], expectedLayer[k], `${k} was passed through correctly`);
-    }
-
-    assert.expectDeprecation(/Use of `sourceId` is deprecated in favor of `layer.source`/);
-    assert.expectDeprecation(/Use of `layerType` is deprecated in favor of `layer.type`/);
-    assert.expectDeprecation(/Use of `layoutOptions` is deprecated in favor of `layer.layout`/);
-    assert.expectDeprecation(/Use of `paintOptions` is deprecated in favor of `layer.paint`/);
-
-    this.clearRender();
-  } finally {
-    this.map.removeSource(expectedLayer.source);
-  }
-});
-
 test('it takes a layer object', async function(assert) {
   this.set('layer', {
     id: 'ervewewebewbt',

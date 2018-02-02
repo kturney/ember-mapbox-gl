@@ -1,8 +1,8 @@
 import { assign } from '@ember/polyfills';
-import { deprecate } from '@ember/application/deprecations';
 import { getOwner } from '@ember/application';
 import { getProperties, get, computed } from '@ember/object';
 import { guidFor } from '@ember/object/internals';
+import { reads } from '@ember/object/computed';
 import Component from '@ember/component';
 
 export default Component.extend({
@@ -25,31 +25,9 @@ export default Component.extend({
   before: null,
 
   /**
-    * @deprecated in favor of `layer.type`
-  */
-  layerType: null,
-
-  /**
-    * @deprecated in favor of `layer.layout`
-  */
-  layoutOptions: null,
-
-  /**
-    * @deprecated in favor of `layer.paint`
-  */
-  paintOptions: null,
-
-  /**
-    * @deprecated in favor of `layer.source`
-  */
-  sourceId: null,
-
-  /**
    * @private for use by mapbox-gl-source to pass in its sourceId
    */
-  _sourceId: computed('layer.source', 'sourceId', function() {
-    return get(this, 'layer.source') || get(this, 'sourceId');
-  }),
+  _sourceId: reads('layer.source'),
 
   /**
    * @private
@@ -61,8 +39,8 @@ export default Component.extend({
   /**
    * @private
    */
-  _layerType: computed('layer.type', 'layerType', function() {
-    return get(this, 'layer.type') || get(this, 'layerType') || 'line';
+  _layerType: computed('layer.type', function() {
+    return get(this, 'layer.type') || 'line';
   }).readOnly(),
 
   _envConfig: computed('_layerType', function() {
@@ -70,18 +48,16 @@ export default Component.extend({
     return get(getOwner(this).resolveRegistration('config:environment'), `mapbox-gl.${layerType}`);
   }).readOnly(),
 
-  _layout: computed('_envConfig.layout', 'layer.layout', 'layoutOptions', function() {
+  _layout: computed('_envConfig.layout', 'layer.layout', function() {
     return assign({},
       get(this, '_envConfig.layout'),
-      get(this, 'layer.layout'),
-      get(this, 'layoutOptions'));
+      get(this, 'layer.layout'));
   }).readOnly(),
 
-  _paint: computed('_envConfig.paint', 'layer.paint', 'paintOptions', function() {
+  _paint: computed('_envConfig.paint', 'layer.paint', function() {
     return assign({},
       get(this, '_envConfig.paint'),
-      get(this, 'layer.paint'),
-      get(this, 'paintOptions'));
+      get(this, 'layer.paint'));
   }).readOnly(),
 
   _layer: computed('layer', '_layerId', '_layerType', '_sourceId', '_layout', '_paint', function() {
@@ -109,36 +85,7 @@ export default Component.extend({
   init() {
     this._super(...arguments);
 
-    const {
-      _layer,
-      before,
-
-      // All of these properties are deprecated, but remain for backwards compatibility
-      sourceId,
-      layerType,
-      layoutOptions,
-      paintOptions
-    } = getProperties(this, '_layer', 'before', 'sourceId', 'layerType', 'layoutOptions', 'paintOptions');
-
-    deprecate('Use of `sourceId` is deprecated in favor of `layer.source`', sourceId === null, {
-      id: 'ember-mapbox-gl.mapbox-gl-layer',
-      until: '1.0.0'
-    });
-
-    deprecate('Use of `layerType` is deprecated in favor of `layer.type`', layerType === null, {
-      id: 'ember-mapbox-gl.mapbox-gl-layer',
-      until: '1.0.0'
-    });
-
-    deprecate('Use of `layoutOptions` is deprecated in favor of `layer.layout`', layoutOptions === null, {
-      id: 'ember-mapbox-gl.mapbox-gl-layer',
-      until: '1.0.0'
-    });
-
-    deprecate('Use of `paintOptions` is deprecated in favor of `layer.paint`', paintOptions === null, {
-      id: 'ember-mapbox-gl.mapbox-gl-layer',
-      until: '1.0.0'
-    });
+    const { _layer, before } = getProperties(this, '_layer', 'before');
 
     this.map.addLayer(_layer, before);
   },
