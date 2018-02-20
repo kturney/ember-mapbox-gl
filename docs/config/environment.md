@@ -4,7 +4,7 @@ Add a `mapbox-gl` entry to ENV.
 
 ## Properties
 - `accessToken`: Required. Your [mapbox token](https://www.mapbox.com/help/how-access-tokens-work/)
-- `map`: Optional. Default options for all map instances
+- `map`: Optional. Default options for all map instances. Additional options are documented in the [mapbox-gl Map docs](https://www.mapbox.com/mapbox-gl-js/api/#map).
 - `background`: Optional. Default options for all background layers.
 - `fill`: Optional. Default options for all fill layers.
 - `line`: Optional. Default options for all line layers.
