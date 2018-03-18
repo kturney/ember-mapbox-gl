@@ -2,7 +2,7 @@ import { assert } from '@ember/debug';
 import { assign } from '@ember/polyfills';
 import { get, set } from '@ember/object';
 import { getOwner } from '@ember/application';
-import { run } from '@ember/runloop';
+import { bind, next, scheduleOnce } from '@ember/runloop';
 import Component from '@ember/component';
 import layout from '../templates/components/mapbox-gl';
 import MapboxGl from 'mapbox-gl';
@@ -31,7 +31,7 @@ export default Component.extend({
     this._super(...arguments);
 
     if (this.glSupported) {
-      run.scheduleOnce('afterRender', this, this._setup);
+      scheduleOnce('afterRender', this, this._setup);
     }
   },
 
@@ -40,7 +40,7 @@ export default Component.extend({
 
     if (this.map !== null) {
       // some map users may be late doing cleanup (seen with mapbox-draw-gl), so don't remove the map until the next tick
-      run.next(this.map, this.map.remove);
+      next(this.map, this.map.remove);
     }
   },
 
@@ -50,7 +50,7 @@ export default Component.extend({
     options.container = this.element;
 
     const map = new MapboxGl.Map(options);
-    map.once('load', run.bind(this, this._onLoad, map));
+    map.once('load', bind(this, this._onLoad, map));
   },
 
   _onLoad(map) {

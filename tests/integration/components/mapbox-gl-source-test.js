@@ -4,6 +4,7 @@ import createMap from '../../helpers/create-map';
 import hbs from 'htmlbars-inline-precompile';
 import Sinon from 'sinon';
 import wait from 'ember-test-helpers/wait';
+import { defer } from 'rsvp';
 
 moduleForComponent('mapbox-gl-source', 'Integration | Component | mapbox gl source', {
   integration: true,
@@ -232,4 +233,60 @@ test('it passes on its sourceId to its layers', async function (assert) {
   assert.equal(addLayerSpy.firstCall.args[0].source, this.sourceId, 'correct sourceId is used');
 
   assert.expectNoDeprecation();
+});
+
+test('it cleans up sources before its containing map is removed when the map goes away', async function(assert) {
+  // a TypeError would be thrown during this test if it doesn't work
+  const sourceOptions = {
+    type: 'geojson',
+    data: {
+      type: 'FeatureCollection',
+      features: [{
+          type: 'Feature',
+          properties: {},
+          geometry: {
+              type: 'Point',
+              coordinates: [
+                  -76.53063297271729,
+                  39.18174077994108
+              ]
+          }
+      }]
+    }
+  };
+
+  let addSourceSpy = null;
+  let removeSourceSpy = null;
+
+  this.setProperties({
+    sourceId: 'evewvrwvwrvw',
+    options: sourceOptions
+  });
+
+  const defered = defer();
+  this.mapLoaded = (map) => {
+    addSourceSpy = this.sandbox.spy(map, 'addSource');
+    removeSourceSpy = this.sandbox.spy(map, 'removeSource');
+
+    defered.resolve();
+  };
+
+  this.render(hbs`
+    {{#mapbox-gl mapLoaded=mapLoaded as |map|}}
+      {{map.source sourceId=sourceId options=options}}
+    {{/mapbox-gl}}
+  `);
+
+  await defered.promise;
+
+  assert.ok(addSourceSpy.calledOnce, 'addSource called once');
+  assert.equal(addSourceSpy.firstCall.args[0], this.sourceId, 'correct sourceId is added');
+  assert.deepEqual(addSourceSpy.firstCall.args[1], sourceOptions, 'correct source options');
+
+  this.clearRender();
+
+  await wait();
+
+  assert.ok(removeSourceSpy.calledOnce, 'removeSource called once');
+  assert.equal(removeSourceSpy.firstCall.args[0], this.sourceId, 'correct sourceId is removed');
 });

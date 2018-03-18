@@ -1,4 +1,4 @@
-import { next } from '@ember/runloop';
+import { scheduleOnce } from '@ember/runloop';
 import { getProperties, get, computed } from '@ember/object';
 import { guidFor } from '@ember/object/internals';
 import Component from '@ember/component';
@@ -54,6 +54,6 @@ export default Component.extend({
     const sourceId = get(this, 'sourceId');
 
     // wait for any layers to be removed before removing the source
-    next(() => this.map.removeSource(sourceId));
+    scheduleOnce('afterRender', this.map, this.map.removeSource, sourceId);
   }
 });
