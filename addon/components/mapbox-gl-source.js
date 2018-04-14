@@ -11,14 +11,16 @@ export default Component.extend({
   map: null,
 
   /**
-   * @param string
+   * @property map
+   * @type {String}
    * @description The source options to add, conforming to the Mapbox Source spec.
    * {@link https://www.mapbox.com/mapbox-gl-js/style-spec/#sources Mapbox}
   */
   options: null,
 
   /**
-   * @param object
+   * @property options
+   * @type {Object}
    * @description The ID of the source to add. Must not conflict with existing sources.
    * {@link https://www.mapbox.com/mapbox-gl-js/api/#map#addsource Mapbox}
   */

@@ -11,25 +11,29 @@ export default Component.extend({
   map: null,
 
   /**
-   * @param object
+   * @property map
+   * @type {Object}
    * @description The style layer to add, conforming to the Mapbox Style Specification's layer definition.
    * {@link https://www.mapbox.com/mapbox-gl-js/api/#map#addlayer Mapbox}
   */
   layer: null,
 
   /**
-   * @param string
+   * @property layer
+   * @type {String}
    * @description The ID of an existing layer to insert the new layer before. If this argument is omitted, the layer will be appended to the end of the layers array.
    * {@link https://www.mapbox.com/mapbox-gl-js/api/#map#addlayer Mapbox}
   */
   before: null,
 
   /**
+   * @property _sourceId
    * @private for use by mapbox-gl-source to pass in its sourceId
    */
   _sourceId: reads('layer.source'),
 
   /**
+   * @property _layerId
    * @private
    */
   _layerId: computed('layer.id', function() {
@@ -37,6 +41,7 @@ export default Component.extend({
   }).readOnly(),
 
   /**
+   * @property _layerType
    * @private
    */
   _layerType: computed('layer.type', function() {
