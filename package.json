@@ -24,12 +24,14 @@
     "broccoli-merge-trees": "^2.0.0",
     "ember-cli-babel": "^6.6.0",
     "ember-cli-htmlbars": "^2.0.1",
-    "ember-wormhole": "^0.5.1"
+    "ember-wormhole": "^0.5.1",
+    "global": "4.3.2",
+    "yuidocjs": "0.10.2"
   },
   "devDependencies": {
     "ember-cli": "~2.18.1",
     "ember-cli-addon-docs": "0.3.0",
-    "ember-cli-addon-docs-yuidoc": "0.2.0",
+    "ember-cli-addon-docs-yuidoc": "0.1.1",
     "ember-cli-code-coverage": "^0.4.1",
     "ember-cli-dependency-checker": "^2.0.0",
     "ember-cli-eslint": "^4.2.1",
