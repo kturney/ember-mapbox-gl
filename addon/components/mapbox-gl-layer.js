@@ -5,6 +5,11 @@ import { guidFor } from '@ember/object/internals';
 import { reads } from '@ember/object/computed';
 import Component from '@ember/component';
 
+/**
+ * A utility that brokers HTTP requests...
+ *
+ * @class MapboxGlLayer
+ */
 export default Component.extend({
   tagName: '',
 

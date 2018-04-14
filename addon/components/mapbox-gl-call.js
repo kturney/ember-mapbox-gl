@@ -3,6 +3,11 @@ import { getProperties } from '@ember/object';
 import { scheduleOnce, cancel } from '@ember/runloop';
 import Component from '@ember/component';
 
+/**
+ * A utility that brokers HTTP requests...
+ *
+ * @class MapboxGlCallComponent
+ */
 const MapboxGlCallComponent = Component.extend({
   tagName: '',
 

@@ -8,6 +8,12 @@ import layout from '../templates/components/mapbox-gl';
 import MapboxGl from 'mapbox-gl';
 import noop from 'ember-mapbox-gl/utils/noop';
 
+/**
+ * A utility that brokers HTTP requests...
+ *
+ * @class MapboxGlMap
+ * @yield {Hash} hash
+ */
 export default Component.extend({
   layout,
 

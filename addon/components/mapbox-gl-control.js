@@ -1,6 +1,11 @@
 import { getProperties } from '@ember/object';
 import Component from '@ember/component';
 
+/**
+ * A utility that brokers HTTP requests...
+ *
+ * @class MapboxGlControlComponent
+ */
 const MapboxGlControlComponent = Component.extend({
   tagName: '',
 

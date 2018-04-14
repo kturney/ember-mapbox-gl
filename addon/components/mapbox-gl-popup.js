@@ -6,6 +6,11 @@ import Component from '@ember/component';
 import layout from '../templates/components/mapbox-gl-popup';
 import MapboxGl from 'mapbox-gl';
 
+/**
+ * A utility that brokers HTTP requests...
+ *
+ * @class MapboxGlPopup
+ */
 export default Component.extend({
   layout,
   tagName: '',

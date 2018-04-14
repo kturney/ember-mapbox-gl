@@ -4,6 +4,11 @@ import { isPresent } from '@ember/utils';
 import { run } from '@ember/runloop';
 import Component from '@ember/component';
 
+/**
+ * A utility that brokers HTTP requests...
+ *
+ * @class MapboxGlOn
+ */
 const MapboxGlOnComponent = Component.extend({
   tagName: '',
 

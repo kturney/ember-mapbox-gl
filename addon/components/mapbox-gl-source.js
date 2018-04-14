@@ -4,6 +4,11 @@ import { guidFor } from '@ember/object/internals';
 import Component from '@ember/component';
 import layout from '../templates/components/mapbox-gl-source';
 
+/**
+ * A utility that brokers HTTP requests...
+ *
+ * @class MapboxGlSource
+ */
 export default Component.extend({
   layout,
   tagName: '',

@@ -3,6 +3,11 @@ import { run } from '@ember/runloop';
 import Component from '@ember/component';
 import noop from 'ember-mapbox-gl/utils/noop';
 
+/**
+ * A utility that brokers HTTP requests...
+ *
+ * @class MapboxGlImageComponent
+ */
 const MapboxGlImageComponent = Component.extend({
   tagName: '',
 
