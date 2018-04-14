@@ -1,4 +1,4 @@
-{{#mapbox-gl as |map|}}
+{{!-- {{#mapbox-gl as |map|}}
   {{#map.source options=(hash data=wanderDrone) as |source|}}
     {{source.layer layer=(hash type='symbol' layout=(hash icon-image='rocket-15'))}}
   {{/map.source}}
@@ -15,3 +15,5 @@
 
   {{map.on 'click' (action 'onClick')}}
 {{/mapbox-gl}}
+ --}}
+{{outlet}}
