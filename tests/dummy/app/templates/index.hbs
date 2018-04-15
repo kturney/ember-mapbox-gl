@@ -2,12 +2,24 @@
 
 {{docs-hero
   logo='ember'
-  slimHeading='My'
-  strongHeading='Addon'
-  byline='My addon demo/marketing page.'}}
+  slimHeading='Ember'
+  strongHeading='MapboxGL'
+  byline='Fast, expressive MapboxGL maps'}}
 
-{{#docs-demo as |demo|}}
-  {{#demo.example name='my-demo.hbs'}}
-    Introduction
-  {{/demo.example}}
-{{/docs-demo}}
+{{#mapbox-gl as |map|}}
+  {{#map.source options=(hash type='geojson' data=wanderDrone) as |source|}}
+    {{source.layer layer=(hash type='symbol' layout=(hash icon-image='rocket-15'))}}
+  {{/map.source}}
+
+  {{#if curLocation}}
+    {{#map.marker lngLat=curLocation as |marker|}}
+      {{#marker.popup}}
+        This is where you are!
+      {{/marker.popup}}
+    {{/map.marker}}
+
+    {{map.call 'easeTo' (hash center=curLocation)}}
+  {{/if}}
+
+  {{map.on 'click' (action 'onClick')}}
+{{/mapbox-gl}}

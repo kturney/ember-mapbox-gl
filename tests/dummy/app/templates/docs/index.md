@@ -1,3 +1,3 @@
 # Index
 
-This is my new addon, and it rocks!
+Ember integration with mapbox-gl-js.
