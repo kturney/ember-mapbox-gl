@@ -12,7 +12,7 @@ import noop from 'ember-mapbox-gl/utils/noop';
   Component that creates a new [mapbox-gl-js instance](https://www.mapbox.com/mapbox-gl-js/api/#map):
   
   ```hbs
-  {{#mapbox-gl initOptions=(hash initOptions) mapLoaded=(action 'mapLoaded') as |map|}}
+  {{#mapbox-gl initOptions=initOptions mapLoaded=(action 'mapLoaded') as |map|}}
 
   {{/mapbox-gl}}
   ```
