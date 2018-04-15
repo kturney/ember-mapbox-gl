@@ -5,10 +5,31 @@ import Component from '@ember/component';
 import layout from '../templates/components/mapbox-gl-source';
 
 /**
- * A utility that brokers HTTP requests...
- *
- * @class MapboxGlSource
- */
+  Adds a data source to the map. The API matches the mapbox [source docs](https://www.mapbox.com/mapbox-gl-js/api/#sources).
+ 
+  Example:
+  ```hbs
+  {{#mapbox-gl as |map|}}
+    {{#map.source options=(hash
+      type='geojson'
+      data=(hash
+        type='FeatureCollection'
+        features=(array
+          (hash
+            type='Feature'
+            geometry=(hash
+              type='Point'
+              coordinates=(array -96.7969879 32.7766642)
+            )
+          )
+        )
+      ))}}
+    {{/map.source}}
+  {{/mapbox-gl}}
+  ```
+
+  @class MapboxGLSource
+*/
 export default Component.extend({
   layout,
   tagName: '',
@@ -16,10 +37,15 @@ export default Component.extend({
   map: null,
 
   /**
-   * @property map
-   * @type {String}
-   * @description The source options to add, conforming to the Mapbox Source spec.
-   * {@link https://www.mapbox.com/mapbox-gl-js/style-spec/#sources Mapbox}
+    @argument options
+    @type {Object}
+    @description
+    An options hash to set as the source.
+    - #### `options.type`
+      - A string detailing the map source type. Typically `geojson`.
+
+    - #### `options.data`
+      - A data hash for the map, following the source.data API detailed by mapbox docs.
   */
   options: null,
 

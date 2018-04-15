@@ -6,28 +6,54 @@ import { reads } from '@ember/object/computed';
 import Component from '@ember/component';
 
 /**
- * A utility that brokers HTTP requests...
- *
- * @class MapboxGlLayer
- */
+  Adds a data source to the map. 
+  The API matches the mapbox [source docs](https://www.mapbox.com/mapbox-gl-js/api/#sources).
+ 
+  Example:
+  ```hbs
+  {{#mapbox-gl as |map|}}
+    {{#map.source options=(hash
+      type='geojson'
+      data=(hash
+        type='FeatureCollection'
+        features=(array
+          (hash
+            type='Feature'
+            geometry=(hash
+              type='Point'
+              coordinates=(array -96.7969879 32.7766642)
+            )
+          )
+        )
+      )) as |source|}}
+      {{source.layer layer=(hash
+          type='circle'
+          paint=(hash circle-color='#007cbf' circle-radius=10))}}
+    {{/map.source}}
+  {{/mapbox-gl}}
+  ```
+
+  @class MapboxGLSource
+*/
 export default Component.extend({
   tagName: '',
 
   map: null,
 
   /**
-   * @property map
-   * @type {Object}
-   * @description The style layer to add, conforming to the Mapbox Style Specification's layer definition.
-   * {@link https://www.mapbox.com/mapbox-gl-js/api/#map#addlayer Mapbox}
+    @argument layer
+    @type {Object}
+    @description 
+    A hash to pass on to the mapbox [layer](https://www.mapbox.com/mapbox-gl-js/style-spec/#layers).
   */
   layer: null,
 
   /**
-   * @property layer
-   * @type {String}
-   * @description The ID of an existing layer to insert the new layer before. If this argument is omitted, the layer will be appended to the end of the layers array.
-   * {@link https://www.mapbox.com/mapbox-gl-js/api/#map#addlayer Mapbox}
+    @argument before
+    @type {String}
+    @description 
+    The ID of an existing layer to insert the new layer before.
+    If this argument is omitted, the layer will be appended to the end of the layers array.
   */
   before: null,
 

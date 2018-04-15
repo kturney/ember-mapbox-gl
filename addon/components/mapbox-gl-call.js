@@ -4,9 +4,9 @@ import { scheduleOnce, cancel } from '@ember/runloop';
 import Component from '@ember/component';
 
 /**
- * A utility that brokers HTTP requests...
+ * A component used to call a specific Mapbox GL method.
  *
- * @class MapboxGlCallComponent
+ * @class MapboxGLCallComponent
  */
 const MapboxGlCallComponent = Component.extend({
   tagName: '',

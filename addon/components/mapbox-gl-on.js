@@ -5,9 +5,34 @@ import { run } from '@ember/runloop';
 import Component from '@ember/component';
 
 /**
- * A utility that brokers HTTP requests...
- *
- * @class MapboxGlOn
+  Adds an action to listen for [mapbox events](https://www.mapbox.com/mapbox-gl-js/api/#map#on).
+  
+  ### Positional Parameters
+  - `eventSource`
+    - The first positional parameter. The event type to listen for.
+  - `action`
+    - The second positional parameter. The action provided by the consumer to call when the event is triggered.
+
+  ### Example
+  ```hbs
+  {{#mapbox-gl as |map|}}
+    {{map.on 'click' (action 'mapClicked')}}
+  {{/mapbox-gl}}
+  ```
+
+  ```javascript
+  import Controller from '@ember/controller';
+
+  export default Controller.extend({
+    actions: {
+      mapClicked({ target: map, point }) {
+        console.log(map, point);
+      }
+    }
+  });
+  ```
+
+  @class MapboxGLOn
  */
 const MapboxGlOnComponent = Component.extend({
   tagName: '',

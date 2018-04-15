@@ -4,9 +4,51 @@ import Component from '@ember/component';
 import noop from 'ember-mapbox-gl/utils/noop';
 
 /**
- * A utility that brokers HTTP requests...
- *
- * @class MapboxGlImageComponent
+  Adds an image for use in the map, see [here](https://www.mapbox.com/mapbox-gl-js/api/#map#addimage).
+
+  ### Properties
+  - `name`
+    - The unique name for the image. The name will be referenced in a source layer as the `icon-image`. Reference [layers-symbol](https://www.mapbox.com/mapbox-gl-js/style-spec/#layers-symbol) for more details. Property can also be used as the first positional parameter.
+  - `image`
+    - The path to your image, typically `/assets/<some_image>`. Property can also be used as the second positional parameter.
+  - `width`
+    - The width of the image in pixels.
+  - `height`
+    - The height of the image in pixels.
+
+  ### Example
+  ```hbs
+  {{#mapbox-gl as |map|}}
+    {{map.image 'cat' '/assets/cat.png' width=48 height=48}}
+    {{!-- `name` and `icon-image` used as positional params above --}}
+
+    {{#map.source options=(hash type='geojson' data=marker) as |source|}}
+      {{source.layer layer=(hash
+          type='symbol'
+          layout=(hash
+            icon-image='cat'
+            icon-size=0.25))}}
+    {{/map.source}}
+  {{/mapbox-gl}}
+  ```
+
+  ```javascript
+  import Controller from '@ember/controller';
+
+  export default Controller.extend({
+    marker: {
+      type: 'FeatureCollection',
+      features: [
+        {
+          type: 'Feature',
+          geometry: { type: 'Point', coordinates: [ -96.7969879, 32.7766642 ] }
+        }
+      ]
+    }
+  });
+  ```
+
+  @class MapboxGlImageComponent
  */
 const MapboxGlImageComponent = Component.extend({
   tagName: '',

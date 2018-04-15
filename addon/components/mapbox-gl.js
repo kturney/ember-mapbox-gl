@@ -27,7 +27,7 @@ import noop from 'ember-mapbox-gl/utils/noop';
   @yield {Component} map.on
   @yield {Component} map.popup
   @yield {Component} map.source
- */
+*/
 export default Component.extend({
   layout,
 

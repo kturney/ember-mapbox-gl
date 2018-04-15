@@ -2,7 +2,7 @@ import { getProperties } from '@ember/object';
 import Component from '@ember/component';
 
 /**
- * A utility that brokers HTTP requests...
+ * Add a map control.
  *
  * @class MapboxGlControlComponent
  */
