@@ -3341,7 +3341,7 @@ ember-cli@~2.18.1:
     walk-sync "^0.3.0"
     yam "0.0.22"
 
-"ember-code-snippet@github:ef4/ember-code-snippet":
+ember-code-snippet@ef4/ember-code-snippet:
   version "2.1.0"
   resolved "https://codeload.github.com/ef4/ember-code-snippet/tar.gz/50a44c4f752379386c82fb3517f55e222a381e0c"
   dependencies:

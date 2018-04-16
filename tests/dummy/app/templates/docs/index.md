@@ -1,4 +1,4 @@
-# Index
+# Introduction
 
 Ember integration with mapbox-gl-js.
 

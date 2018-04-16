@@ -9,9 +9,12 @@ const Router = EmberRouter.extend({
 Router.map(function() {
   this.route('docs', function() { // docs homepage (required)
     this.route('usage');
-    this.route('quickstart');
-    this.route('patterns');
-    this.route('deploying');
+    this.route('installation');
+    this.route('container');
+    this.route('sources-layers');
+    this.route('actions');
+    this.route('templates');
+    this.route('contextual-components');
 
     this.route('components', function() {
       this.route('mapbox-gl');
