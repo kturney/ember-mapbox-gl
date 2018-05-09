@@ -23,9 +23,7 @@ module.exports = {
   treeForVendor(tree) {
     const mapboxGlTree = new Funnel(Path.dirname(require.resolve('mapbox-gl')), {
       files: [
-        'mapbox-gl.js',
-        'mapbox-gl.js.map',
-        'mapbox-gl-dev.js'
+        this._srcFile()
       ],
       destDir: '/mapbox-gl'
     });
@@ -37,19 +35,40 @@ module.exports = {
     return mapboxGlTree;
   },
 
+  treeForPublic(tree) {
+    if (process.env.EMBER_ENV === 'production') {
+      const mapboxGlTree = new Funnel(Path.dirname(require.resolve('mapbox-gl')), {
+        files: [
+          'mapbox-gl.js.map'
+        ],
+        destDir: '/assets'
+      });
+  
+      if (tree) {
+        return new MergeTrees([ tree, mapboxGlTree ]);
+      }
+  
+      return mapboxGlTree;
+    }
+
+    return tree;
+  },
+
   included(app) {
     this._super.included.apply(this, arguments);
 
-    const srcFile = process.env.EMBER_ENV === 'production'
-      ? 'vendor/mapbox-gl/mapbox-gl.js'
-      : 'vendor/mapbox-gl/mapbox-gl-dev.js';
-
-    app.import(srcFile, {
+    app.import('vendor/mapbox-gl/' + this._srcFile(), {
       using: [
         { transformation: 'amd', as: 'mapbox-gl' }
       ]
     });
 
     app.import('app/styles/mapbox-gl.css');
+  },
+
+  _srcFile() {
+    return process.env.EMBER_ENV === 'production'
+      ? 'mapbox-gl.js'
+      : 'mapbox-gl-dev.js';
   }
 };
