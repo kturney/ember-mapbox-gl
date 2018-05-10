@@ -5,17 +5,7 @@ import { Promise } from 'rsvp';
 import createMap from '../../helpers/create-map';
 import hbs from 'htmlbars-inline-precompile';
 import Sinon from 'sinon';
-
-const createDeferred = () => {
-  const defer = {};
-
-  defer.promise = new Promise((resolve, reject) => {
-    defer.resolve = resolve;
-    defer.reject = reject;
-  });
-
-  return defer;
-}
+import { all, defer as createDeferred } from 'rsvp';
 
 module('Integration | Component | mapbox gl image', function(hooks) {
   setupRenderingTest(hooks);
@@ -106,7 +96,14 @@ module('Integration | Component | mapbox gl image', function(hooks) {
   });
 
   test('it doesn\'t load the image if the component is destroyed before the image has loaded', async function(assert) {
-    const loadImageSpy = this.sandbox.spy(this.map, 'loadImage');
+    // on the first call, store the args, and then after clearRender trigger the real call
+    const loadImageStub = this.sandbox.stub(this.map, 'loadImage');
+    let loadImageArgs = null;
+    loadImageStub.onFirstCall().callsFake((...args) => {
+      loadImageArgs = args;
+    });
+    loadImageStub.callThrough();
+
     const addImageSpy = this.sandbox.spy(this.map, 'addImage');
 
     this.setProperties({
@@ -116,10 +113,11 @@ module('Integration | Component | mapbox gl image', function(hooks) {
 
     await render(hbs`{{mapbox-gl-image name image map=map}}`);
 
-    assert.ok(loadImageSpy.calledOnce, 'loadImage called');
-    assert.equal(loadImageSpy.firstCall.args[0], this.image, 'loads correct image');
+    assert.ok(loadImageStub.calledOnce, 'loadImage called');
+    assert.equal(loadImageStub.firstCall.args[0], this.image, 'loads correct image');
 
     await clearRender();
+    this.map.loadImage(...loadImageArgs);
 
     await new Promise((resolve) => setTimeout(resolve, 100));
 
@@ -258,13 +256,14 @@ module('Integration | Component | mapbox gl image', function(hooks) {
       onError: defer.reject
     });
 
-    await render(hbs`{{mapbox-gl-image name image map=map onLoad=onLoad onError=onError}}`);
-
     try {
-      await defer.promise;
+      await all([
+        render(hbs`{{mapbox-gl-image name image map=map onLoad=onLoad onError=onError}}`),
+        defer.promise
+      ]);
       assert.ok(false, 'should have gotten error');
     } catch (err) {
-      assert.equal(err.message, 'failed to load svg');
+      assert.equal(err.message, 'failed to load svg', 'correct err message');
       assert.ok(err.ev, 'should have original error event attached');
     }
   });
