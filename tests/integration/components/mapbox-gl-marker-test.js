@@ -1,23 +1,25 @@
 import { Map } from 'mapbox-gl';
-import { moduleForComponent, test } from 'ember-qunit';
+import { module, test } from 'qunit';
+import { setupRenderingTest } from 'ember-qunit';
+import { render } from '@ember/test-helpers';
 import hbs from 'htmlbars-inline-precompile';
 
-moduleForComponent('mapbox-gl-marker', 'Integration | Component | mapbox gl marker', {
-  integration: true,
+module('Integration | Component | mapbox gl marker', function(hooks) {
+  setupRenderingTest(hooks);
 
-  before() {
+  hooks.before(function() {
     this.map = new Map({ container: document.createElement('div') });
-  },
+  });
 
-  after() {
+  hooks.after(function() {
     this.map.remove();
-  }
-});
+  });
 
-test('it renders', function(assert) {
-  assert.expect(0);
+  test('it renders', async function(assert) {
+    assert.expect(0);
 
-  this.set('lngLat', [ 0, 0 ]);
+    this.set('lngLat', [ 0, 0 ]);
 
-  this.render(hbs`{{mapbox-gl-marker map=map lngLat=lngLat}}`);
+    await render(hbs`{{mapbox-gl-marker map=map lngLat=lngLat}}`);
+  });
 });
