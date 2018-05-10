@@ -14,20 +14,21 @@
   "repository": "https://github.com/kturney/ember-mapbox-gl",
   "scripts": {
     "build": "ember build",
-    "lint:js": "eslint ./*.js addon addon-test-support app config lib server test-support tests",
+    "lint:js": "eslint ./*.js addon addon-test-support app blueprints config lib server test-support tests",
     "start": "ember serve",
-    "test": "ember try:each",
+    "test": "ember test",
+    "test:all": "ember try:each",
     "test-cov": "COVERAGE=true ember test --launch chrome"
   },
   "dependencies": {
     "broccoli-funnel": "^2.0.0",
-    "broccoli-merge-trees": "^2.0.0",
+    "broccoli-merge-trees": "^3.0.0",
     "ember-cli-babel": "^6.6.0",
     "ember-cli-htmlbars": "^2.0.1",
     "ember-wormhole": "^0.5.1"
   },
   "devDependencies": {
-    "ember-cli": "~2.18.1",
+    "ember-cli": "~3.1.4",
     "ember-cli-code-coverage": "^0.4.1",
     "ember-cli-dependency-checker": "^2.0.0",
     "ember-cli-eslint": "^4.2.1",
@@ -38,15 +39,18 @@
     "ember-disable-prototype-extensions": "^1.1.2",
     "ember-export-application-global": "^2.0.0",
     "ember-load-initializers": "^1.0.0",
+    "ember-maybe-import-regenerator": "^0.1.6",
     "ember-native-dom-event-dispatcher": "^0.6.0",
     "ember-qunit-assert-helpers": "^0.2.0",
     "ember-resolver": "^4.0.0",
-    "ember-sinon": "^1.0.0",
-    "ember-source": "~2.18.0",
+    "ember-sinon": "^2.1.0",
+    "ember-source": "~3.1.0",
+    "ember-source-channel-url": "^1.0.1",
+    "ember-try": "^0.2.23",
     "eslint-plugin-ember": "^5.0.1",
-    "eslint-plugin-node": "^5.2.1",
+    "eslint-plugin-node": "^6.0.1",
     "loader.js": "^4.2.3",
-    "mapbox-gl": "^0.44.0"
+    "mapbox-gl": "^0.45.0"
   },
   "peerDependencies": {
     "mapbox-gl": ">=0.38"

@@ -20,6 +20,7 @@ env:
   matrix:
     - EMBER_TRY_SCENARIO=ember-lts-2.12
     - EMBER_TRY_SCENARIO=ember-lts-2.16
+    - EMBER_TRY_SCENARIO=ember-lts-2.18
     - EMBER_TRY_SCENARIO=ember-release
     - EMBER_TRY_SCENARIO=ember-beta
     - EMBER_TRY_SCENARIO=ember-default
@@ -29,6 +30,7 @@ env:
     - EMBER_TRY_SCENARIO=ember-default-mapbox-gl-0.41
     - EMBER_TRY_SCENARIO=ember-default-mapbox-gl-0.42
     - EMBER_TRY_SCENARIO=ember-default-mapbox-gl-0.43
+    - EMBER_TRY_SCENARIO=ember-default-mapbox-gl-0.44
 
 matrix:
   fast_finish: true
