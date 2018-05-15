@@ -20,4 +20,23 @@ module('Integration | Component | mapbox gl popup', function(hooks) {
 
     await render(hbs`{{mapbox-gl-popup map=map}}`);
   });
+
+  test('popup events can be subscribed to from the template', async function(assert) {
+    this.onClose = () => {
+      assert.step('onClose');
+    };
+
+    await render(hbs`
+      {{#mapbox-gl-popup map=map as |popup|}}
+        {{popup.on 'close' onClose}}
+      {{/mapbox-gl-popup}}
+    `);
+
+    // popups close when the map is clicked
+    this.map.fire('click');
+
+    assert.verifySteps([
+      'onClose'
+    ]);
+  });
 });
