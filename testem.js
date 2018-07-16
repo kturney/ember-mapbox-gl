@@ -11,9 +11,12 @@ module.exports = {
   ],
   browser_args: {
     Chrome: {
-      mode: 'ci',
-      args: [
-        '--no-sandbox'
+      ci: [
+        '--no-sandbox',
+        '--disable-dev-shm-usage',
+        '--mute-audio',
+        '--remote-debugging-port=0',
+        '--window-size=1440,900'
       ]
     }
   }
