@@ -13,6 +13,7 @@ export default Component.extend({
   map: null,
   initOptions: null,
   lngLat: null,
+  useDefault: false,
 
   init() {
     this._super(...arguments);
@@ -46,7 +47,12 @@ export default Component.extend({
   },
 
   _setup() {
-    const { lngLat, initOptions } = getProperties(this, 'lngLat', 'initOptions');
+    const { lngLat, initOptions, useDefault } = getProperties(this, 'lngLat', 'initOptions', 'useDefault');
+    let element;
+
+    if (!useDefault) {
+      element = this.element;
+    }
 
     assert('mapbox-gl-marker requires lngLat, maybe you passed latLng?', lngLat);
 
@@ -54,7 +60,7 @@ export default Component.extend({
       get(getOwner(this).resolveRegistration('config:environment'), 'mapbox-gl.marker'),
       initOptions);
 
-    const marker = new MapboxGl.Marker(this.element, options)
+    const marker = new MapboxGl.Marker(element, options)
       .setLngLat(lngLat)
       .addTo(this.map);
 
