@@ -10,7 +10,7 @@ module('Integration | Component | mapbox gl layer', function(hooks) {
   setupRenderingTest(hooks);
 
   hooks.before(async function() {
-    this.sandbox = Sinon.sandbox.create();
+    this.sandbox = Sinon.createSandbox();
 
     this.map = await createMap();
   });
