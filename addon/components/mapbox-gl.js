@@ -55,6 +55,7 @@ export default Component.extend({
 
   _onLoad(map) {
     if (this.isDestroyed || this.isDestroying) {
+      map.remove();
       return;
     }
 
