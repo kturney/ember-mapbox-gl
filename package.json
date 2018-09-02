@@ -23,6 +23,7 @@
   "dependencies": {
     "broccoli-funnel": "^2.0.0",
     "broccoli-merge-trees": "^3.0.0",
+    "ember-auto-import": "^1.2.13",
     "ember-cli-babel": "^6.6.0",
     "ember-cli-htmlbars": "^2.0.1",
     "ember-wormhole": "^0.5.1"
