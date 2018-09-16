@@ -57,7 +57,7 @@
     "qunit-dom": "^0.8.0"
   },
   "peerDependencies": {
-    "mapbox-gl": ">=0.38"
+    "mapbox-gl": ">=0.46"
   },
   "engines": {
     "node": "6.* || 8.* || >= 10.*"
