@@ -12,25 +12,25 @@ module.exports = function() {
 
       scenarios: [
         {
-          name: 'ember-lts-2.12',
-          npm: {
-            devDependencies: {
-              'ember-source': '~2.12.0'
-            }
-          }
-        },
-        {
           name: 'ember-lts-2.16',
+          env: {
+            EMBER_OPTIONAL_FEATURES: JSON.stringify({ 'jquery-integration': true }),
+          },
           npm: {
             devDependencies: {
+              '@ember/jquery': '^0.5.1',
               'ember-source': '~2.16.0'
             }
           }
         },
         {
           name: 'ember-lts-2.18',
+          env: {
+            EMBER_OPTIONAL_FEATURES: JSON.stringify({ 'jquery-integration': true }),
+          },
           npm: {
             devDependencies: {
+              '@ember/jquery': '^0.5.1',
               'ember-source': '~2.18.0'
             }
           }
@@ -58,66 +58,15 @@ module.exports = function() {
           }
         },
         {
-          name: 'ember-default-mapbox-gl-0.38',
+          name: 'ember-default-with-jquery',
+          env: {
+            EMBER_OPTIONAL_FEATURES: JSON.stringify({
+              'jquery-integration': true
+            })
+          },
           npm: {
             devDependencies: {
-              'mapbox-gl': '^0.38.0'
-            }
-          }
-        },
-        {
-          name: 'ember-default-mapbox-gl-0.39',
-          npm: {
-            devDependencies: {
-              'mapbox-gl': '^0.39.0'
-            }
-          }
-        },
-        {
-          name: 'ember-default-mapbox-gl-0.40',
-          npm: {
-            devDependencies: {
-              'mapbox-gl': '^0.40.0'
-            }
-          }
-        },
-        {
-          name: 'ember-default-mapbox-gl-0.41',
-          npm: {
-            devDependencies: {
-              'mapbox-gl': '^0.41.0'
-            }
-          }
-        },
-        {
-          name: 'ember-default-mapbox-gl-0.42',
-          npm: {
-            devDependencies: {
-              'mapbox-gl': '^0.42.0'
-            }
-          }
-        },
-        {
-          name: 'ember-default-mapbox-gl-0.43',
-          npm: {
-            devDependencies: {
-              'mapbox-gl': '^0.43.0'
-            }
-          }
-        },
-        {
-          name: 'ember-default-mapbox-gl-0.44',
-          npm: {
-            devDependencies: {
-              'mapbox-gl': '^0.44.0'
-            }
-          }
-        },
-        {
-          name: 'ember-default-mapbox-gl-0.45',
-          npm: {
-            devDependencies: {
-              'mapbox-gl': '^0.45.0'
+              '@ember/jquery': '^0.5.1'
             }
           }
         },
@@ -134,6 +83,14 @@ module.exports = function() {
           npm: {
             devDependencies: {
               'mapbox-gl': '^0.47.0'
+            }
+          }
+        },
+        {
+          name: 'ember-default-mapbox-gl-0.48',
+          npm: {
+            devDependencies: {
+              'mapbox-gl': '^0.48.0'
             }
           }
         }

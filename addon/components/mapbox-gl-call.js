@@ -9,7 +9,7 @@ const MapboxGlCallComponent = Component.extend({
   obj: null,
   func: null,
   args: null,
-  onResp: null,
+  onResp() {},
   params: null,
 
   _scheduledCall: null,
@@ -44,7 +44,7 @@ const MapboxGlCallComponent = Component.extend({
   _call(obj, func, args) {
     this._scheduledCall = null;
 
-    this.sendAction('onResp', obj[func].apply(obj, args)); // eslint-disable-line ember/closure-actions
+    this.onResp(obj[func].apply(obj, args));
   }
 });
 
