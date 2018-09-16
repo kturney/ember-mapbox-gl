@@ -17,7 +17,7 @@ module.exports = {
   rules: {
     'ember/no-jquery': 'error',
     'ember/no-observers': 'error',
-    'ember/order-in-components': 'error',
+    'ember/order-in-components': 'off',
     'ember/use-ember-get-and-set': 'error'
   },
   overrides: [
