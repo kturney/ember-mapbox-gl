@@ -1,7 +1,7 @@
 'use strict';
 
 module.exports = {
-  name: 'ember-mapbox-gl',
+  name: require('./package').name,
 
   treeForStyles(tree) {
     const Funnel = require('broccoli-funnel');
