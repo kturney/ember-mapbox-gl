@@ -1,4 +1,4 @@
-import { assert } from '@ember/debug';
+import { assert, warn } from '@ember/debug';
 import { assign } from '@ember/polyfills';
 import { get, set } from '@ember/object';
 import { getOwner } from '@ember/application';
@@ -22,7 +22,7 @@ export default Component.extend({
 
     const mbglConfig = getOwner(this).resolveRegistration('config:environment')['mapbox-gl'];
     assert('mapbox-gl config is required in config/environment', mbglConfig);
-    assert('mapbox-gl config must have an accessToken string', typeof mbglConfig.accessToken === 'string');
+    warn('mapbox-gl config is missing an accessToken string', typeof mbglConfig.accessToken === 'string');
 
     MapboxGl.accessToken = mbglConfig.accessToken;
   },
