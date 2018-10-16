@@ -20,8 +20,8 @@ export default Component.extend({
     this.map = null;
     this.glSupported = MapboxGl.supported();
 
-    const mbglConfig = getOwner(this).resolveRegistration('config:environment')['mapbox-gl'];
-    warn('mapbox-gl config is required in config/environment', mbglConfig);
+    const mbglConfig = getOwner(this).resolveRegistration('config:environment')['mapbox-gl'] || {};
+    warn('mapbox-gl config is missing in config/environment', mbglConfig);
     warn('mapbox-gl config is missing an accessToken string', typeof mbglConfig.accessToken === 'string');
 
     MapboxGl.accessToken = mbglConfig.accessToken;
