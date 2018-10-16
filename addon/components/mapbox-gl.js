@@ -22,7 +22,7 @@ export default Component.extend({
 
     const mbglConfig = getOwner(this).resolveRegistration('config:environment')['mapbox-gl'] || {};
     warn('mapbox-gl config is missing in config/environment', mbglConfig, { id: 'ember-mapbox-gl.config-object' });
-    warn('mapbox-gl config is missing an accessToken string', typeof mbglConfig.accessToken === 'string', { id: 'ember-mapbox-gl.config-object' });
+    warn('mapbox-gl config is missing an accessToken string', typeof mbglConfig.accessToken === 'string', { id: 'ember-mapbox-gl.access-token' });
 
     MapboxGl.accessToken = mbglConfig.accessToken;
   },
