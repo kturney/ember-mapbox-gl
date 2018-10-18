@@ -45,8 +45,8 @@ export default Component.extend({
   },
 
   _setup() {
-    const mbglConfig = getOwner(this).resolveRegistration('config:environment')['mapbox-gl'] || {};
-    const options = assign({}, mbglConfig.map, get(this, 'initOptions'));
+    const mbglConfig = get(getOwner(this).resolveRegistration('config:environment'), 'mapbox-gl.map');
+    const options = assign({}, mbglConfig, get(this, 'initOptions'));
     options.container = this.element;
 
     const map = new MapboxGl.Map(options);
