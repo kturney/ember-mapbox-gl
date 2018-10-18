@@ -1,5 +1,5 @@
 {{#mapbox-gl as |map|}}
-  {{#map.source options=(hash data=wanderDrone) as |source|}}
+  {{#map.source options=(hash data=wanderDrone type='geojson') as |source|}}
     {{source.layer layer=(hash type='symbol' layout=(hash icon-image='rocket-15'))}}
   {{/map.source}}
 
