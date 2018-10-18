@@ -119,7 +119,7 @@ const MapboxGlOnComponent = Component.extend({
       return;
     }
 
-    this.sendAction('_action', ...arguments); // eslint-disable-line ember/closure-actions
+    get(this, '_action')(...arguments);
   }
 });
 

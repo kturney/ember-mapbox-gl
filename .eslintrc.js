@@ -17,22 +17,26 @@ module.exports = {
   rules: {
     'ember/no-jquery': 'error',
     'ember/no-observers': 'error',
-    'ember/order-in-components': 'error',
+    'ember/order-in-components': 'off',
     'ember/use-ember-get-and-set': 'error'
   },
   overrides: [
     // node files
     {
       files: [
+        '.template-lintrc.js',
+        'ember-cli-build.js',
         'index.js',
         'testem.js',
-        'ember-cli-build.js',
+        'blueprints/*/index.js',
         'config/**/*.js',
         'tests/dummy/config/**/*.js'
       ],
       excludedFiles: [
+        'addon/**',
+        'addon-test-support/**',
         'app/**',
-        'addon/**'
+        'tests/dummy/app/**'
       ],
       parserOptions: {
         sourceType: 'script',
@@ -51,7 +55,6 @@ module.exports = {
     // test files
     {
       files: ['tests/**/*.js'],
-      excludedFiles: ['tests/dummy/**/*.js'],
       env: {
         embertest: true
       },

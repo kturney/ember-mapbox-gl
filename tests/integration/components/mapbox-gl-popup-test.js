@@ -1,21 +1,42 @@
 import { Map } from 'mapbox-gl';
-import { moduleForComponent, test } from 'ember-qunit';
+import { module, test } from 'qunit';
+import { setupRenderingTest } from 'ember-qunit';
+import { render } from '@ember/test-helpers';
 import hbs from 'htmlbars-inline-precompile';
 
-moduleForComponent('mapbox-gl-popup', 'Integration | Component | mapbox gl popup', {
-  integration: true,
+module('Integration | Component | mapbox gl popup', function(hooks) {
+  setupRenderingTest(hooks);
 
-  before() {
+  hooks.before(function() {
     this.map = new Map({ container: document.createElement('div') });
-  },
+  });
 
-  after() {
+  hooks.after(function() {
     this.map.remove();
-  }
-});
+  });
 
-test('it renders', function(assert) {
-  assert.expect(0);
+  test('it renders', async function(assert) {
+    assert.expect(0);
 
-  this.render(hbs`{{mapbox-gl-popup map=map}}`);
+    await render(hbs`{{mapbox-gl-popup map=map}}`);
+  });
+
+  test('popup events can be subscribed to from the template', async function(assert) {
+    this.onClose = () => {
+      assert.step('onClose');
+    };
+
+    await render(hbs`
+      {{#mapbox-gl-popup map=map as |popup|}}
+        {{popup.on 'close' onClose}}
+      {{/mapbox-gl-popup}}
+    `);
+
+    // popups close when the map is clicked
+    this.map.fire('click');
+
+    assert.verifySteps([
+      'onClose'
+    ]);
+  });
 });

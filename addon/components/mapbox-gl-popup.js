@@ -52,7 +52,7 @@ export default Component.extend({
   lngLat: null,
   initOptions: null,
 
-  onClose: null,
+  onClose() {},
 
   init() {
     this._super(...arguments);
@@ -60,7 +60,7 @@ export default Component.extend({
     const { initOptions, marker } = getProperties(this, 'initOptions', 'marker');
 
     this.domContent = document.createElement('div');
-    this._onClose = bind(this, this.sendAction, 'onClose'); // eslint-disable-line ember/closure-actions
+    this._onClose = bind(this, this.onClose);
     const options = assign({},
       get(getOwner(this).resolveRegistration('config:environment'), 'mapbox-gl.popup'),
       initOptions);

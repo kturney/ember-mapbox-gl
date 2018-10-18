@@ -17,34 +17,46 @@ env:
   global:
     # See https://git.io/vdao3 for details.
     - JOBS=1
-  matrix:
-    - EMBER_TRY_SCENARIO=ember-lts-2.12
-    - EMBER_TRY_SCENARIO=ember-lts-2.16
-    - EMBER_TRY_SCENARIO=ember-release
-    - EMBER_TRY_SCENARIO=ember-beta
-    - EMBER_TRY_SCENARIO=ember-default
-    - EMBER_TRY_SCENARIO=ember-default-mapbox-gl-0.38
-    - EMBER_TRY_SCENARIO=ember-default-mapbox-gl-0.39
-    - EMBER_TRY_SCENARIO=ember-default-mapbox-gl-0.40
-    - EMBER_TRY_SCENARIO=ember-default-mapbox-gl-0.41
-    - EMBER_TRY_SCENARIO=ember-default-mapbox-gl-0.42
-    - EMBER_TRY_SCENARIO=ember-default-mapbox-gl-0.43
 
-matrix:
-  fast_finish: true
-  allow_failures:
-    - env: EMBER_TRY_SCENARIO=ember-canary
+jobs:
+  fail_fast: true
 
-install:
-  - yarn install --pure-lockfile
+  include:
+    # runs linting and tests with current locked deps
+
+    - stage: "Tests"
+      name: "Tests"
+      install:
+        - yarn install --non-interactive
+      script:
+        - yarn lint:hbs
+        - yarn lint:js
+        - yarn test
+
+    - name: "Floating Dependencies"
+      script:
+        - yarn test
+
+    - stage: "Additional Tests"
+      env: EMBER_TRY_SCENARIO=ember-lts-2.16
+    - env: EMBER_TRY_SCENARIO=ember-lts-2.18
+    - env: EMBER_TRY_SCENARIO=ember-release
+    - env: EMBER_TRY_SCENARIO=ember-default-with-jquery
+    - env: EMBER_TRY_SCENARIO=ember-default-mapbox-gl-0.46
+    - env: EMBER_TRY_SCENARIO=ember-default-mapbox-gl-0.47
+    - env: EMBER_TRY_SCENARIO=ember-default-mapbox-gl-0.48
 
 before_script:
   - "export DISPLAY=:99.0"
   - "sh -e /etc/init.d/xvfb start"
   - sleep 3 # give xvfb some time to start
 
+before_install:
+  - curl -o- -L https://yarnpkg.com/install.sh | bash
+  - export PATH=$HOME/.yarn/bin:$PATH
+
+install:
+  - yarn install --no-lockfile --non-interactive
+
 script:
-  - yarn lint:js
-  # Usually, it's ok to finish the test scenario without reverting
-  #  to the addon's original dependency state, skipping "cleanup".
-  - node_modules/.bin/ember try:one $EMBER_TRY_SCENARIO --skip-cleanup
+  - node_modules/.bin/ember try:one $EMBER_TRY_SCENARIO

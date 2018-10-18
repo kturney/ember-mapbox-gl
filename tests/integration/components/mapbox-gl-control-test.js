@@ -1,21 +1,23 @@
 import { Map } from 'mapbox-gl';
-import { moduleForComponent, test } from 'ember-qunit';
+import { module, test } from 'qunit';
+import { setupRenderingTest } from 'ember-qunit';
+import { render } from '@ember/test-helpers';
 import hbs from 'htmlbars-inline-precompile';
 
-moduleForComponent('mapbox-gl-control', 'Integration | Component | mapbox gl control', {
-  integration: true,
+module('Integration | Component | mapbox gl control', function(hooks) {
+  setupRenderingTest(hooks);
 
-  before() {
+  hooks.before(function() {
     this.map = new Map({ container: document.createElement('div') });
-  },
+  });
 
-  after() {
+  hooks.after(function() {
     this.map.remove();
-  }
-});
+  });
 
-test('it renders', function(assert) {
-  assert.expect(0);
+  test('it renders', async function(assert) {
+    assert.expect(0);
 
-  this.render(hbs`{{mapbox-gl-control map=map}}`);
+    await render(hbs`{{mapbox-gl-control map=map}}`);
+  });
 });

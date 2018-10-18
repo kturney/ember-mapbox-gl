@@ -1,19 +1,21 @@
-import { moduleForComponent, test } from 'ember-qunit';
+import { module, test } from 'qunit';
+import { setupRenderingTest } from 'ember-qunit';
+import { render } from '@ember/test-helpers';
 import hbs from 'htmlbars-inline-precompile';
 
-moduleForComponent('mapbox-gl', 'Integration | Component | mapbox gl', {
-  integration: true
-});
+module('Integration | Component | mapbox gl', function(hooks) {
+  setupRenderingTest(hooks);
 
-test('it renders', function(assert) {
-  assert.expect(0);
+  test('it renders', async function(assert) {
+    assert.expect(0);
 
-  this.render(hbs`{{mapbox-gl}}`);
+    await render(hbs`{{mapbox-gl}}`);
 
-  // Template block usage:
-  this.render(hbs`
-    {{#mapbox-gl as |map|}}
+    // Template block usage:
+    await render(hbs`
+      {{#mapbox-gl as |map|}}
 
-    {{/mapbox-gl}}
-  `);
+      {{/mapbox-gl}}
+    `);
+  });
 });

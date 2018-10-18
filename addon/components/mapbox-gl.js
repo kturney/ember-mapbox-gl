@@ -1,4 +1,4 @@
-import { assert } from '@ember/debug';
+import { warn } from '@ember/debug';
 import { assign } from '@ember/polyfills';
 import { get, set } from '@ember/object';
 import { getOwner } from '@ember/application';
@@ -55,9 +55,9 @@ export default Component.extend({
     this.map = null;
     this.glSupported = MapboxGl.supported();
 
-    const mbglConfig = getOwner(this).resolveRegistration('config:environment')['mapbox-gl'];
-    assert('mapbox-gl config is required in config/environment', mbglConfig);
-    assert('mapbox-gl config must have an accessToken string', typeof mbglConfig.accessToken === 'string');
+    const mbglConfig = getOwner(this).resolveRegistration('config:environment')['mapbox-gl'] || {};
+    warn('mapbox-gl config is missing in config/environment', mbglConfig, { id: 'ember-mapbox-gl.config-object' });
+    warn('mapbox-gl config is missing an accessToken string', typeof mbglConfig.accessToken === 'string', { id: 'ember-mapbox-gl.access-token' });
 
     MapboxGl.accessToken = mbglConfig.accessToken;
   },
@@ -80,8 +80,8 @@ export default Component.extend({
   },
 
   _setup() {
-    const mbglConfig = getOwner(this).resolveRegistration('config:environment')['mapbox-gl'];
-    const options = assign({}, mbglConfig.map, get(this, 'initOptions'));
+    const mbglConfig = get(getOwner(this).resolveRegistration('config:environment'), 'mapbox-gl.map');
+    const options = assign({}, mbglConfig, get(this, 'initOptions'));
     options.container = this.element;
 
     const map = new MapboxGl.Map(options);
@@ -90,6 +90,7 @@ export default Component.extend({
 
   _onLoad(map) {
     if (this.isDestroyed || this.isDestroying) {
+      map.remove();
       return;
     }
 
