@@ -7,6 +7,11 @@ import Component from '@ember/component';
 import layout from '../templates/components/mapbox-gl-marker';
 import MapboxGl from 'mapbox-gl';
 
+/**
+ * A utility that brokers HTTP requests...
+ *
+ * @class MapboxGlMarker
+ */
 export default Component.extend({
   layout,
 

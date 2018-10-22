@@ -6,6 +6,43 @@ import Component from '@ember/component';
 import layout from '../templates/components/mapbox-gl-popup';
 import MapboxGl from 'mapbox-gl';
 
+/**
+  Adds a [popup](https://www.mapbox.com/mapbox-gl-js/api/#popup) to the map.
+
+  ### Properties
+  - `lngLat`
+    - The longitude and latitude to pin the popup at.
+
+  ### Example
+  ```hbs
+  {{#mapbox-gl as |map|}}
+    {{#map.source options=(hash
+      type='geojson'
+      data=(hash
+        type='FeatureCollection'
+        features=(array
+          (hash
+            type='Feature'
+            geometry=(hash
+              type='Point'
+              coordinates=(array -96.7969879 32.7766642)
+            )
+          )
+        )
+      )) as |source|}}
+      {{source.layer layer=(hash
+          type='circle'
+          paint=(hash circle-color='#007cbf' circle-radius=10))}}
+    {{/map.source}}
+
+    {{#map.popup lngLat=(array -96.7969879 32.7766642)}}
+      Dallas, TX
+    {{/map.popup}}
+  {{/mapbox-gl}}
+  ```
+
+  @class MapboxGLPopup
+ */
 export default Component.extend({
   layout,
   tagName: '',

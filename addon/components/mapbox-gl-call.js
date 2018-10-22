@@ -3,6 +3,11 @@ import { getProperties } from '@ember/object';
 import { scheduleOnce, cancel } from '@ember/runloop';
 import Component from '@ember/component';
 
+/**
+ * A component used to call a specific Mapbox GL method.
+ *
+ * @class MapboxGLCallComponent
+ */
 const MapboxGlCallComponent = Component.extend({
   tagName: '',
 

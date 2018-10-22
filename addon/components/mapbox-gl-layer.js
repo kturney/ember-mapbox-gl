@@ -5,31 +5,66 @@ import { guidFor } from '@ember/object/internals';
 import { reads } from '@ember/object/computed';
 import Component from '@ember/component';
 
+/**
+  Adds a data source to the map. 
+  The API matches the mapbox [source docs](https://www.mapbox.com/mapbox-gl-js/api/#sources).
+ 
+  Example:
+  ```hbs
+  {{#mapbox-gl as |map|}}
+    {{#map.source options=(hash
+      type='geojson'
+      data=(hash
+        type='FeatureCollection'
+        features=(array
+          (hash
+            type='Feature'
+            geometry=(hash
+              type='Point'
+              coordinates=(array -96.7969879 32.7766642)
+            )
+          )
+        )
+      )) as |source|}}
+      {{source.layer layer=(hash
+          type='circle'
+          paint=(hash circle-color='#007cbf' circle-radius=10))}}
+    {{/map.source}}
+  {{/mapbox-gl}}
+  ```
+
+  @class MapboxGLSource
+*/
 export default Component.extend({
   tagName: '',
 
   map: null,
 
   /**
-   * @param object
-   * @description The style layer to add, conforming to the Mapbox Style Specification's layer definition.
-   * {@link https://www.mapbox.com/mapbox-gl-js/api/#map#addlayer Mapbox}
+    @argument layer
+    @type {Object}
+    @description 
+    A hash to pass on to the mapbox [layer](https://www.mapbox.com/mapbox-gl-js/style-spec/#layers).
   */
   layer: null,
 
   /**
-   * @param string
-   * @description The ID of an existing layer to insert the new layer before. If this argument is omitted, the layer will be appended to the end of the layers array.
-   * {@link https://www.mapbox.com/mapbox-gl-js/api/#map#addlayer Mapbox}
+    @argument before
+    @type {String}
+    @description 
+    The ID of an existing layer to insert the new layer before.
+    If this argument is omitted, the layer will be appended to the end of the layers array.
   */
   before: null,
 
   /**
+   * @property _sourceId
    * @private for use by mapbox-gl-source to pass in its sourceId
    */
   _sourceId: reads('layer.source'),
 
   /**
+   * @property _layerId
    * @private
    */
   _layerId: computed('layer.id', function() {
@@ -37,6 +72,7 @@ export default Component.extend({
   }).readOnly(),
 
   /**
+   * @property _layerType
    * @private
    */
   _layerType: computed('layer.type', function() {
