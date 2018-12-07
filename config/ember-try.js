@@ -14,7 +14,7 @@ module.exports = function() {
         {
           name: 'ember-lts-2.16',
           env: {
-            EMBER_OPTIONAL_FEATURES: JSON.stringify({ 'jquery-integration': true }),
+            EMBER_OPTIONAL_FEATURES: JSON.stringify({ 'jquery-integration': true })
           },
           npm: {
             devDependencies: {
@@ -26,7 +26,7 @@ module.exports = function() {
         {
           name: 'ember-lts-2.18',
           env: {
-            EMBER_OPTIONAL_FEATURES: JSON.stringify({ 'jquery-integration': true }),
+            EMBER_OPTIONAL_FEATURES: JSON.stringify({ 'jquery-integration': true })
           },
           npm: {
             devDependencies: {
@@ -91,6 +91,22 @@ module.exports = function() {
           npm: {
             devDependencies: {
               'mapbox-gl': '^0.48.0'
+            }
+          }
+        },
+        {
+          name: 'ember-default-mapbox-gl-0.49',
+          npm: {
+            devDependencies: {
+              'mapbox-gl': '^0.49.0'
+            }
+          }
+        },
+        {
+          name: 'ember-default-mapbox-gl-0.50',
+          npm: {
+            devDependencies: {
+              'mapbox-gl': '^0.50.0'
             }
           }
         }
