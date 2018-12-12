@@ -1,18 +1,22 @@
-{{#if glSupported}}
-  {{#if map}}
-    {{yield
-      (hash
-        call=(component 'mapbox-gl-call' obj=map)
-        control=(component 'mapbox-gl-control' map=map)
-        image=(component 'mapbox-gl-image' map=map)
-        layer=(component 'mapbox-gl-layer' map=map)
-        marker=(component 'mapbox-gl-marker' map=map)
-        on=(component 'mapbox-gl-on' eventSource=map)
-        popup=(component 'mapbox-gl-popup' map=map)
-        source=(component 'mapbox-gl-source' map=map)
-      )
-    }}
+{{#if _loader.isLoaded}}
+  {{#if _glSupported}}
+    {{#if _map}}
+      {{#if _isMapLoaded}}
+        {{yield
+          (hash
+            call=(component 'mapbox-gl-call' obj=_map)
+            control=(component 'mapbox-gl-control' map=_map)
+            image=(component 'mapbox-gl-image' map=_map)
+            layer=(component 'mapbox-gl-layer' map=_map)
+            marker=(component 'mapbox-gl-marker' map=_map)
+            on=(component 'mapbox-gl-on' eventSource=_map)
+            popup=(component 'mapbox-gl-popup' map=_map)
+            source=(component 'mapbox-gl-source' map=_map)
+          )
+        }}
+      {{/if}}
+    {{/if}}
+  {{else}}
+    {{yield to='inverse'}}
   {{/if}}
-{{else}}
-  {{yield to='inverse'}}
 {{/if}}
