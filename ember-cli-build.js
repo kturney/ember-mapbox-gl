@@ -4,7 +4,9 @@ const EmberAddon = require('ember-cli/lib/broccoli/ember-addon');
 
 module.exports = function(defaults) {
   let app = new EmberAddon(defaults, {
-    // vendorFiles: { 'jquery.js': null }
+    [require('./package').name]: {
+      lazyLoad: process.env.LAZY_LOAD === 'true'
+    }
   });
 
   return app.toTree();

@@ -41,6 +41,7 @@ jobs:
       env: EMBER_TRY_SCENARIO=ember-lts-2.16
     - env: EMBER_TRY_SCENARIO=ember-lts-2.18
     - env: EMBER_TRY_SCENARIO=ember-release
+    - env: EMBER_TRY_SCENARIO=ember-default-lazy
     - env: EMBER_TRY_SCENARIO=ember-default-with-jquery
     - env: EMBER_TRY_SCENARIO=ember-default-mapbox-gl-0.46
     - env: EMBER_TRY_SCENARIO=ember-default-mapbox-gl-0.47
