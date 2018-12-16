@@ -32,7 +32,7 @@
   "devDependencies": {
     "@ember/optional-features": "^0.7.0",
     "babel-eslint": "^10.0.1",
-    "ember-cli": "~3.5.1",
+    "ember-cli": "~3.6.0",
     "ember-cli-addon-docs": "^0.6.0",
     "ember-cli-addon-docs-yuidoc": "0.2.1",
     "ember-cli-code-coverage": "^0.4.1",
@@ -54,7 +54,7 @@
     "ember-qunit-assert-helpers": "^0.2.0",
     "ember-resolver": "^5.0.1",
     "ember-sinon": "^3.0.0",
-    "ember-source": "~3.5.1",
+    "ember-source": "~3.6.0",
     "ember-source-channel-url": "^1.1.0",
     "ember-try": "^1.0.0",
     "eslint-plugin-ember": "^6.0.1",

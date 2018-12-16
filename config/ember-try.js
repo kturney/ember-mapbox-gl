@@ -52,12 +52,6 @@ module.exports = function() {
           }
         },
         {
-          name: 'ember-default',
-          npm: {
-            devDependencies: {}
-          }
-        },
-        {
           name: 'ember-default-lazy',
           env: {
             LAZY_LOAD: 'true'
