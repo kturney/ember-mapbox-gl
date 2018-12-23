@@ -52,12 +52,6 @@ module.exports = function() {
           }
         },
         {
-          name: 'ember-default',
-          npm: {
-            devDependencies: {}
-          }
-        },
-        {
           name: 'ember-default-lazy',
           env: {
             LAZY_LOAD: 'true'
@@ -116,6 +110,14 @@ module.exports = function() {
           npm: {
             devDependencies: {
               'mapbox-gl': '^0.50.0'
+            }
+          }
+        },
+        {
+          name: 'ember-default-mapbox-gl-0.51',
+          npm: {
+            devDependencies: {
+              'mapbox-gl': '^0.51.0'
             }
           }
         }
