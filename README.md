@@ -89,3 +89,20 @@ The above example does the following:
 * Attaches a `mapClicked` action when anywhere on the map is clicked
 * Generates a geojson map source (`marker`)
 * Draws a blue circle on the map at the coordinates provided by `marker`
+
+## Lazy loading the `mapbox-gl` library
+
+This add-on supports lazy loading the `mapbox-gl` module using `ember-auto-import`. This feature is optional and set to `false` by default.
+
+To enable the lazy load of the `mapbox-gl` library, set the `lazyLoad` option to `true` on `ember-cli-build.js`:
+```javascript
+module.exports = function(defaults) {
+  let app = new EmberApp(defaults, {
+    'ember-mapbox-gl': {
+      lazyLoad: true
+    }
+  }
+  
+  return app.toTree();
+};
+```
