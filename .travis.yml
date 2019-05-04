@@ -1,10 +1,7 @@
 ---
 language: node_js
 node_js:
-  - "6"
-
-sudo: false
-dist: trusty
+  - "8"
 
 addons:
   firefox: latest
@@ -44,8 +41,8 @@ jobs:
         - yarn test
 
     - stage: "Additional Tests"
-      env: EMBER_TRY_SCENARIO=ember-lts-2.16
-    - env: EMBER_TRY_SCENARIO=ember-lts-2.18
+      env: EMBER_TRY_SCENARIO=ember-lts-2.18
+    - env: EMBER_TRY_SCENARIO=ember-lts-3.4
     - env: EMBER_TRY_SCENARIO=ember-release
     - env: EMBER_TRY_SCENARIO=ember-default-lazy
     - env: EMBER_TRY_SCENARIO=ember-default-with-jquery
@@ -55,6 +52,8 @@ jobs:
     - env: EMBER_TRY_SCENARIO=ember-default-mapbox-gl-0.49
     - env: EMBER_TRY_SCENARIO=ember-default-mapbox-gl-0.50
     - env: EMBER_TRY_SCENARIO=ember-default-mapbox-gl-0.51
+    - env: EMBER_TRY_SCENARIO=ember-default-mapbox-gl-0.52
+    - env: EMBER_TRY_SCENARIO=ember-default-mapbox-gl-0.53
 
 before_script:
   - "export DISPLAY=:99.0"

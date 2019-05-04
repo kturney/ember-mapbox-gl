@@ -6,7 +6,7 @@ import layout from '../templates/components/mapbox-gl-source';
 
 /**
   Adds a data source to the map. The API matches the mapbox [source docs](https://www.mapbox.com/mapbox-gl-js/api/#sources).
- 
+
   Example:
   ```hbs
   {{#mapbox-gl as |map|}}
@@ -55,8 +55,14 @@ export default Component.extend({
    * @description The ID of the source to add. Must not conflict with existing sources.
    * {@link https://www.mapbox.com/mapbox-gl-js/api/#map#addsource Mapbox}
   */
-  sourceId: computed(function() {
-    return guidFor(this);
+  sourceId: computed({
+    get() {
+      return guidFor(this);
+    },
+
+    set(k, v) {
+      return v;
+    }
   }),
 
   init() {
