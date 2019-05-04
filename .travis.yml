@@ -1,10 +1,7 @@
 ---
 language: node_js
 node_js:
-  - "6"
-
-sudo: false
-dist: trusty
+  - "8"
 
 addons:
   firefox: latest
