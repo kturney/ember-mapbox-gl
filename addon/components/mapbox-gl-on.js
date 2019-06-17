@@ -49,7 +49,7 @@ const MapboxGlOnComponent = Component.extend({
     const event = get(this, 'event');
     assert(`mapbox-gl-event requires event to be a string, was ${event}`, typeof event === 'string');
 
-    return event.toLowerCase();
+    return event;
   }),
 
   _layerId: computed('layerId', '_action', function () {
