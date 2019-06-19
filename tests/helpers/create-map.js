@@ -5,20 +5,31 @@ import QUnit from 'qunit';
 
 MapboxGl.accessToken = Config['mapbox-gl'].accessToken;
 
-export default function createMap() {
-  return new Promise((resolve) => {
-    const map = new MapboxGl.Map({
-      container: document.createElement('div'),
-      style: Config['mapbox-gl'].map.style
+export default function setupMap(hooks) {
+  hooks.before(function() {
+    return new Promise((resolve) => {
+      this._mapContainer = document
+        .querySelector(Config.APP.rootElement)
+        .appendChild(document.createElement('div'));
+
+      this.map = new MapboxGl.Map({
+        container: this._mapContainer,
+        style: Config['mapbox-gl'].map.style
+      });
+
+      this.map.style.once('data', () => resolve());
+
+      const onErr = (data) => {
+        QUnit.onUnhandledRejection((data && data.error) || data || 'Empty error event from mapbox-gl-js');
+      };
+
+      this.map.style.on('error', onErr);
+      this.map.on('error', onErr);
     });
+  });
 
-    map.style.once('data', () => resolve(map));
-
-    const onErr = (data) => {
-      QUnit.onUnhandledRejection((data && data.error) || data || 'Empty error event from mapbox-gl-js');
-    };
-
-    map.style.on('error', onErr);
-    map.on('error', onErr);
+  hooks.after(function() {
+    this.map.remove();
+    this._mapContainer.parentElement.removeChild(this._mapContainer);
   });
 }

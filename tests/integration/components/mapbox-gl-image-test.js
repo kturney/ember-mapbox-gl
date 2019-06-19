@@ -2,26 +2,21 @@ import { module, test } from 'qunit';
 import { setupRenderingTest } from 'ember-qunit';
 import { clearRender, render } from '@ember/test-helpers';
 import { Promise } from 'rsvp';
-import createMap from '../../helpers/create-map';
+import setupMap from '../../helpers/create-map';
 import hbs from 'htmlbars-inline-precompile';
 import Sinon from 'sinon';
 import { all, defer as createDeferred } from 'rsvp';
 
 module('Integration | Component | mapbox gl image', function(hooks) {
   setupRenderingTest(hooks);
+  setupMap(hooks);
 
-  hooks.before(async function() {
+  hooks.before(function() {
     this.sandbox = Sinon.createSandbox();
-
-    this.map = await createMap();
   });
 
   hooks.afterEach(function() {
     this.sandbox.restore();
-  });
-
-  hooks.after(function() {
-    this.map.remove();
   });
 
   test('it ignores null image', async function(assert) {
