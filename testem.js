@@ -12,12 +12,17 @@ module.exports = {
   browser_args: {
     Chrome: {
       ci: [
-        '--no-sandbox',
-        '--disable-dev-shm-usage',
+        // --no-sandbox is needed when running Chrome inside a container
+        process.env.CI ? '--no-sandbox' : null,
+        '--disable-background-timer-throttling',
+        '--disable-renderer-backgrounding',
         '--mute-audio',
         '--remote-debugging-port=0',
         '--window-size=1440,900'
-      ]
+      ].filter(Boolean)
+    },
+    Firefox: {
+      ci: ['--window-size=1440,900']
     }
   }
 };
