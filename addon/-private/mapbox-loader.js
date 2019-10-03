@@ -1,10 +1,17 @@
 import { bind, next } from '@ember/runloop';
-import EmberObject, { set } from '@ember/object';
+import EmberObject, { get, set } from '@ember/object';
 import { Promise as RsvpPromise } from 'rsvp';
 
 class MapboxLoaderCancelledError extends Error {}
 class MapboxSupportError extends Error {
   isMapboxSupportError = true;
+}
+class MapboxError extends Error {
+  constructor(ev) {
+    super(get(ev, 'error.message') || 'unknown mapbox error');
+
+    this.event = ev;
+  }
 }
 
 export default EmberObject.extend({
@@ -67,10 +74,11 @@ export default EmberObject.extend({
           map.off('error', listeners.onError);
           resolve();
         },
-        onError(err) {
+        onError(ev) {
           map.off('load', listeners.onLoad);
           map.off('error', listeners.onError);
-          reject(err);
+
+          reject(new MapboxError(ev));
         }
       };
 

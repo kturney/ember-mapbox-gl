@@ -1,6 +1,12 @@
 import { Promise } from 'rsvp';
 import Config from '../../config/environment';
 import QUnit from 'qunit';
+import { get } from '@ember/object';
+
+const ALLOWED_ERRORS = [
+  'The operation was aborted',
+  'Failed to fetch'
+];
 
 export default function setupMap(hooks) {
   hooks.before(async function() {
@@ -20,8 +26,19 @@ export default function setupMap(hooks) {
 
       this.map.style.once('data', () => resolve());
 
-      const onErr = (data) => {
-        QUnit.onUnhandledRejection((data && data.error) || data || 'Empty error event from mapbox-gl-js');
+      const onErr = (ev) => {
+        const err = {
+          message: get(ev, 'error.message') || 'unknown mapbox error',
+          event: ev,
+          stack: get(ev, 'error.stack')
+        };
+
+        if (ALLOWED_ERRORS.includes(err.message)) {
+          // eslint-disable-next-line no-console
+          console.error(err.message, ev.error);
+        } else {
+          QUnit.onUnhandledRejection(err);
+        }
       };
 
       this.map.style.on('error', onErr);
