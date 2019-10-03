@@ -4,6 +4,10 @@ module.exports = {
   name: require('./package').name,
 
   options: {
+    autoImport: {
+      skipBabel: [{ package: 'mapbox-gl', semverRange: '*' }]
+    },
+
     babel: {
       plugins: [
         // Ensure that `ember-auto-import` can handle the dynamic imports
