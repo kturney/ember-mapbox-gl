@@ -1,26 +1,44 @@
 import { Promise } from 'rsvp';
 import Config from '../../config/environment';
-import MapboxGl from 'mapbox-gl';
 import QUnit from 'qunit';
+import { get } from '@ember/object';
 
-MapboxGl.accessToken = Config['mapbox-gl'].accessToken;
+const ALLOWED_ERRORS = [
+  'The operation was aborted',
+  'Failed to fetch'
+];
 
 export default function setupMap(hooks) {
-  hooks.before(function() {
-    return new Promise((resolve) => {
+  hooks.before(async function() {
+    const MapboxGl = await import('mapbox-gl');
+    this.MapboxGl = MapboxGl.default;
+    this.MapboxGl.accessToken = Config['mapbox-gl'].accessToken;
+
+    await new Promise((resolve) => {
       this._mapContainer = document
         .querySelector(Config.APP.rootElement)
         .appendChild(document.createElement('div'));
 
-      this.map = new MapboxGl.Map({
+      this.map = new this.MapboxGl.Map({
         container: this._mapContainer,
         style: Config['mapbox-gl'].map.style
       });
 
       this.map.style.once('data', () => resolve());
 
-      const onErr = (data) => {
-        QUnit.onUnhandledRejection((data && data.error) || data || 'Empty error event from mapbox-gl-js');
+      const onErr = (ev) => {
+        const err = {
+          message: get(ev, 'error.message') || 'unknown mapbox error',
+          event: ev,
+          stack: get(ev, 'error.stack')
+        };
+
+        if (ALLOWED_ERRORS.includes(err.message)) {
+          // eslint-disable-next-line no-console
+          console.error(err.message, ev.error);
+        } else {
+          QUnit.onUnhandledRejection(err);
+        }
       };
 
       this.map.style.on('error', onErr);

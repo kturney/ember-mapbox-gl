@@ -2,21 +2,16 @@ import { module, test } from 'qunit';
 import { setupRenderingTest } from 'ember-qunit';
 import { render } from '@ember/test-helpers';
 import hbs from 'htmlbars-inline-precompile';
-import MapboxLoader from 'ember-mapbox-gl/-private/mapbox-loader';
 import setupMap from '../../helpers/create-map';
 
 module('Integration | Component | mapbox gl popup', function(hooks) {
   setupRenderingTest(hooks);
   setupMap(hooks);
 
-  hooks.beforeEach(function() {
-    return MapboxLoader.load(this.owner.resolveRegistration('config:environment')['mapbox-gl']);
-  });
-
   test('it renders', async function(assert) {
     assert.expect(0);
 
-    await render(hbs`{{mapbox-gl-popup map=map}}`);
+    await render(hbs`{{mapbox-gl-popup map=map MapboxGl=MapboxGl}}`);
   });
 
   test('popup events can be subscribed to from the template', async function(assert) {
@@ -25,7 +20,7 @@ module('Integration | Component | mapbox gl popup', function(hooks) {
     };
 
     await render(hbs`
-      {{#mapbox-gl-popup map=map as |popup|}}
+      {{#mapbox-gl-popup map=map MapboxGl=MapboxGl as |popup|}}
         {{popup.on 'close' onClose}}
       {{/mapbox-gl-popup}}
     `);

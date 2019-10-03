@@ -4,7 +4,6 @@ import { getProperties, get } from '@ember/object';
 import { bind } from '@ember/runloop';
 import Component from '@ember/component';
 import layout from '../templates/components/mapbox-gl-popup';
-import MapboxLoader from 'ember-mapbox-gl/-private/mapbox-loader';
 
 /**
   Adds a [popup](https://www.mapbox.com/mapbox-gl-js/api/#popup) to the map.
@@ -47,6 +46,7 @@ export default Component.extend({
   layout,
   tagName: '',
 
+  MapboxGl: null,
   map: null,
   marker: null,
   lngLat: null,
@@ -65,7 +65,7 @@ export default Component.extend({
       get(getOwner(this).resolveRegistration('config:environment'), 'mapbox-gl.popup'),
       initOptions);
 
-    this.popup = new MapboxLoader.Mapbox.Popup(options)
+    this.popup = new this.MapboxGl.Popup(options)
       .setDOMContent(this.domContent)
       .on('close', this._onClose);
 

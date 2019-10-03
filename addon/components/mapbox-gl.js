@@ -1,11 +1,9 @@
 import { assign } from '@ember/polyfills';
-import { computed, get, set } from '@ember/object';
+import { get } from '@ember/object';
 import { getOwner } from '@ember/application';
-import { bind, next } from '@ember/runloop';
 import Component from '@ember/component';
 import layout from '../templates/components/mapbox-gl';
-import noop from 'ember-mapbox-gl/utils/noop';
-import MapboxLoader from 'ember-mapbox-gl/-private/mapbox-loader';
+import MapboxLoader from '../-private/mapbox-loader';
 
 /**
   Component that creates a new [mapbox-gl-js instance](https://www.mapbox.com/mapbox-gl-js/api/#map):
@@ -46,55 +44,28 @@ export default Component.extend({
     @argument mapLoaded
     @type {Function}
   */
-  mapLoaded: noop,
-
-  _loader: MapboxLoader,
-  _isMapLoaded: false,
-  _glSupported: computed('_loader.Mapbox', function() {
-    const Mapbox = get(this, '_loader.Mapbox');
-    if (Mapbox) {
-      return Mapbox.supported();
-    }
-  }).readOnly(),
-
-  _map: computed('_loader.Mapbox', 'element', function() {
-    const Mapbox = get(this, '_loader.Mapbox');
-    const { element } = this;
-    if (Mapbox && element) {
-      const config = get(getOwner(this).resolveRegistration('config:environment'), 'mapbox-gl.map');
-      const options = assign({}, config, get(this, 'initOptions'));
-      options.container = element;
-
-      const map = new Mapbox.Map(options);
-      map.once('load', bind(this, this._onLoad, map));
-      return map;
-    }
-  }).readOnly(),
+  mapLoaded: null,
 
   init() {
     this._super(...arguments);
 
-    MapboxLoader.load(getOwner(this).resolveRegistration('config:environment')['mapbox-gl']);
+    this._loader = MapboxLoader.create();
   },
 
-  willDestroy() {
+  didInsertElement() {
     this._super(...arguments);
 
-    if (this._isMapLoaded) {
-      const map = get(this, '_map');
-      // some map users may be late doing cleanup (seen with mapbox-draw-gl), so don't remove the map until the next tick
-      next(map, map.remove);
-    }
+    const { accessToken, map } = getOwner(this).resolveRegistration('config:environment')['mapbox-gl'] || {};
+
+    const options = assign({}, map, get(this, 'initOptions'));
+    options.container = this.element;
+
+    this._loader.load(accessToken, options, this.mapLoaded);
   },
 
-  _onLoad(map) {
-    if (this.isDestroyed || this.isDestroying) {
-      map.remove();
-      return;
-    }
+  willDestroyElement() {
+    this._super(...arguments);
 
-    this.mapLoaded(map);
-
-    set(this, '_isMapLoaded', true);
+    this._loader.cancel();
   }
 });
