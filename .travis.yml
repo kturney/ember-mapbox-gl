@@ -44,23 +44,10 @@ jobs:
         - yarn test
 
     - stage: "Additional Tests"
-      env: EMBER_TRY_SCENARIO=ember-lts-2.18
-    - env: EMBER_TRY_SCENARIO=ember-lts-3.4
+      env: EMBER_TRY_SCENARIO=ember-lts-3.4
+    - env: EMBER_TRY_SCENARIO=ember-lts-3.8
     - env: EMBER_TRY_SCENARIO=ember-release
-    - env: EMBER_TRY_SCENARIO=ember-default-lazy
-    - env: EMBER_TRY_SCENARIO=ember-default-with-jquery
-    - env: EMBER_TRY_SCENARIO=ember-default-mapbox-gl-0.46
-    - env: EMBER_TRY_SCENARIO=ember-default-mapbox-gl-0.47
-    - env: EMBER_TRY_SCENARIO=ember-default-mapbox-gl-0.48
-    - env: EMBER_TRY_SCENARIO=ember-default-mapbox-gl-0.49
-    - env: EMBER_TRY_SCENARIO=ember-default-mapbox-gl-0.50
-    - env: EMBER_TRY_SCENARIO=ember-default-mapbox-gl-0.51
-    - env: EMBER_TRY_SCENARIO=ember-default-mapbox-gl-0.52
-    - env: EMBER_TRY_SCENARIO=ember-default-mapbox-gl-0.53
-
-before_install:
-  - curl -o- -L https://yarnpkg.com/install.sh | bash
-  - export PATH=$HOME/.yarn/bin:$PATH
+    - env: EMBER_TRY_SCENARIO=ember-beta
 
 install:
   - yarn install --no-lockfile --non-interactive
