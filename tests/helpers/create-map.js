@@ -1,18 +1,19 @@
 import { Promise } from 'rsvp';
 import Config from '../../config/environment';
-import MapboxGl from 'mapbox-gl';
 import QUnit from 'qunit';
 
-MapboxGl.accessToken = Config['mapbox-gl'].accessToken;
-
 export default function setupMap(hooks) {
-  hooks.before(function() {
-    return new Promise((resolve) => {
+  hooks.before(async function() {
+    const MapboxGl = await import('mapbox-gl');
+    this.MapboxGl = MapboxGl.default;
+    this.MapboxGl.accessToken = Config['mapbox-gl'].accessToken;
+
+    await new Promise((resolve) => {
       this._mapContainer = document
         .querySelector(Config.APP.rootElement)
         .appendChild(document.createElement('div'));
 
-      this.map = new MapboxGl.Map({
+      this.map = new this.MapboxGl.Map({
         container: this._mapContainer,
         style: Config['mapbox-gl'].map.style
       });

@@ -12,37 +12,6 @@ module.exports = {
     }
   },
 
-  addonJsFiles() {
-    const Funnel = require('broccoli-funnel');
-    const config = this._findHost().options[this.name];
-
-    const tree = this._super.addonJsFiles.apply(this, arguments);
-
-    if (config && config.lazyLoad === true) {
-      return new Funnel(tree, {
-        exclude: [ 'ember-mapbox-gl/-private/mapbox-loader-static.js' ],
-        getDestinationPath(relativePath) {
-          if (relativePath === 'ember-mapbox-gl/-private/mapbox-loader-dynamic.js') {
-            return 'ember-mapbox-gl/-private/mapbox-loader.js';
-          }
-
-          return relativePath;
-        }
-      });
-    }
-
-    return new Funnel(tree, {
-      exclude: [ 'ember-mapbox-gl/-private/mapbox-loader-dynamic.js' ],
-      getDestinationPath(relativePath) {
-        if (relativePath === 'ember-mapbox-gl/-private/mapbox-loader-static.js') {
-          return 'ember-mapbox-gl/-private/mapbox-loader.js';
-        }
-
-        return relativePath;
-      }
-    });
-  },
-
   treeForStyles(tree) {
     const Funnel = require('broccoli-funnel');
 
