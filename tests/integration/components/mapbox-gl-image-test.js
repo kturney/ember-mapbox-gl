@@ -3,7 +3,7 @@ import { setupRenderingTest } from 'ember-qunit';
 import { clearRender, render } from '@ember/test-helpers';
 import { Promise } from 'rsvp';
 import setupMap from '../../helpers/create-map';
-import hbs from 'htmlbars-inline-precompile';
+import { hbs } from 'ember-cli-htmlbars';
 import Sinon from 'sinon';
 import { all, defer as createDeferred } from 'rsvp';
 

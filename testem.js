@@ -14,6 +14,9 @@ module.exports = {
       ci: [
         // --no-sandbox is needed when running Chrome inside a container
         process.env.CI ? '--no-sandbox' : null,
+        '--headless',
+        '--disable-dev-shm-usage',
+        '--disable-software-rasterizer',
         '--disable-background-timer-throttling',
         '--disable-renderer-backgrounding',
         '--mute-audio',
@@ -22,7 +25,9 @@ module.exports = {
       ].filter(Boolean)
     },
     Firefox: {
-      ci: ['--window-size=1440,900']
+      ci: [
+        '--window-size=1440,900'
+      ]
     }
   }
 };
