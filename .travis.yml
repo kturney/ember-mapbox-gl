@@ -1,7 +1,7 @@
 ---
 language: node_js
 node_js:
-  - "8"
+  - "10"
 
 services:
   - xvfb
@@ -25,32 +25,34 @@ branches:
     - /^v\d+\.\d+\.\d+/
 
 jobs:
-  fail_fast: true
+  fast_finish: true
 
   include:
     # runs linting and tests with current locked deps
 
     - stage: "Tests"
       name: "Tests"
-      install:
-        - yarn install --non-interactive
       script:
-        - yarn lint:hbs
-        - yarn lint:js
-        - yarn test
-
-    - name: "Floating Dependencies"
-      script:
-        - yarn test
+        - yarn lint
+        - yarn test:ember
 
     - stage: "Additional Tests"
-      env: EMBER_TRY_SCENARIO=ember-lts-3.4
+      name: "Floating Dependencies"
+      install:
+        - yarn install --no-lockfile --non-interactive
+      script:
+        - yarn test:ember
+
     - env: EMBER_TRY_SCENARIO=ember-lts-3.8
+    - env: EMBER_TRY_SCENARIO=ember-lts-3.12
+    - env: EMBER_TRY_SCENARIO=ember-lts-3.16
     - env: EMBER_TRY_SCENARIO=ember-release
     - env: EMBER_TRY_SCENARIO=ember-beta
+    - env: EMBER_TRY_SCENARIO=ember-canary
+    - env: EMBER_TRY_SCENARIO=ember-classic
 
 install:
-  - yarn install --no-lockfile --non-interactive
+  - yarn install --non-interactive
 
 script:
   - node_modules/.bin/ember try:one $EMBER_TRY_SCENARIO

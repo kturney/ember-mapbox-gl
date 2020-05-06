@@ -16,27 +16,15 @@ module.exports = {
     }
   },
 
-  treeForStyles(tree) {
-    const Funnel = require('broccoli-funnel');
-
-    const mapboxDirName = require('path').dirname(require.resolve('mapbox-gl'));
-    const mapboxGlTree = new Funnel(mapboxDirName, {
-      files: [ 'mapbox-gl.css' ],
-      destDir: 'app/styles'
-    });
-
-    if (tree) {
-      const MergeTrees = require('broccoli-merge-trees');
-
-      return new MergeTrees([ tree, mapboxGlTree ]);
-    }
-
-    return mapboxGlTree;
-  },
-
   included(app) {
     this._super.included.apply(this, arguments);
 
-    app.import('app/styles/mapbox-gl.css');
+    const path = require('path');
+    const mapboxDirName = path.dirname(require.resolve('mapbox-gl'));
+
+    app.import(path.join(
+      mapboxDirName.slice(mapboxDirName.lastIndexOf('node_modules')),
+      'mapbox-gl.css'
+    ));
   }
 };
