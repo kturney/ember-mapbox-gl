@@ -4,6 +4,6 @@ module.exports = {
   extends: 'recommended',
 
   rules: {
-    quotes: 'single'
-  }
+    quotes: 'single',
+  },
 };

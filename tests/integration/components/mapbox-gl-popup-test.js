@@ -4,17 +4,17 @@ import { render } from '@ember/test-helpers';
 import { hbs } from 'ember-cli-htmlbars';
 import setupMap from '../../helpers/create-map';
 
-module('Integration | Component | mapbox gl popup', function(hooks) {
+module('Integration | Component | mapbox gl popup', function (hooks) {
   setupRenderingTest(hooks);
   setupMap(hooks);
 
-  test('it renders', async function(assert) {
+  test('it renders', async function (assert) {
     assert.expect(0);
 
     await render(hbs`{{mapbox-gl-popup map=map MapboxGl=MapboxGl}}`);
   });
 
-  test('popup events can be subscribed to from the template', async function(assert) {
+  test('popup events can be subscribed to from the template', async function (assert) {
     this.onClose = () => {
       assert.step('onClose');
     };
@@ -28,8 +28,6 @@ module('Integration | Component | mapbox gl popup', function(hooks) {
     // popups close when the map is clicked
     this.map.fire('click');
 
-    assert.verifySteps([
-      'onClose'
-    ]);
+    assert.verifySteps(['onClose']);
   });
 });

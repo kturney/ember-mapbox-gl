@@ -54,7 +54,9 @@ export default Component.extend({
   didInsertElement() {
     this._super(...arguments);
 
-    const { accessToken, map } = getOwner(this).resolveRegistration('config:environment')['mapbox-gl'] || {};
+    const { accessToken, map } =
+      getOwner(this).resolveRegistration('config:environment')['mapbox-gl'] ||
+      {};
 
     const options = assign({}, map, this.initOptions);
     options.container = this.element;
@@ -66,5 +68,5 @@ export default Component.extend({
     this._super(...arguments);
 
     this._loader.cancel();
-  }
+  },
 });

@@ -54,7 +54,7 @@ export default Component.extend({
    * @type {Object}
    * @description The ID of the source to add. Must not conflict with existing sources.
    * {@link https://www.mapbox.com/mapbox-gl-js/api/#map#addsource Mapbox}
-  */
+   */
   sourceId: computed({
     get() {
       return guidFor(this);
@@ -62,7 +62,7 @@ export default Component.extend({
 
     set(k, v) {
       return v;
-    }
+    },
   }),
 
   init() {
@@ -92,5 +92,5 @@ export default Component.extend({
 
     // wait for any layers to be removed before removing the source
     scheduleOnce('afterRender', this.map, this.map.removeSource, sourceId);
-  }
+  },
 });

@@ -24,11 +24,19 @@ export default Component.extend({
     this.domContent = document.createElement('div');
     const { lngLat, initOptions } = this;
 
-    assert('mapbox-gl-marker requires lngLat, maybe you passed latLng?', lngLat);
+    assert(
+      'mapbox-gl-marker requires lngLat, maybe you passed latLng?',
+      lngLat
+    );
 
-    const options = assign({},
-      (getOwner(this).resolveRegistration('config:environment')['mapbox-gl'] ?? {}).marker,
-      initOptions);
+    const options = assign(
+      {},
+      (
+        getOwner(this).resolveRegistration('config:environment')['mapbox-gl'] ??
+        {}
+      ).marker,
+      initOptions
+    );
 
     this.marker = new this.MapboxGl.Marker(this.domContent, options)
       .setLngLat(lngLat)
@@ -39,7 +47,10 @@ export default Component.extend({
     this._super(...arguments);
 
     const lngLat = this.lngLat;
-    assert('mapbox-gl-marker requires lngLat, maybe you passed latLng?', lngLat);
+    assert(
+      'mapbox-gl-marker requires lngLat, maybe you passed latLng?',
+      lngLat
+    );
 
     this.marker.setLngLat(lngLat);
   },
@@ -48,5 +59,5 @@ export default Component.extend({
     this._super(...arguments);
 
     this.marker.remove();
-  }
+  },
 });

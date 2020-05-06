@@ -60,8 +60,12 @@ export default Component.extend({
 
     this.domContent = document.createElement('div');
     this._onClose = bind(this, this.onClose);
-    const options = assign({},
-      (getOwner(this).resolveRegistration('config:environment')['mapbox-gl'] ?? {}).popup,
+    const options = assign(
+      {},
+      (
+        getOwner(this).resolveRegistration('config:environment')['mapbox-gl'] ??
+        {}
+      ).popup,
       initOptions
     );
 
@@ -97,5 +101,5 @@ export default Component.extend({
     } else {
       marker.setPopup(null);
     }
-  }
+  },
 });

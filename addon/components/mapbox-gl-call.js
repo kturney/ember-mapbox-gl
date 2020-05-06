@@ -26,15 +26,31 @@ const MapboxGlCallComponent = Component.extend({
       if (func !== null) {
         args = params;
       } else {
-        [ func, ...args ] = params;
+        [func, ...args] = params;
       }
     }
 
-    assert('mapbox-gl-call obj is required', typeof obj === 'object' && obj !== null);
-    assert('mapbox-gl-call func is required and must be a string', typeof func === 'string');
-    assert(`mapbox-gl-call ${func} must be a function on ${obj}`, typeof obj[func] === 'function');
+    assert(
+      'mapbox-gl-call obj is required',
+      typeof obj === 'object' && obj !== null
+    );
+    assert(
+      'mapbox-gl-call func is required and must be a string',
+      typeof func === 'string'
+    );
+    assert(
+      `mapbox-gl-call ${func} must be a function on ${obj}`,
+      typeof obj[func] === 'function'
+    );
 
-    this._scheduledCall = scheduleOnce('afterRender', this, this._call, obj, func, args);
+    this._scheduledCall = scheduleOnce(
+      'afterRender',
+      this,
+      this._call,
+      obj,
+      func,
+      args
+    );
   },
 
   willDestroy() {
@@ -49,11 +65,11 @@ const MapboxGlCallComponent = Component.extend({
     this._scheduledCall = null;
 
     this.onResp(obj[func].apply(obj, args));
-  }
+  },
 });
 
 MapboxGlCallComponent.reopenClass({
-  positionalParams: 'params'
+  positionalParams: 'params',
 });
 
 export default MapboxGlCallComponent;

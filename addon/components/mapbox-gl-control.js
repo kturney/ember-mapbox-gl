@@ -42,11 +42,11 @@ const MapboxGlControlComponent = Component.extend({
     if (this._prevControl !== null) {
       this.map.removeControl(this._prevControl);
     }
-  }
+  },
 });
 
 MapboxGlControlComponent.reopenClass({
-  positionalParams: [ 'control', 'position' ]
+  positionalParams: ['control', 'position'],
 });
 
 export default MapboxGlControlComponent;

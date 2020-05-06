@@ -68,7 +68,7 @@ const MapboxGlImageComponent = Component.extend({
   _origName: null,
   _imageSet: false,
 
-  isSvg: computed('image', 'name', function() {
+  isSvg: computed('image', 'name', function () {
     const image = this.image;
     if (image === null || typeof image !== 'string') {
       return false;
@@ -122,7 +122,8 @@ const MapboxGlImageComponent = Component.extend({
       return;
     }
 
-    if (this.image !== imageName) { // image has changed since we started loading
+    if (this.image !== imageName) {
+      // image has changed since we started loading
       return;
     }
 
@@ -149,11 +150,11 @@ const MapboxGlImageComponent = Component.extend({
     const err = new Error('failed to load svg');
     err.ev = ev;
     this._onImage(imageName, err);
-  }
+  },
 });
 
 MapboxGlImageComponent.reopenClass({
-  positionalParams: [ 'name', 'image', 'options' ]
+  positionalParams: ['name', 'image', 'options'],
 });
 
 export default MapboxGlImageComponent;

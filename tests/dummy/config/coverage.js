@@ -1,6 +1,3 @@
 module.exports = {
-  reporters: [
-    'lcov',
-    'text-summary'
-  ]
+  reporters: ['lcov', 'text-summary'],
 };

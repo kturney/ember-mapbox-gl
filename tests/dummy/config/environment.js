@@ -1,6 +1,6 @@
 'use strict';
 
-module.exports = function(environment) {
+module.exports = function (environment) {
   let ENV = {
     modulePrefix: 'dummy',
     environment,
@@ -13,8 +13,8 @@ module.exports = function(environment) {
       },
       EXTEND_PROTOTYPES: {
         // Prevent Ember Data from overriding Date.parse.
-        Date: false
-      }
+        Date: false,
+      },
     },
 
     APP: {
@@ -23,11 +23,12 @@ module.exports = function(environment) {
     },
 
     'mapbox-gl': {
-      accessToken: 'pk.eyJ1Ijoia3R1cm5leSIsImEiOiJjajFudmQ2Z2owMDBiMnlyd3FtZDl2dDlkIn0.5uUKBumz-7IWM_2PQ6cXQw',
+      accessToken:
+        'pk.eyJ1Ijoia3R1cm5leSIsImEiOiJjajFudmQ2Z2owMDBiMnlyd3FtZDl2dDlkIn0.5uUKBumz-7IWM_2PQ6cXQw',
       map: {
-        style: 'mapbox://styles/mapbox/streets-v9?optimize=true'
-      }
-    }
+        style: 'mapbox://styles/mapbox/streets-v9?optimize=true',
+      },
+    },
   };
 
   if (environment === 'development') {

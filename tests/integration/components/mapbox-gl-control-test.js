@@ -4,11 +4,11 @@ import { render } from '@ember/test-helpers';
 import { hbs } from 'ember-cli-htmlbars';
 import setupMap from '../../helpers/create-map';
 
-module('Integration | Component | mapbox gl control', function(hooks) {
+module('Integration | Component | mapbox gl control', function (hooks) {
   setupRenderingTest(hooks);
   setupMap(hooks);
 
-  test('it renders', async function(assert) {
+  test('it renders', async function (assert) {
     assert.expect(0);
 
     await render(hbs`{{mapbox-gl-control map=map}}`);

@@ -5,15 +5,15 @@ module.exports = {
 
   options: {
     autoImport: {
-      skipBabel: [{ package: 'mapbox-gl', semverRange: '*' }]
+      skipBabel: [{ package: 'mapbox-gl', semverRange: '*' }],
     },
 
     babel: {
       plugins: [
         // Ensure that `ember-auto-import` can handle the dynamic imports
-        require('ember-auto-import/babel-plugin')
-      ]
-    }
+        require('ember-auto-import/babel-plugin'),
+      ],
+    },
   },
 
   included(app) {
@@ -22,9 +22,11 @@ module.exports = {
     const path = require('path');
     const mapboxDirName = path.dirname(require.resolve('mapbox-gl'));
 
-    app.import(path.join(
-      mapboxDirName.slice(mapboxDirName.lastIndexOf('node_modules')),
-      'mapbox-gl.css'
-    ));
-  }
+    app.import(
+      path.join(
+        mapboxDirName.slice(mapboxDirName.lastIndexOf('node_modules')),
+        'mapbox-gl.css'
+      )
+    );
+  },
 };

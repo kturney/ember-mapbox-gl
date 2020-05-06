@@ -47,7 +47,10 @@ const MapboxGlOnComponent = Component.extend({
 
   _event: computed('event', function () {
     const event = this.event;
-    assert(`mapbox-gl-event requires event to be a string, was ${event}`, typeof event === 'string');
+    assert(
+      `mapbox-gl-event requires event to be a string, was ${event}`,
+      typeof event === 'string'
+    );
 
     return event;
   }).readOnly(),
@@ -61,7 +64,7 @@ const MapboxGlOnComponent = Component.extend({
     return layerId;
   }).readOnly(),
 
-  _action: computed('layerId', 'action', function() {
+  _action: computed('layerId', 'action', function () {
     const { layerId, action } = this;
     return action || layerId;
   }).readOnly(),
@@ -75,7 +78,14 @@ const MapboxGlOnComponent = Component.extend({
   didReceiveAttrs() {
     this._super(...arguments);
 
-    const { eventSource, _layerId, _event, _prevEvent, _prevLayerId, _action } = this;
+    const {
+      eventSource,
+      _layerId,
+      _event,
+      _prevEvent,
+      _prevLayerId,
+      _action,
+    } = this;
 
     assert('mapbox-gl-event requires an eventSource', isPresent(eventSource));
     assert('mapbox-gl-event requires an action', isPresent(_action));
@@ -119,11 +129,11 @@ const MapboxGlOnComponent = Component.extend({
     }
 
     this._action(...arguments);
-  }
+  },
 });
 
 MapboxGlOnComponent.reopenClass({
-  positionalParams: [ 'event', 'layerId', 'action' ]
+  positionalParams: ['event', 'layerId', 'action'],
 });
 
 export default MapboxGlOnComponent;

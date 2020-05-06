@@ -12,7 +12,10 @@ export default Controller.extend({
 
     if ('geolocation' in navigator) {
       navigator.geolocation.getCurrentPosition((position) => {
-        run(this, this.set, 'curLocation', [ position.coords.longitude, position.coords.latitude ]);
+        run(this, this.set, 'curLocation', [
+          position.coords.longitude,
+          position.coords.latitude,
+        ]);
       });
     }
   },
@@ -30,6 +33,6 @@ export default Controller.extend({
   actions: {
     onClick(ev) {
       console.log('onClick', ev); // eslint-disable-line no-console
-    }
-  }
+    },
+  },
 });

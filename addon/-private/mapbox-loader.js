@@ -62,10 +62,12 @@ export default EmberObject.extend({
     this.MapboxGl.accessToken = this._accessToken;
 
     if (!this.MapboxGl.supported()) {
-      throw new MapboxSupportError('mapbox-gl not supported in current browser');
+      throw new MapboxSupportError(
+        'mapbox-gl not supported in current browser'
+      );
     }
 
-    const map = this.map = new this.MapboxGl.Map(this._mapOptions);
+    const map = (this.map = new this.MapboxGl.Map(this._mapOptions));
 
     return new RsvpPromise((resolve, reject) => {
       const listeners = {
@@ -79,7 +81,7 @@ export default EmberObject.extend({
           map.off('error', listeners.onError);
 
           reject(new MapboxError(ev));
-        }
+        },
       };
 
       map.on('load', listeners.onLoad);

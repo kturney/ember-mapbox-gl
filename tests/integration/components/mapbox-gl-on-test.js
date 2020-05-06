@@ -4,15 +4,16 @@ import { setupRenderingTest } from 'ember-qunit';
 import { render } from '@ember/test-helpers';
 import { hbs } from 'ember-cli-htmlbars';
 
-module('Integration | Component | mapbox gl on', function(hooks) {
+module('Integration | Component | mapbox gl on', function (hooks) {
   setupRenderingTest(hooks);
 
-  hooks.beforeEach(function() {
+  hooks.beforeEach(function () {
     this.actions = {};
-    this.send = (actionName, ...args) => this.actions[actionName].apply(this, args);
+    this.send = (actionName, ...args) =>
+      this.actions[actionName].apply(this, args);
   });
 
-  test('it renders', async function(assert) {
+  test('it renders', async function (assert) {
     const done = assert.async();
 
     const event = {};
@@ -24,7 +25,7 @@ module('Integration | Component | mapbox gl on', function(hooks) {
         run.next(cb, event);
       },
 
-      off() {}
+      off() {},
     });
 
     this.actions.onEvent = (ev) => {
@@ -32,10 +33,12 @@ module('Integration | Component | mapbox gl on', function(hooks) {
       done();
     };
 
-    await render(hbs`{{mapbox-gl-on eventSource=eventSource event='onzoom' action=(action 'onEvent')}}`);
+    await render(
+      hbs`{{mapbox-gl-on eventSource=eventSource event='onzoom' action=(action 'onEvent')}}`
+    );
   });
 
-  test('it works with positionalParams', async function(assert) {
+  test('it works with positionalParams', async function (assert) {
     assert.expect(3);
     const done = assert.async();
 
@@ -50,7 +53,7 @@ module('Integration | Component | mapbox gl on', function(hooks) {
 
       off(eventName) {
         assert.equal(eventName, 'onzoom', 'unsubscribes to event name');
-      }
+      },
     });
 
     this.actions.onEvent = (ev) => {
@@ -58,10 +61,12 @@ module('Integration | Component | mapbox gl on', function(hooks) {
       done();
     };
 
-    await render(hbs`{{mapbox-gl-on 'onzoom' (action 'onEvent') eventSource=eventSource}}`);
+    await render(
+      hbs`{{mapbox-gl-on 'onzoom' (action 'onEvent') eventSource=eventSource}}`
+    );
   });
 
-  test('it takes a layerId to target', async function(assert) {
+  test('it takes a layerId to target', async function (assert) {
     assert.expect(5);
     const done = assert.async();
 
@@ -78,7 +83,7 @@ module('Integration | Component | mapbox gl on', function(hooks) {
       off(eventName, source) {
         assert.equal(eventName, 'onzoom', 'unsubscribes to event name');
         assert.equal(source, 'layer1', 'passes on layer');
-      }
+      },
     });
 
     this.actions.onEvent = (ev) => {
@@ -86,6 +91,8 @@ module('Integration | Component | mapbox gl on', function(hooks) {
       done();
     };
 
-    await render(hbs`{{mapbox-gl-on 'onzoom' 'layer1' (action 'onEvent') eventSource=eventSource}}`);
+    await render(
+      hbs`{{mapbox-gl-on 'onzoom' 'layer1' (action 'onEvent') eventSource=eventSource}}`
+    );
   });
 });

@@ -67,7 +67,7 @@ export default Component.extend({
    * @property _layerId
    * @private
    */
-  _layerId: computed('layer.id', function() {
+  _layerId: computed('layer.id', function () {
     return this.layer?.id ?? guidFor(this);
   }).readOnly(),
 
@@ -75,39 +75,41 @@ export default Component.extend({
    * @property _layerType
    * @private
    */
-  _layerType: computed('layer.type', function() {
+  _layerType: computed('layer.type', function () {
     return this.layer?.type ?? 'line';
   }).readOnly(),
 
-  _envConfig: computed('_layerType', function() {
+  _envConfig: computed('_layerType', function () {
     const config = getOwner(this).resolveRegistration('config:environment');
     return (config['mapbox-gl'] ?? {})[this._layerType];
   }).readOnly(),
 
-  _layout: computed('_envConfig.layout', 'layer.layout', function() {
-    return assign({},
-      this._envConfig?.layout,
-      this.layer?.layout
-    );
+  _layout: computed('_envConfig.layout', 'layer.layout', function () {
+    return assign({}, this._envConfig?.layout, this.layer?.layout);
   }).readOnly(),
 
-  _paint: computed('_envConfig.paint', 'layer.paint', function() {
-    return assign({},
-      this._envConfig?.paint,
-      this.layer?.paint
-    );
+  _paint: computed('_envConfig.paint', 'layer.paint', function () {
+    return assign({}, this._envConfig?.paint, this.layer?.paint);
   }).readOnly(),
 
-  _layer: computed('layer', '_layerId', '_layerType', '_sourceId', '_layout', '_paint', function() {
-    // do this to pick up other properties like filter, re, metadata, source-layer, minzoom, maxzoom, etc
-    return assign({}, this.layer, {
-      id: this._layerId,
-      type: this._layerType,
-      source: this._sourceId,
-      layout: this._layout,
-      paint: this._paint
-    });
-  }).readOnly(),
+  _layer: computed(
+    'layer',
+    '_layerId',
+    '_layerType',
+    '_sourceId',
+    '_layout',
+    '_paint',
+    function () {
+      // do this to pick up other properties like filter, re, metadata, source-layer, minzoom, maxzoom, etc
+      return assign({}, this.layer, {
+        id: this._layerId,
+        type: this._layerType,
+        source: this._sourceId,
+        layout: this._layout,
+        paint: this._paint,
+      });
+    }
+  ).readOnly(),
 
   init() {
     this._super(...arguments);
@@ -139,5 +141,5 @@ export default Component.extend({
     this._super(...arguments);
 
     this.map.removeLayer(this._layerId);
-  }
+  },
 });
