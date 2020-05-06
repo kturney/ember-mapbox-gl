@@ -1,5 +1,4 @@
 import { assert } from '@ember/debug';
-import { getProperties } from '@ember/object';
 import { scheduleOnce, cancel } from '@ember/runloop';
 import Component from '@ember/component';
 
@@ -22,7 +21,7 @@ const MapboxGlCallComponent = Component.extend({
   didReceiveAttrs() {
     this._super(...arguments);
 
-    let { obj, func, args, params } = getProperties(this, 'obj', 'func', 'args', 'params');
+    let { obj, func, args, params } = this;
     if (args === null && params !== null) {
       if (func !== null) {
         args = params;

@@ -1,5 +1,5 @@
 import { scheduleOnce } from '@ember/runloop';
-import { getProperties, get, computed } from '@ember/object';
+import { computed } from '@ember/object';
 import { guidFor } from '@ember/object/internals';
 import Component from '@ember/component';
 import layout from '../templates/components/mapbox-gl-source';
@@ -68,15 +68,13 @@ export default Component.extend({
   init() {
     this._super(...arguments);
 
-    const { sourceId, options } = getProperties(this, 'sourceId', 'options');
-
-    this.map.addSource(sourceId, options);
+    this.map.addSource(this.sourceId, this.options);
   },
 
   didUpdateAttrs() {
     this._super(...arguments);
 
-    const { sourceId, options } = getProperties(this, 'sourceId', 'options');
+    const { sourceId, options } = this;
 
     if (options) {
       if (options.data) {
@@ -90,7 +88,7 @@ export default Component.extend({
   willDestroy() {
     this._super(...arguments);
 
-    const sourceId = get(this, 'sourceId');
+    const sourceId = this.sourceId;
 
     // wait for any layers to be removed before removing the source
     scheduleOnce('afterRender', this.map, this.map.removeSource, sourceId);

@@ -1,4 +1,3 @@
-import { getProperties } from '@ember/object';
 import Component from '@ember/component';
 
 /**
@@ -23,7 +22,7 @@ const MapboxGlControlComponent = Component.extend({
   didReceiveAttrs() {
     this._super(...arguments);
 
-    const { control, position } = getProperties(this, 'control', 'position');
+    const { control, position } = this;
 
     if (this._prevControl !== null) {
       this.map.removeControl(this._prevControl);

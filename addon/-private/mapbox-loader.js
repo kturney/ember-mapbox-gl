@@ -1,5 +1,5 @@
 import { bind, next } from '@ember/runloop';
-import EmberObject, { get, set } from '@ember/object';
+import EmberObject, { set } from '@ember/object';
 import { Promise as RsvpPromise } from 'rsvp';
 
 class MapboxLoaderCancelledError extends Error {}
@@ -8,7 +8,7 @@ class MapboxSupportError extends Error {
 }
 class MapboxError extends Error {
   constructor(ev) {
-    super(get(ev, 'error.message') || 'unknown mapbox error');
+    super(ev.error?.message ?? 'unknown mapbox error');
 
     this.event = ev;
   }

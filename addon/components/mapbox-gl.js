@@ -1,5 +1,4 @@
 import { assign } from '@ember/polyfills';
-import { get } from '@ember/object';
 import { getOwner } from '@ember/application';
 import Component from '@ember/component';
 import layout from '../templates/components/mapbox-gl';
@@ -57,7 +56,7 @@ export default Component.extend({
 
     const { accessToken, map } = getOwner(this).resolveRegistration('config:environment')['mapbox-gl'] || {};
 
-    const options = assign({}, map, get(this, 'initOptions'));
+    const options = assign({}, map, this.initOptions);
     options.container = this.element;
 
     this._loader.load(accessToken, options, this.mapLoaded);
