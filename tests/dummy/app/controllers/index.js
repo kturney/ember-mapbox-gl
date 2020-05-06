@@ -30,9 +30,7 @@ export default Controller.extend({
     this.curRun = run.later(this, this._updateWanderDrone, 1000);
   },
 
-  actions: {
-    onClick(ev) {
-      console.log('onClick', ev); // eslint-disable-line no-console
-    },
+  onClick(ev) {
+    console.log('onClick', ev); // eslint-disable-line no-console
   },
 });

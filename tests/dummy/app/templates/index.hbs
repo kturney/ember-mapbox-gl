@@ -1,26 +1,26 @@
-{{docs-header}}
+<DocsHeader />
 
-{{docs-hero
-  logo='ember'
-  slimHeading='Ember'
-  strongHeading='MapboxGL'
-  byline='Fast, expressive MapboxGL maps'
-}}
+<DocsHero
+  @logo='ember'
+  @slimHeading='Ember'
+  @strongHeading='MapboxGL'
+  @byline='Fast, expressive MapboxGL maps'
+/>
 
-{{#mapbox-gl as |map|}}
-  {{#map.source options=(hash type='geojson' data=wanderDrone) as |source|}}
-    {{source.layer layer=(hash type='symbol' layout=(hash icon-image='rocket-15'))}}
-  {{/map.source}}
+<MapboxGl as |map|>
+  <map.source @options={{hash type='geojson' data=this.wanderDrone}} as |source|>
+    <source.layer @layer={{hash type='symbol' layout=(hash icon-image='rocket-15')}} />
+  </map.source>
 
-  {{#if curLocation}}
-    {{#map.marker lngLat=curLocation as |marker|}}
-      {{#marker.popup}}
+  {{#if this.curLocation}}
+    <map.marker @lngLat={{this.curLocation}} as |marker|>
+      <marker.popup>
         This is where you are!
-      {{/marker.popup}}
-    {{/map.marker}}
+      </marker.popup>
+    </map.marker>
 
-    {{map.call 'easeTo' (hash center=curLocation)}}
+    {{map.call 'easeTo' (hash center=this.curLocation)}}
   {{/if}}
 
-  {{map.on 'click' (action 'onClick')}}
-{{/mapbox-gl}}
+  {{map.on 'click' (fn this.onClick)}}
+</MapboxGl>

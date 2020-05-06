@@ -1,8 +1,7 @@
-{{docs-header}}
+<DocsHeader />
 
-{{#docs-viewer as |viewer|}}
-
-  {{#viewer.nav as |nav|}}
+<DocsViewer as |viewer|>
+  <viewer.nav as |nav|>
     {{nav.item 'Introduction' 'docs.index'}}
     {{nav.item 'Usage' 'docs.usage'}}
     {{!-- {{nav.item 'Installation' 'docs.installation'}} --}}
@@ -10,14 +9,13 @@
     {{!-- {{nav.item 'Sources & Layers' 'docs.sources-layers'}} --}}
     {{!-- {{nav.item 'Capturing Events' 'docs.actions'}} --}}
     {{!-- {{nav.item 'Templates' 'docs.templates'}} --}}
-  {{/viewer.nav}}
+  </viewer.nav>
 
-  {{#viewer.main}}
+  <viewer.main>
     <div class='docs-container'>
       <div class='docs-section'>
         {{outlet}}
       </div>
     </div>
-  {{/viewer.main}}
-
-{{/docs-viewer}}
+  </viewer.main>
+</DocsViewer>
