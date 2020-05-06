@@ -9,10 +9,8 @@ module.exports = {
     },
 
     babel: {
-      plugins: [
-        // Ensure that `ember-auto-import` can handle the dynamic imports
-        require('ember-auto-import/babel-plugin'),
-      ],
+      // Ensure that `ember-auto-import` can handle the dynamic imports
+      plugins: [require.resolve('ember-auto-import/babel-plugin')],
     },
   },
 
@@ -20,13 +18,13 @@ module.exports = {
     this._super.included.apply(this, arguments);
 
     const path = require('path');
-    const mapboxDirName = path.dirname(require.resolve('mapbox-gl'));
+    const mapboxPkg = require(require.resolve('mapbox-gl/package.json', {
+      paths: [app.project.root],
+    }));
+    const stylesPath = require.resolve(`mapbox-gl/${mapboxPkg.style}`, {
+      paths: [app.project.root],
+    });
 
-    app.import(
-      path.join(
-        mapboxDirName.slice(mapboxDirName.lastIndexOf('node_modules')),
-        'mapbox-gl.css'
-      )
-    );
+    app.import(path.relative(app.project.root, stylesPath));
   },
 };
