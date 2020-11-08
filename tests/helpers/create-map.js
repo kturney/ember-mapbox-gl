@@ -1,7 +1,6 @@
 import { Promise } from 'rsvp';
 import Config from '../../config/environment';
 import QUnit from 'qunit';
-import { get } from '@ember/object';
 
 const ALLOWED_ERRORS = ['The operation was aborted', 'Failed to fetch'];
 
@@ -25,9 +24,9 @@ export default function setupMap(hooks) {
 
       const onErr = (ev) => {
         const err = {
-          message: get(ev, 'error.message') || 'unknown mapbox error',
+          message: ev.error?.message || 'unknown mapbox error',
           event: ev,
-          stack: get(ev, 'error.stack'),
+          stack: ev.error?.stack,
         };
 
         if (ALLOWED_ERRORS.includes(err.message)) {
