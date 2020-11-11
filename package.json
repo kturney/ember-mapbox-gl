@@ -85,6 +85,9 @@
   "ember-addon": {
     "configPath": "tests/dummy/config"
   },
+  "resolutions": {
+    "ember-keyboard": "^6.0.2"
+  },
   "volta": {
     "node": "10.23.0",
     "yarn": "1.22.10"
