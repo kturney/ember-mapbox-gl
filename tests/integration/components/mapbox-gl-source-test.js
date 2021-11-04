@@ -1,7 +1,7 @@
 import { assign } from '@ember/polyfills';
 import { module, test } from 'qunit';
 import { setupRenderingTest } from 'ember-qunit';
-import { clearRender, render, settled, waitFor } from '@ember/test-helpers';
+import { clearRender, render, settled, waitFor, find } from '@ember/test-helpers';
 import setupMap from '../../helpers/create-map';
 import { hbs } from 'ember-cli-htmlbars';
 import Sinon from 'sinon';
@@ -341,5 +341,34 @@ module('Integration | Component | mapbox gl source', function (hooks) {
       this.sourceId,
       'correct sourceId is removed'
     );
+  });
+
+  test('it yields the sourceId', async function (assert) {
+    this.setProperties({
+      data: {
+        type: 'FeatureCollection',
+        features: [
+          {
+            type: 'Feature',
+            geometry: {
+              type: 'Point',
+              coordinates: [-76.53063297271729, 39.18174077994108],
+            },
+          },
+        ],
+      },
+    });
+
+    await render(
+      hbs`
+        {{#mapbox-gl-source sourceId='test-source-id' map=map options=(hash type='geojson' data=data) as |source|}}
+          <div id="source">
+            {{source.id}}
+          </div>
+        {{/mapbox-gl-source}}
+      `
+    );
+
+    assert.dom('#source').hasText('test-source-id');
   });
 });
