@@ -4,6 +4,7 @@ import { computed } from '@ember/object';
 import { guidFor } from '@ember/object/internals';
 import { reads } from '@ember/object/computed';
 import Component from '@ember/component';
+import layout from '../templates/components/mapbox-gl-layer';
 
 /**
   Adds a data source to the map.
@@ -36,6 +37,7 @@ import Component from '@ember/component';
   @class MapboxGLSource
 */
 export default Component.extend({
+  layout,
   tagName: '',
 
   map: null,
