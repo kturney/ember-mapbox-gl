@@ -11,9 +11,12 @@
 /.ember-cli
 /.env*
 /.eslintignore
+/.eslintcache
 /.eslintrc.js
 /.git/
 /.gitignore
+/.prettierignore
+/.prettierrc.js
 /.template-lintrc.js
 /.travis.yml
 /.watchmanconfig
@@ -25,6 +28,7 @@
 /jsconfig.json
 /testem.js
 /tests/
+/yarn-error.log
 /yarn.lock
 .gitkeep
 
