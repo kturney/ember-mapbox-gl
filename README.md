@@ -1,13 +1,13 @@
 # ember-mapbox-gl
 
 [![Latest NPM release][npm-badge]][npm-badge-url]
-[![TravisCI Build Status][travis-badge]][travis-badge-url]
+[![GitHub Actions Build Status][github-actions-badge]][github-actions-badge-url]
 [![Ember Observer Score][ember-observer-badge]][ember-observer-url]
 
 [npm-badge]: https://img.shields.io/npm/v/ember-mapbox-gl.svg
 [npm-badge-url]: https://www.npmjs.com/package/ember-mapbox-gl
-[travis-badge]: https://img.shields.io/travis/kturney/ember-mapbox-gl/master.svg
-[travis-badge-url]: https://travis-ci.org/kturney/ember-mapbox-gl
+[github-actions-badge]: https://github.com/kturney/ember-mapbox-gl/workflows/CI/badge.svg
+[github-actions-badge-url]: https://github.com/kturney/ember-mapbox-gl/actions/workflows/ci.yml?query=branch%3Amaster
 [ember-observer-badge]: http://emberobserver.com/badges/ember-mapbox-gl.svg
 [ember-observer-url]: http://emberobserver.com/addons/ember-mapbox-gl
 
