@@ -1,4 +1,4 @@
-name: Deploy Latest `main` Docs
+name: Docs for Release
 
 on:
   push:
