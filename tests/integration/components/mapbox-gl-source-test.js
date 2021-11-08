@@ -274,8 +274,6 @@ module('Integration | Component | mapbox gl source', function (hooks) {
       this.sourceId,
       'correct sourceId is used'
     );
-
-    assert.expectNoDeprecation();
   });
 
   test('it cleans up sources before its containing map is removed when the map goes away', async function (assert) {
