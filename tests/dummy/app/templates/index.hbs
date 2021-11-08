@@ -20,5 +20,5 @@
     {{map.call 'easeTo' (hash center=this.curLocation)}}
   {{/if}}
 
-  {{map.on 'click' (fn this.onClick)}}
+  {{map.on 'click' this.onClick}}
 </MapboxGl>

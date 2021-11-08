@@ -24,7 +24,7 @@ module('Integration | Component | mapbox gl image', function (hooks) {
 
     await render(hbs`{{mapbox-gl-image map=map}}`);
 
-    assert.equal(loadImageSpy.calledOnce, false, 'loadImage not called');
+    assert.false(loadImageSpy.calledOnce, 'loadImage not called');
   });
 
   test('it adds the image to the map', async function (assert) {

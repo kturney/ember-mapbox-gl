@@ -78,14 +78,8 @@ const MapboxGlOnComponent = Component.extend({
   didReceiveAttrs() {
     this._super(...arguments);
 
-    const {
-      eventSource,
-      _layerId,
-      _event,
-      _prevEvent,
-      _prevLayerId,
-      _action,
-    } = this;
+    const { eventSource, _layerId, _event, _prevEvent, _prevLayerId, _action } =
+      this;
 
     assert('mapbox-gl-event requires an eventSource', isPresent(eventSource));
     assert('mapbox-gl-event requires an action', isPresent(_action));
