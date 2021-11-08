@@ -1,7 +1,7 @@
 import { assign } from '@ember/polyfills';
 import { module, test } from 'qunit';
 import { setupRenderingTest } from 'ember-qunit';
-import { clearRender, render, settled, waitFor, find } from '@ember/test-helpers';
+import { clearRender, render, settled, waitFor } from '@ember/test-helpers';
 import setupMap from '../../helpers/create-map';
 import { hbs } from 'ember-cli-htmlbars';
 import Sinon from 'sinon';
