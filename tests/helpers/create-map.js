@@ -5,18 +5,16 @@ import QUnit from 'qunit';
 const ALLOWED_ERRORS = ['The operation was aborted', 'Failed to fetch'];
 
 export default function setupMap(hooks) {
-  hooks.before(async function () {
+  hooks.beforeEach(async function () {
     const MapboxGl = await import('mapbox-gl');
     this.MapboxGl = MapboxGl.default;
     this.MapboxGl.accessToken = Config['mapbox-gl'].accessToken;
 
     await new Promise((resolve) => {
-      this._mapContainer = document
-        .querySelector(Config.APP.rootElement)
-        .appendChild(document.createElement('div'));
-
       this.map = new this.MapboxGl.Map({
-        container: this._mapContainer,
+        container: document
+          .querySelector(Config.APP.rootElement)
+          .appendChild(document.createElement('div')),
         style: Config['mapbox-gl'].map.style,
       });
 
@@ -42,8 +40,11 @@ export default function setupMap(hooks) {
     });
   });
 
-  hooks.after(function () {
+  hooks.afterEach(function () {
     this.map.remove();
-    this._mapContainer.parentElement.removeChild(this._mapContainer);
+    document
+      .querySelector(Config.APP.rootElement)
+      .querySelectorAll('.mapboxgl-map')
+      .forEach((el) => el.remove());
   });
 }

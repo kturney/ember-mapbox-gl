@@ -1,12 +1,12 @@
 import { module, test } from 'qunit';
 import { setupRenderingTest } from 'ember-qunit';
-import { render, click, settled } from '@ember/test-helpers';
+import { render, click } from '@ember/test-helpers';
 import { hbs } from 'ember-cli-htmlbars';
 import setupMap from '../../helpers/create-map';
 
 module('Integration | Component | mapbox gl popup', function (hooks) {
-  setupRenderingTest(hooks);
   setupMap(hooks);
+  setupRenderingTest(hooks);
 
   test('it renders', async function (assert) {
     assert.expect(0);
@@ -32,8 +32,6 @@ module('Integration | Component | mapbox gl popup', function (hooks) {
   });
 
   test('it handles re-renders on map clicks after closing', async function (assert) {
-    assert.expect(1);
-
     this.set('clicked', { lngLat: { lng: -93.9688, lat: 37.1314 } });
 
     await render(hbs`
