@@ -274,8 +274,6 @@ module('Integration | Component | mapbox gl source', function (hooks) {
       this.sourceId,
       'correct sourceId is used'
     );
-
-    assert.expectNoDeprecation();
   });
 
   test('it cleans up sources before its containing map is removed when the map goes away', async function (assert) {
@@ -341,5 +339,34 @@ module('Integration | Component | mapbox gl source', function (hooks) {
       this.sourceId,
       'correct sourceId is removed'
     );
+  });
+
+  test('it yields the sourceId', async function (assert) {
+    this.setProperties({
+      data: {
+        type: 'FeatureCollection',
+        features: [
+          {
+            type: 'Feature',
+            geometry: {
+              type: 'Point',
+              coordinates: [-76.53063297271729, 39.18174077994108],
+            },
+          },
+        ],
+      },
+    });
+
+    await render(
+      hbs`
+        {{#mapbox-gl-source sourceId='test-source-id' map=map options=(hash type='geojson' data=data) as |source|}}
+          <div id="source">
+            {{source.id}}
+          </div>
+        {{/mapbox-gl-source}}
+      `
+    );
+
+    assert.dom('#source').hasText('test-source-id');
   });
 });

@@ -424,4 +424,31 @@ module('Integration | Component | mapbox gl layer', function (hooks) {
       'setLayerZoomRange called with correct maxzoom'
     );
   });
+
+  test('it yields the layerId', async function (assert) {
+    this.set('layer', {
+      id: 'test-layer-id',
+      type: 'circle',
+      source: {
+        type: 'geojson',
+        data: {
+          type: 'Feature',
+          geometry: {
+            type: 'Point',
+            coordinates: [-76.53063297271729, 39.18174077994108],
+          },
+        },
+      },
+    });
+
+    await render(hbs`
+      {{#mapbox-gl-layer map=map layer=layer as |layer|}}
+        <div id="layer">
+          {{layer.id}}
+        </div>
+      {{/mapbox-gl-layer}}
+    `);
+
+    assert.dom('#layer').hasText('test-layer-id');
+  });
 });
