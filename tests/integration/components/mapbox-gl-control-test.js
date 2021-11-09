@@ -5,8 +5,8 @@ import { hbs } from 'ember-cli-htmlbars';
 import setupMap from '../../helpers/create-map';
 
 module('Integration | Component | mapbox gl control', function (hooks) {
-  setupRenderingTest(hooks);
   setupMap(hooks);
+  setupRenderingTest(hooks);
 
   test('it renders', async function (assert) {
     assert.expect(0);

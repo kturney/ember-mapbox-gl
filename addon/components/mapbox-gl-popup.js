@@ -86,7 +86,13 @@ export default Component.extend({
     const lngLat = this.lngLat;
 
     if (lngLat) {
-      this.popup.setLngLat(lngLat);
+      if (this.popup.isOpen()) {
+        this.popup.setLngLat(lngLat);
+      } else {
+        this.popup.remove();
+        this.popup.addTo(this.map);
+        this.popup.setLngLat(lngLat);
+      }
     }
   },
 
