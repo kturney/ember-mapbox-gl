@@ -8124,7 +8124,7 @@ this.domContent=document.createElement("div"),this._onClose=Ember.run.bind(this,
 var n=Ember.assign({},(null!==(e=Ember.getOwner(this).resolveRegistration("config:environment")["mapbox-gl"])&&void 0!==e?e:{}).popup,t)
 this.popup=new this.MapboxGl.Popup(n).setDOMContent(this.domContent).on("close",this._onClose),null===r?this.popup.addTo(this.map):r.setPopup(this.popup)},didReceiveAttrs:function(){this._super.apply(this,arguments)
 var e=this.lngLat
-e&&this.popup.setLngLat(e)},willDestroy:function(){this._super.apply(this,arguments),this.popup.off("close",this._onClose)
+e&&(this.popup.isOpen()||(this.popup.remove(),this.popup.addTo(this.map)),this.popup.setLngLat(e))},willDestroy:function(){this._super.apply(this,arguments),this.popup.off("close",this._onClose)
 var e=this.marker
 null===e?this.popup.remove():e.setPopup(null)}})
 e.default=r})),define("ember-mapbox-gl/components/mapbox-gl-source",["exports","ember-mapbox-gl/templates/components/mapbox-gl-source"],(function(e,t){"use strict"
