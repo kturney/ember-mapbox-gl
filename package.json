@@ -1,6 +1,6 @@
 {
   "name": "ember-mapbox-gl",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "Ember integration for Mapbox GL JS",
   "keywords": [
     "ember-addon"
