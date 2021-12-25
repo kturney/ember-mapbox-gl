@@ -1,4 +1,4 @@
-import { run } from '@ember/runloop';
+import { next } from '@ember/runloop';
 import { module, test } from 'qunit';
 import { setupRenderingTest } from 'ember-qunit';
 import { render } from '@ember/test-helpers';
@@ -22,7 +22,7 @@ module('Integration | Component | mapbox gl on', function (hooks) {
       on(eventName, cb) {
         assert.equal(eventName, 'onzoom', 'subscribes to event name');
 
-        run.next(cb, event);
+        next(cb, event);
       },
 
       off() {},
@@ -34,7 +34,7 @@ module('Integration | Component | mapbox gl on', function (hooks) {
     };
 
     await render(
-      hbs`{{mapbox-gl-on eventSource=eventSource event='onzoom' action=(action 'onEvent')}}`
+      hbs`{{mapbox-gl-on eventSource=this.eventSource event='onzoom' action=(action 'onEvent')}}`
     );
   });
 
@@ -48,7 +48,7 @@ module('Integration | Component | mapbox gl on', function (hooks) {
       on(eventName, cb) {
         assert.equal(eventName, 'onzoom', 'subscribes to event name');
 
-        run.next(cb, event);
+        next(cb, event);
       },
 
       off(eventName) {
@@ -62,7 +62,7 @@ module('Integration | Component | mapbox gl on', function (hooks) {
     };
 
     await render(
-      hbs`{{mapbox-gl-on 'onzoom' (action 'onEvent') eventSource=eventSource}}`
+      hbs`{{mapbox-gl-on 'onzoom' (action 'onEvent') eventSource=this.eventSource}}`
     );
   });
 
@@ -77,7 +77,7 @@ module('Integration | Component | mapbox gl on', function (hooks) {
         assert.equal(eventName, 'onzoom', 'subscribes to event name');
         assert.equal(source, 'layer1', 'passes on layer');
 
-        run.next(cb, event);
+        next(cb, event);
       },
 
       off(eventName, source) {
@@ -92,7 +92,7 @@ module('Integration | Component | mapbox gl on', function (hooks) {
     };
 
     await render(
-      hbs`{{mapbox-gl-on 'onzoom' 'layer1' (action 'onEvent') eventSource=eventSource}}`
+      hbs`{{mapbox-gl-on 'onzoom' 'layer1' (action 'onEvent') eventSource=this.eventSource}}`
     );
   });
 });

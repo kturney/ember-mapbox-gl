@@ -22,9 +22,9 @@ module('Integration | Component | mapbox gl image', function (hooks) {
   test('it ignores null image', async function (assert) {
     const loadImageSpy = this.sandbox.spy(this.map, 'loadImage');
 
-    await render(hbs`{{mapbox-gl-image map=map}}`);
+    await render(hbs`{{mapbox-gl-image map=this.map}}`);
 
-    assert.equal(loadImageSpy.calledOnce, false, 'loadImage not called');
+    assert.false(loadImageSpy.calledOnce, 'loadImage not called');
   });
 
   test('it adds the image to the map', async function (assert) {
@@ -43,7 +43,7 @@ module('Integration | Component | mapbox gl image', function (hooks) {
     });
 
     await render(
-      hbs`{{mapbox-gl-image name image options map=map onLoad=onLoad onError=onError}}`
+      hbs`{{mapbox-gl-image this.name this.image this.options map=this.map onLoad=this.onLoad onError=this.onError}}`
     );
 
     assert.ok(loadImageSpy.calledOnce, 'loadImage called');
@@ -92,7 +92,7 @@ module('Integration | Component | mapbox gl image', function (hooks) {
     });
 
     await render(
-      hbs`{{mapbox-gl-image name image options map=map onLoad=onLoad onError=onError}}`
+      hbs`{{mapbox-gl-image this.name this.image this.options map=this.map onLoad=this.onLoad onError=this.onError}}`
     );
 
     assert.ok(loadImageSpy.calledOnce, 'loadImage called');
@@ -142,7 +142,7 @@ module('Integration | Component | mapbox gl image', function (hooks) {
       image: '/assets/creativecommons-128.png',
     });
 
-    await render(hbs`{{mapbox-gl-image name image map=map}}`);
+    await render(hbs`{{mapbox-gl-image this.name this.image map=this.map}}`);
 
     assert.ok(loadImageStub.calledOnce, 'loadImage called');
     assert.equal(
@@ -175,7 +175,7 @@ module('Integration | Component | mapbox gl image', function (hooks) {
     });
 
     await render(
-      hbs`{{mapbox-gl-image name image options map=map onLoad=onLoad onError=onError}}`
+      hbs`{{mapbox-gl-image this.name this.image this.options map=this.map onLoad=this.onLoad onError=this.onError}}`
     );
 
     assert.ok(loadImageSpy.calledOnce, 'loadImage called');
@@ -255,7 +255,7 @@ module('Integration | Component | mapbox gl image', function (hooks) {
     });
 
     await render(
-      hbs`{{mapbox-gl-image name image map=map onLoad=onLoad onError=onError}}`
+      hbs`{{mapbox-gl-image this.name this.image map=this.map onLoad=this.onLoad onError=this.onError}}`
     );
 
     assert.ok(loadImageSpy.calledOnce, 'loadImage called');
@@ -288,7 +288,7 @@ module('Integration | Component | mapbox gl image', function (hooks) {
     });
 
     await render(
-      hbs`{{mapbox-gl-image name image map=map onLoad=onLoad onError=onError}}`
+      hbs`{{mapbox-gl-image this.name this.image map=this.map onLoad=this.onLoad onError=this.onError}}`
     );
 
     await defer.promise;
@@ -317,7 +317,7 @@ module('Integration | Component | mapbox gl image', function (hooks) {
     });
 
     await render(
-      hbs`{{mapbox-gl-image name image width=width height=height map=map onLoad=onLoad onError=onError}}`
+      hbs`{{mapbox-gl-image this.name this.image width=this.width height=this.height map=this.map onLoad=this.onLoad onError=this.onError}}`
     );
 
     await defer.promise;
@@ -354,7 +354,7 @@ module('Integration | Component | mapbox gl image', function (hooks) {
     try {
       await all([
         render(
-          hbs`{{mapbox-gl-image name image map=map onLoad=onLoad onError=onError}}`
+          hbs`{{mapbox-gl-image this.name this.image map=this.map onLoad=this.onLoad onError=this.onError}}`
         ),
         defer.promise,
       ]);

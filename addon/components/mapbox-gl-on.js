@@ -1,7 +1,7 @@
 import { assert } from '@ember/debug';
 import { computed } from '@ember/object';
 import { isPresent } from '@ember/utils';
-import { run } from '@ember/runloop';
+import { bind } from '@ember/runloop';
 import Component from '@ember/component';
 
 /**
@@ -72,20 +72,14 @@ const MapboxGlOnComponent = Component.extend({
   init() {
     this._super(...arguments);
 
-    this._boundOnEvent = run.bind(this, this._onEvent);
+    this._boundOnEvent = bind(this, this._onEvent);
   },
 
   didReceiveAttrs() {
     this._super(...arguments);
 
-    const {
-      eventSource,
-      _layerId,
-      _event,
-      _prevEvent,
-      _prevLayerId,
-      _action,
-    } = this;
+    const { eventSource, _layerId, _event, _prevEvent, _prevLayerId, _action } =
+      this;
 
     assert('mapbox-gl-event requires an eventSource', isPresent(eventSource));
     assert('mapbox-gl-event requires an action', isPresent(_action));

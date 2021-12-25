@@ -7,10 +7,17 @@ module.exports = function (defaults) {
     babel: {
       plugins: [
         // Ensure that `ember-auto-import` can handle the dynamic imports
-        require('ember-auto-import/babel-plugin'),
+        require.resolve('ember-auto-import/babel-plugin'),
       ],
     },
   });
 
-  return app.toTree();
+  const { maybeEmbroider } = require('@embroider/test-setup');
+  return maybeEmbroider(app, {
+    skipBabel: [
+      {
+        package: 'qunit',
+      },
+    ],
+  });
 };

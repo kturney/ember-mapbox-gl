@@ -19,26 +19,25 @@ module.exports = {
   env: {
     browser: true,
   },
-  rules: {},
+  rules: {
+    'ember/no-classic-classes': 'off',
+    'ember/no-classic-components': 'off',
+    'ember/no-component-lifecycle-hooks': 'off',
+    'ember/require-tagless-components': 'off',
+  },
   overrides: [
     // node files
     {
       files: [
-        '.eslintrc.js',
-        '.prettierrc.js',
-        '.template-lintrc.js',
-        'ember-cli-build.js',
-        'index.js',
-        'testem.js',
-        'blueprints/*/index.js',
-        'config/**/*.js',
-        'tests/dummy/config/**/*.js',
-      ],
-      excludedFiles: [
-        'addon/**',
-        'addon-test-support/**',
-        'app/**',
-        'tests/dummy/app/**',
+        './.eslintrc.js',
+        './.prettierrc.js',
+        './.template-lintrc.js',
+        './ember-cli-build.js',
+        './index.js',
+        './testem.js',
+        './blueprints/*/index.js',
+        './config/**/*.js',
+        './tests/dummy/config/**/*.js',
       ],
       parserOptions: {
         sourceType: 'script',
@@ -49,6 +48,14 @@ module.exports = {
       },
       plugins: ['node'],
       extends: ['plugin:node/recommended'],
+    },
+    {
+      // Test files:
+      files: ['tests/**/*-test.{js,ts}'],
+      extends: ['plugin:qunit/recommended'],
+      rules: {
+        'qunit/require-expect': 'off',
+      },
     },
   ],
 };

@@ -1,4 +1,3 @@
-import { assign } from '@ember/polyfills';
 import { getOwner } from '@ember/application';
 import { bind } from '@ember/runloop';
 import Component from '@ember/component';
@@ -60,14 +59,13 @@ export default Component.extend({
 
     this.domContent = document.createElement('div');
     this._onClose = bind(this, this.onClose);
-    const options = assign(
-      {},
-      (
+    const options = {
+      ...(
         getOwner(this).resolveRegistration('config:environment')['mapbox-gl'] ??
         {}
       ).popup,
-      initOptions
-    );
+      ...initOptions,
+    };
 
     this.popup = new this.MapboxGl.Popup(options)
       .setDOMContent(this.domContent)

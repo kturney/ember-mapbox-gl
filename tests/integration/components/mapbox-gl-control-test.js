@@ -11,6 +11,6 @@ module('Integration | Component | mapbox gl control', function (hooks) {
   test('it renders', async function (assert) {
     assert.expect(0);
 
-    await render(hbs`{{mapbox-gl-control map=map}}`);
+    await render(hbs`{{mapbox-gl-control map=this.map}}`);
   });
 });

@@ -13,7 +13,7 @@
     )
   }}
 {{else if this._loader.error}}
-  {{#if (hasBlock 'inverse')}}
+  {{#if (has-block 'inverse')}}
     {{yield this._loader.error to='inverse'}}
   {{else}}
     {{! template-lint-disable no-log }}
