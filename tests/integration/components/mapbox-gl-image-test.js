@@ -8,8 +8,8 @@ import Sinon from 'sinon';
 import { all, defer as createDeferred } from 'rsvp';
 
 module('Integration | Component | mapbox gl image', function (hooks) {
-  setupRenderingTest(hooks);
   setupMap(hooks);
+  setupRenderingTest(hooks);
 
   hooks.before(function () {
     this.sandbox = Sinon.createSandbox();

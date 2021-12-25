@@ -6,8 +6,8 @@ import { hbs } from 'ember-cli-htmlbars';
 import Sinon from 'sinon';
 
 module('Integration | Component | mapbox gl source', function (hooks) {
-  setupRenderingTest(hooks);
   setupMap(hooks);
+  setupRenderingTest(hooks);
 
   hooks.before(function () {
     this.sandbox = Sinon.createSandbox();
