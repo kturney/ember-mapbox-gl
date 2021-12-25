@@ -38,7 +38,7 @@ module('Integration | Component | mapbox gl source', function (hooks) {
     const removeSourceSpy = this.sandbox.spy(this.map, 'removeSource');
 
     await render(
-      hbs`{{mapbox-gl-source map=map options=(hash type='geojson' data=data)}}`
+      hbs`{{mapbox-gl-source map=this.map options=(hash type='geojson' data=this.data)}}`
     );
 
     assert.ok(addSourceSpy.calledOnce, 'addSource called once');
@@ -81,7 +81,7 @@ module('Integration | Component | mapbox gl source', function (hooks) {
     });
 
     await render(
-      hbs`{{mapbox-gl-source map=map sourceId=sourceId options=options}}`
+      hbs`{{mapbox-gl-source map=this.map sourceId=this.sourceId options=this.options}}`
     );
 
     assert.ok(addSourceSpy.calledOnce, 'addSource called once');
@@ -148,7 +148,7 @@ module('Integration | Component | mapbox gl source', function (hooks) {
     });
 
     await render(
-      hbs`{{mapbox-gl-source map=map sourceId=sourceId options=(hash type='geojson' data=data)}}`
+      hbs`{{mapbox-gl-source map=this.map sourceId=this.sourceId options=(hash type='geojson' data=this.data)}}`
     );
 
     assert.ok(addSourceSpy.calledOnce, 'addSource called once');
@@ -201,7 +201,7 @@ module('Integration | Component | mapbox gl source', function (hooks) {
     const addSourceSpy = this.sandbox.spy(this.map, 'addSource');
 
     await render(
-      hbs`{{mapbox-gl-source map=map sourceId=sourceId options=options}}`
+      hbs`{{mapbox-gl-source map=this.map sourceId=this.sourceId options=this.options}}`
     );
 
     assert.ok(addSourceSpy.calledOnce, 'addSource called once');
@@ -259,7 +259,7 @@ module('Integration | Component | mapbox gl source', function (hooks) {
     this.sourceId = 'guvvguvguugvu';
 
     await render(hbs`
-      {{#mapbox-gl-source map=map sourceId=sourceId options=(hash type='geojson' data=data) as |source|}}
+      {{#mapbox-gl-source map=this.map sourceId=this.sourceId options=(hash type='geojson' data=this.data) as |source|}}
         {{source.layer layer=(hash type='symbol' layout=(hash icon-image='rocket-15'))}}
       {{/mapbox-gl-source}}
     `);
@@ -305,8 +305,8 @@ module('Integration | Component | mapbox gl source', function (hooks) {
     };
 
     await render(hbs`
-      {{#mapbox-gl mapLoaded=mapLoaded as |map|}}
-        {{map.source sourceId=sourceId options=options}}
+      {{#mapbox-gl mapLoaded=this.mapLoaded as |map|}}
+        {{map.source sourceId=this.sourceId options=this.options}}
         <div id='loaded-sigil'></div>
       {{/mapbox-gl}}
     `);
@@ -353,7 +353,7 @@ module('Integration | Component | mapbox gl source', function (hooks) {
 
     await render(
       hbs`
-        {{#mapbox-gl-source sourceId='test-source-id' map=map options=(hash type='geojson' data=data) as |source|}}
+        {{#mapbox-gl-source sourceId='test-source-id' map=this.map options=(hash type='geojson' data=this.data) as |source|}}
           <div id="source">
             {{source.id}}
           </div>

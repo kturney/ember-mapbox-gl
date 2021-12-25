@@ -35,7 +35,7 @@ module('Integration | Component | mapbox gl call', function (hooks) {
     };
 
     await render(
-      hbs`{{mapbox-gl-call obj=obj func='func' args=args onResp=(action 'onResp')}}`
+      hbs`{{mapbox-gl-call obj=this.obj func='func' args=this.args onResp=(action 'onResp')}}`
     );
   });
 
@@ -60,7 +60,7 @@ module('Integration | Component | mapbox gl call', function (hooks) {
     };
 
     await render(
-      hbs`{{mapbox-gl-call 'func' 'a' 1 'z' obj=obj onResp=(action 'onResp')}}`
+      hbs`{{mapbox-gl-call 'func' 'a' 1 'z' obj=this.obj onResp=(action 'onResp')}}`
     );
   });
 });

@@ -11,7 +11,7 @@ module('Integration | Component | mapbox gl popup', function (hooks) {
   test('it renders', async function (assert) {
     assert.expect(0);
 
-    await render(hbs`{{mapbox-gl-popup map=map MapboxGl=MapboxGl}}`);
+    await render(hbs`{{mapbox-gl-popup map=this.map MapboxGl=this.MapboxGl}}`);
   });
 
   test('popup events can be subscribed to from the template', async function (assert) {
@@ -20,8 +20,8 @@ module('Integration | Component | mapbox gl popup', function (hooks) {
     };
 
     await render(hbs`
-      {{#mapbox-gl-popup map=map MapboxGl=MapboxGl as |popup|}}
-        {{popup.on 'close' onClose}}
+      {{#mapbox-gl-popup map=this.map MapboxGl=this.MapboxGl as |popup|}}
+        {{popup.on 'close' this.onClose}}
       {{/mapbox-gl-popup}}
     `);
 

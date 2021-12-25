@@ -1,5 +1,5 @@
 import { computed } from '@ember/object';
-import { run } from '@ember/runloop';
+import { bind } from '@ember/runloop';
 import Component from '@ember/component';
 import noop from 'ember-mapbox-gl/utils/noop';
 
@@ -101,11 +101,11 @@ const MapboxGlImageComponent = Component.extend({
         img.height = height;
       }
 
-      img.onload = run.bind(this, this._onImage, image, null, img);
-      img.onerror = run.bind(this, this._onSvgErr, image);
+      img.onload = bind(this, this._onImage, image, null, img);
+      img.onerror = bind(this, this._onSvgErr, image);
       img.src = image;
     } else {
-      this.map.loadImage(image, run.bind(this, this._onImage, image));
+      this.map.loadImage(image, bind(this, this._onImage, image));
     }
   },
 

@@ -14,7 +14,7 @@ module('Integration | Component | mapbox gl marker', function (hooks) {
     this.set('lngLat', [0, 0]);
 
     await render(
-      hbs`{{mapbox-gl-marker map=map lngLat=lngLat MapboxGl=MapboxGl}}`
+      hbs`{{mapbox-gl-marker map=this.map lngLat=this.lngLat MapboxGl=this.MapboxGl}}`
     );
   });
 });
