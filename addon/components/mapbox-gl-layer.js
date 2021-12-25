@@ -1,4 +1,3 @@
-import { assign } from '@ember/polyfills';
 import { getOwner } from '@ember/application';
 import { computed } from '@ember/object';
 import { guidFor } from '@ember/object/internals';
@@ -87,11 +86,11 @@ export default Component.extend({
   }).readOnly(),
 
   _layout: computed('_envConfig.layout', 'layer.layout', function () {
-    return assign({}, this._envConfig?.layout, this.layer?.layout);
+    return { ...this._envConfig?.layout, ...this.layer?.layout };
   }).readOnly(),
 
   _paint: computed('_envConfig.paint', 'layer.paint', function () {
-    return assign({}, this._envConfig?.paint, this.layer?.paint);
+    return { ...this._envConfig?.paint, ...this.layer?.paint };
   }).readOnly(),
 
   _layer: computed(
@@ -103,13 +102,14 @@ export default Component.extend({
     '_paint',
     function () {
       // do this to pick up other properties like filter, re, metadata, source-layer, minzoom, maxzoom, etc
-      return assign({}, this.layer, {
+      return {
+        ...this.layer,
         id: this._layerId,
         type: this._layerType,
         source: this._sourceId,
         layout: this._layout,
         paint: this._paint,
-      });
+      };
     }
   ).readOnly(),
 

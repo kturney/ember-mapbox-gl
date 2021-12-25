@@ -1,4 +1,3 @@
-import { assign } from '@ember/polyfills';
 import { module, test } from 'qunit';
 import { setupRenderingTest } from 'ember-qunit';
 import { clearRender, render, waitFor } from '@ember/test-helpers';
@@ -221,10 +220,7 @@ module('Integration | Component | mapbox gl source', function (hooks) {
       'setCoordinates'
     );
 
-    this.set(
-      'options',
-      assign({}, this.options, { coordinates: updatedCoordinates })
-    );
+    this.set('options', { ...this.options, coordinates: updatedCoordinates });
 
     assert.ok(
       setCoordinatesSpy.calledOnce,

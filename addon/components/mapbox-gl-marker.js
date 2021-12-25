@@ -1,5 +1,4 @@
 import { assert } from '@ember/debug';
-import { assign } from '@ember/polyfills';
 import { getOwner } from '@ember/application';
 import Component from '@ember/component';
 import layout from '../templates/components/mapbox-gl-marker';
@@ -29,14 +28,13 @@ export default Component.extend({
       lngLat
     );
 
-    const options = assign(
-      {},
-      (
+    const options = {
+      ...(
         getOwner(this).resolveRegistration('config:environment')['mapbox-gl'] ??
         {}
       ).marker,
-      initOptions
-    );
+      ...initOptions,
+    };
 
     this.marker = new this.MapboxGl.Marker(this.domContent, options)
       .setLngLat(lngLat)

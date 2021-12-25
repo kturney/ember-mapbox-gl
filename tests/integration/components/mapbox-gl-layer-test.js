@@ -1,4 +1,3 @@
-import { assign } from '@ember/polyfills';
 import { module, test } from 'qunit';
 import { setupRenderingTest } from 'ember-qunit';
 import { clearRender, render } from '@ember/test-helpers';
@@ -219,10 +218,7 @@ module('Integration | Component | mapbox gl layer', function (hooks) {
       'layout property was set'
     );
 
-    this.set(
-      'layer',
-      assign({}, this.layer, { layout: { visibility: 'visible' } })
-    );
+    this.set('layer', { ...this.layer, layout: { visibility: 'visible' } });
 
     assert.equal(
       this.map.getLayoutProperty(this.layer.id, 'visibility'),
@@ -258,10 +254,7 @@ module('Integration | Component | mapbox gl layer', function (hooks) {
       'paint property was set'
     );
 
-    this.set(
-      'layer',
-      assign({}, this.layer, { paint: { 'circle-color': 'black' } })
-    );
+    this.set('layer', { ...this.layer, paint: { 'circle-color': 'black' } });
 
     assert.equal(
       this.map.getPaintProperty(this.layer.id, 'circle-color'),
@@ -321,10 +314,7 @@ module('Integration | Component | mapbox gl layer', function (hooks) {
       'filter was set'
     );
 
-    this.set(
-      'layer',
-      assign({}, this.layer, { filter: ['!=', '$type', 'LineString'] })
-    );
+    this.set('layer', { ...this.layer, filter: ['!=', '$type', 'LineString'] });
 
     assert.deepEqual(
       this.map.getFilter(this.layer.id),
@@ -332,7 +322,7 @@ module('Integration | Component | mapbox gl layer', function (hooks) {
       'filter was updated'
     );
 
-    this.set('layer', assign({}, this.layer, { filter: null }));
+    this.set('layer', { ...this.layer, filter: null });
 
     assert.equal(this.map.getFilter(this.layer.id), null, 'filter was cleared');
   });
@@ -408,7 +398,7 @@ module('Integration | Component | mapbox gl layer', function (hooks) {
       'setLayerZoomRange not called'
     );
 
-    this.set('layer', assign({}, this.layer, { minzoom: 2, maxzoom: 15 }));
+    this.set('layer', { ...this.layer, minzoom: 2, maxzoom: 15 });
 
     assert.ok(addLayerSpy.calledOnce, 'addLayer only called once');
     assert.ok(setLayerZoomRangeSpy.calledOnce, 'setLayerZoomRange calledOnce');
