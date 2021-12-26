@@ -20,7 +20,7 @@ module('Integration | Component | mapbox gl on', function (hooks) {
 
     this.set('eventSource', {
       on(eventName, cb) {
-        assert.equal(eventName, 'onzoom', 'subscribes to event name');
+        assert.strictEqual(eventName, 'onzoom', 'subscribes to event name');
 
         next(cb, event);
       },
@@ -29,7 +29,7 @@ module('Integration | Component | mapbox gl on', function (hooks) {
     });
 
     this.actions.onEvent = (ev) => {
-      assert.equal(ev, event, 'sends event to the action');
+      assert.strictEqual(ev, event, 'sends event to the action');
       done();
     };
 
@@ -46,18 +46,18 @@ module('Integration | Component | mapbox gl on', function (hooks) {
 
     this.set('eventSource', {
       on(eventName, cb) {
-        assert.equal(eventName, 'onzoom', 'subscribes to event name');
+        assert.strictEqual(eventName, 'onzoom', 'subscribes to event name');
 
         next(cb, event);
       },
 
       off(eventName) {
-        assert.equal(eventName, 'onzoom', 'unsubscribes to event name');
+        assert.strictEqual(eventName, 'onzoom', 'unsubscribes to event name');
       },
     });
 
     this.actions.onEvent = (ev) => {
-      assert.equal(ev, event, 'sends event to the action');
+      assert.strictEqual(ev, event, 'sends event to the action');
       done();
     };
 
@@ -74,20 +74,20 @@ module('Integration | Component | mapbox gl on', function (hooks) {
 
     this.set('eventSource', {
       on(eventName, source, cb) {
-        assert.equal(eventName, 'onzoom', 'subscribes to event name');
-        assert.equal(source, 'layer1', 'passes on layer');
+        assert.strictEqual(eventName, 'onzoom', 'subscribes to event name');
+        assert.strictEqual(source, 'layer1', 'passes on layer');
 
         next(cb, event);
       },
 
       off(eventName, source) {
-        assert.equal(eventName, 'onzoom', 'unsubscribes to event name');
-        assert.equal(source, 'layer1', 'passes on layer');
+        assert.strictEqual(eventName, 'onzoom', 'unsubscribes to event name');
+        assert.strictEqual(source, 'layer1', 'passes on layer');
       },
     });
 
     this.actions.onEvent = (ev) => {
-      assert.equal(ev, event, 'sends event to the action');
+      assert.strictEqual(ev, event, 'sends event to the action');
       done();
     };
 

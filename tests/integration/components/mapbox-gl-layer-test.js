@@ -91,7 +91,7 @@ module('Integration | Component | mapbox gl layer', function (hooks) {
     );
 
     assert.ok(addLayerSpy.calledOnce, 'addLayer called once');
-    assert.equal(
+    assert.strictEqual(
       addLayerSpy.firstCall.args[1],
       this.before,
       'passes on correct before'
@@ -126,7 +126,7 @@ module('Integration | Component | mapbox gl layer', function (hooks) {
     await clearRender();
 
     assert.ok(removeLayerSpy.calledOnce, 'removeLayer called once');
-    assert.equal(
+    assert.strictEqual(
       removeLayerSpy.firstCall.args[0],
       addLayerSpy.firstCall.args[0].id,
       'removes correct layer'
@@ -152,7 +152,7 @@ module('Integration | Component | mapbox gl layer', function (hooks) {
     );
 
     assert.ok(addLayerSpy.calledOnce, 'addLayer called once');
-    assert.equal(
+    assert.strictEqual(
       addLayerSpy.firstCall.args[0].type,
       'line',
       'default layer.type is line'
@@ -179,12 +179,12 @@ module('Integration | Component | mapbox gl layer', function (hooks) {
     await render(hbs`{{mapbox-gl-layer map=this.map layer=this.layer}}`);
 
     assert.ok(addLayerSpy.calledOnce, 'addLayer called once');
-    assert.equal(
+    assert.strictEqual(
       addLayerSpy.firstCall.args[0].id,
       this.layer.id,
       'layer id is passed through'
     );
-    assert.equal(
+    assert.strictEqual(
       addLayerSpy.firstCall.args[0].type,
       'line',
       'default layer.type is line'
@@ -212,7 +212,7 @@ module('Integration | Component | mapbox gl layer', function (hooks) {
 
     await render(hbs`{{mapbox-gl-layer map=this.map layer=this.layer}}`);
 
-    assert.equal(
+    assert.strictEqual(
       this.map.getLayoutProperty(this.layer.id, 'visibility'),
       'none',
       'layout property was set'
@@ -220,7 +220,7 @@ module('Integration | Component | mapbox gl layer', function (hooks) {
 
     this.set('layer', { ...this.layer, layout: { visibility: 'visible' } });
 
-    assert.equal(
+    assert.strictEqual(
       this.map.getLayoutProperty(this.layer.id, 'visibility'),
       'visible',
       'layout property was updated'
@@ -248,7 +248,7 @@ module('Integration | Component | mapbox gl layer', function (hooks) {
 
     await render(hbs`{{mapbox-gl-layer map=this.map layer=this.layer}}`);
 
-    assert.equal(
+    assert.strictEqual(
       this.map.getPaintProperty(this.layer.id, 'circle-color'),
       'white',
       'paint property was set'
@@ -256,7 +256,7 @@ module('Integration | Component | mapbox gl layer', function (hooks) {
 
     this.set('layer', { ...this.layer, paint: { 'circle-color': 'black' } });
 
-    assert.equal(
+    assert.strictEqual(
       this.map.getPaintProperty(this.layer.id, 'circle-color'),
       'black',
       'paint property was updated'
@@ -324,7 +324,11 @@ module('Integration | Component | mapbox gl layer', function (hooks) {
 
     this.set('layer', { ...this.layer, filter: null });
 
-    assert.equal(this.map.getFilter(this.layer.id), null, 'filter was cleared');
+    assert.strictEqual(
+      this.map.getFilter(this.layer.id),
+      undefined,
+      'filter was cleared'
+    );
   });
 
   test('it passes through other layer options', async function (assert) {
@@ -349,7 +353,7 @@ module('Integration | Component | mapbox gl layer', function (hooks) {
       this.layer.metadata,
       'metadata passed through'
     );
-    assert.equal(
+    assert.strictEqual(
       addLayerSpy.firstCall.args[0]['source-layer'],
       this.layer['source-layer'],
       'source-layer passed through'
@@ -383,12 +387,12 @@ module('Integration | Component | mapbox gl layer', function (hooks) {
     await render(hbs`{{mapbox-gl-layer map=this.map layer=this.layer}}`);
 
     assert.ok(addLayerSpy.calledOnce, 'addLayer called once');
-    assert.equal(
+    assert.strictEqual(
       addLayerSpy.firstCall.args[0].minzoom,
       5,
       'minzoom passed through'
     );
-    assert.equal(
+    assert.strictEqual(
       addLayerSpy.firstCall.args[0].maxzoom,
       10,
       'maxzoom passed through'
@@ -402,17 +406,17 @@ module('Integration | Component | mapbox gl layer', function (hooks) {
 
     assert.ok(addLayerSpy.calledOnce, 'addLayer only called once');
     assert.ok(setLayerZoomRangeSpy.calledOnce, 'setLayerZoomRange calledOnce');
-    assert.equal(
+    assert.strictEqual(
       setLayerZoomRangeSpy.firstCall.args[0],
       this.layer.id,
       'setLayerZoomRange called with correct layerId'
     );
-    assert.equal(
+    assert.strictEqual(
       setLayerZoomRangeSpy.firstCall.args[1],
       2,
       'setLayerZoomRange called with correct minzoom'
     );
-    assert.equal(
+    assert.strictEqual(
       setLayerZoomRangeSpy.firstCall.args[2],
       15,
       'setLayerZoomRange called with correct maxzoom'

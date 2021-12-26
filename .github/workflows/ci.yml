@@ -11,14 +11,14 @@ on:
   schedule:
     - cron: '0 6 * * 0'
 
-env:
-  CI: true
+concurrency:
+   group: ci-${{ github.head_ref || github.ref }}
+   cancel-in-progress: true
 
 jobs:
   test:
     name: "Tests"
     runs-on: ubuntu-latest
-    continue-on-error: true
 
     steps:
       - uses: actions/checkout@v2
@@ -53,23 +53,19 @@ jobs:
     name: ${{ matrix.try-scenario }}
     runs-on: ubuntu-latest
     needs: 'test'
-    continue-on-error: ${{ matrix.experimental }}
+
     strategy:
       fail-fast: false
       matrix:
         try-scenario:
-          - ember-lts-3.20
           - ember-lts-3.24
+          - ember-lts-3.28
           - ember-release
+          - ember-beta
+          - ember-canary
           - ember-classic
           - embroider-safe
           - embroider-optimized
-        experimental: [false]
-        include:
-          - try-scenario: ember-beta
-            experimental: true
-          - try-scenario: ember-canary
-            experimental: true
 
     steps:
       - uses: actions/checkout@v2

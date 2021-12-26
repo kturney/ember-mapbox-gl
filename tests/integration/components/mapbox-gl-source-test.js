@@ -46,7 +46,7 @@ module('Integration | Component | mapbox gl source', function (hooks) {
     await clearRender();
 
     assert.ok(removeSourceSpy.calledOnce, 'removeSource called once');
-    assert.equal(
+    assert.strictEqual(
       removeSourceSpy.firstCall.args[0],
       addSourceSpy.firstCall.args[0],
       'correct sourceId is removed'
@@ -84,7 +84,7 @@ module('Integration | Component | mapbox gl source', function (hooks) {
     );
 
     assert.ok(addSourceSpy.calledOnce, 'addSource called once');
-    assert.equal(
+    assert.strictEqual(
       addSourceSpy.firstCall.args[0],
       this.sourceId,
       'correct sourceId is added'
@@ -98,7 +98,7 @@ module('Integration | Component | mapbox gl source', function (hooks) {
     await clearRender();
 
     assert.ok(removeSourceSpy.calledOnce, 'removeSource called once');
-    assert.equal(
+    assert.strictEqual(
       removeSourceSpy.firstCall.args[0],
       this.sourceId,
       'correct sourceId is removed'
@@ -151,7 +151,7 @@ module('Integration | Component | mapbox gl source', function (hooks) {
     );
 
     assert.ok(addSourceSpy.calledOnce, 'addSource called once');
-    assert.equal(
+    assert.strictEqual(
       addSourceSpy.firstCall.args[0],
       this.sourceId,
       'correct sourceId is added'
@@ -204,7 +204,7 @@ module('Integration | Component | mapbox gl source', function (hooks) {
     );
 
     assert.ok(addSourceSpy.calledOnce, 'addSource called once');
-    assert.equal(
+    assert.strictEqual(
       addSourceSpy.firstCall.args[0],
       this.sourceId,
       'correct sourceId is added'
@@ -261,7 +261,7 @@ module('Integration | Component | mapbox gl source', function (hooks) {
     `);
 
     assert.ok(addLayerSpy.calledOnce, 'addLayer called once');
-    assert.equal(
+    assert.strictEqual(
       addLayerSpy.firstCall.args[0].source,
       this.sourceId,
       'correct sourceId is used'
@@ -310,7 +310,7 @@ module('Integration | Component | mapbox gl source', function (hooks) {
     await waitFor('#loaded-sigil');
 
     assert.ok(addSourceSpy.calledOnce, 'addSource called once');
-    assert.equal(
+    assert.strictEqual(
       addSourceSpy.firstCall.args[0],
       this.sourceId,
       'correct sourceId is added'
@@ -324,7 +324,7 @@ module('Integration | Component | mapbox gl source', function (hooks) {
     await clearRender();
 
     assert.ok(removeSourceSpy.calledOnce, 'removeSource called once');
-    assert.equal(
+    assert.strictEqual(
       removeSourceSpy.firstCall.args[0],
       this.sourceId,
       'correct sourceId is removed'

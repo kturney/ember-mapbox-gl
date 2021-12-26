@@ -47,7 +47,7 @@ module('Integration | Component | mapbox gl image', function (hooks) {
     );
 
     assert.ok(loadImageSpy.calledOnce, 'loadImage called');
-    assert.equal(
+    assert.strictEqual(
       loadImageSpy.firstCall.args[0],
       this.image,
       'loads correct image'
@@ -56,12 +56,12 @@ module('Integration | Component | mapbox gl image', function (hooks) {
     await defer.promise;
 
     assert.ok(addImageSpy.calledOnce, 'addImage called');
-    assert.equal(
+    assert.strictEqual(
       addImageSpy.firstCall.args[0],
       this.name,
       'adds as correct name'
     );
-    assert.equal(
+    assert.strictEqual(
       addImageSpy.firstCall.args[2],
       this.options,
       'adds with correct options'
@@ -70,7 +70,7 @@ module('Integration | Component | mapbox gl image', function (hooks) {
     await clearRender();
 
     assert.ok(removeImageSpy.calledOnce, 'removeImage called');
-    assert.equal(
+    assert.strictEqual(
       removeImageSpy.firstCall.args[0],
       this.name,
       'removes correct name'
@@ -96,7 +96,7 @@ module('Integration | Component | mapbox gl image', function (hooks) {
     );
 
     assert.ok(loadImageSpy.calledOnce, 'loadImage called');
-    assert.equal(
+    assert.strictEqual(
       loadImageSpy.firstCall.args[0],
       this.image,
       'loads correct image'
@@ -105,7 +105,7 @@ module('Integration | Component | mapbox gl image', function (hooks) {
     this.set('image', '/assets/mapbox-logo.png');
 
     assert.ok(loadImageSpy.calledTwice, 'loadImage called');
-    assert.equal(
+    assert.strictEqual(
       loadImageSpy.secondCall.args[0],
       this.image,
       'loads correct image'
@@ -114,12 +114,12 @@ module('Integration | Component | mapbox gl image', function (hooks) {
     await defer.promise;
 
     assert.ok(addImageSpy.calledOnce, 'addImage called');
-    assert.equal(
+    assert.strictEqual(
       addImageSpy.firstCall.args[0],
       this.name,
       'adds as correct name'
     );
-    assert.equal(
+    assert.strictEqual(
       addImageSpy.firstCall.args[2],
       this.options,
       'adds with correct options'
@@ -145,7 +145,7 @@ module('Integration | Component | mapbox gl image', function (hooks) {
     await render(hbs`{{mapbox-gl-image this.name this.image map=this.map}}`);
 
     assert.ok(loadImageStub.calledOnce, 'loadImage called');
-    assert.equal(
+    assert.strictEqual(
       loadImageStub.firstCall.args[0],
       this.image,
       'loads correct image'
@@ -179,7 +179,7 @@ module('Integration | Component | mapbox gl image', function (hooks) {
     );
 
     assert.ok(loadImageSpy.calledOnce, 'loadImage called');
-    assert.equal(
+    assert.strictEqual(
       loadImageSpy.firstCall.args[0],
       this.image,
       'loads correct image'
@@ -188,12 +188,12 @@ module('Integration | Component | mapbox gl image', function (hooks) {
     await defer.promise;
 
     assert.ok(addImageSpy.calledOnce, 'addImage called');
-    assert.equal(
+    assert.strictEqual(
       addImageSpy.firstCall.args[0],
       this.name,
       'adds as correct name'
     );
-    assert.equal(
+    assert.strictEqual(
       addImageSpy.firstCall.args[2],
       this.options,
       'adds with correct options'
@@ -208,10 +208,14 @@ module('Integration | Component | mapbox gl image', function (hooks) {
     });
 
     assert.ok(removeImageSpy.calledOnce, 'removeImage called');
-    assert.equal(removeImageSpy.firstCall.args[0], 'logo', 'removes old name');
+    assert.strictEqual(
+      removeImageSpy.firstCall.args[0],
+      'logo',
+      'removes old name'
+    );
 
     assert.ok(loadImageSpy.calledTwice, 'loadImage called for updated image');
-    assert.equal(
+    assert.strictEqual(
       loadImageSpy.secondCall.args[0],
       this.image,
       'loads correct updated image'
@@ -220,12 +224,12 @@ module('Integration | Component | mapbox gl image', function (hooks) {
     await defer.promise;
 
     assert.ok(addImageSpy.calledTwice, 'addImage called for updated image');
-    assert.equal(
+    assert.strictEqual(
       addImageSpy.secondCall.args[0],
       this.name,
       'adds updated as correct name'
     );
-    assert.equal(
+    assert.strictEqual(
       addImageSpy.secondCall.args[2],
       this.options,
       'adds updated with correct options'
@@ -234,7 +238,7 @@ module('Integration | Component | mapbox gl image', function (hooks) {
     await clearRender();
 
     assert.ok(removeImageSpy.calledTwice, 'removeImage called for updated');
-    assert.equal(
+    assert.strictEqual(
       removeImageSpy.secondCall.args[0],
       this.name,
       'removes updated name'
@@ -259,7 +263,7 @@ module('Integration | Component | mapbox gl image', function (hooks) {
     );
 
     assert.ok(loadImageSpy.calledOnce, 'loadImage called');
-    assert.equal(
+    assert.strictEqual(
       loadImageSpy.firstCall.args[0],
       this.image,
       'loads correct image'
@@ -268,7 +272,7 @@ module('Integration | Component | mapbox gl image', function (hooks) {
     await defer.promise;
 
     assert.ok(addImageSpy.calledOnce, 'addImage called');
-    assert.equal(
+    assert.strictEqual(
       addImageSpy.firstCall.args[0],
       this.name,
       'adds as correct name'
@@ -294,7 +298,7 @@ module('Integration | Component | mapbox gl image', function (hooks) {
     await defer.promise;
 
     assert.ok(addImageSpy.calledOnce, 'addImage called');
-    assert.equal(
+    assert.strictEqual(
       addImageSpy.firstCall.args[0],
       this.name,
       'adds as correct name'
@@ -323,18 +327,18 @@ module('Integration | Component | mapbox gl image', function (hooks) {
     await defer.promise;
 
     assert.ok(addImageSpy.calledOnce, 'addImage called');
-    assert.equal(
+    assert.strictEqual(
       addImageSpy.firstCall.args[0],
       this.name,
       'adds as correct name'
     );
     assert.ok(addImageSpy.firstCall.args[1] instanceof Image, 'adds image');
-    assert.equal(
+    assert.strictEqual(
       addImageSpy.firstCall.args[1].width,
       this.width,
       'image has width'
     );
-    assert.equal(
+    assert.strictEqual(
       addImageSpy.firstCall.args[1].height,
       this.height,
       'image has height'
@@ -360,7 +364,11 @@ module('Integration | Component | mapbox gl image', function (hooks) {
       ]);
       assert.ok(false, 'should have gotten error');
     } catch (err) {
-      assert.equal(err.message, 'failed to load svg', 'correct err message');
+      assert.strictEqual(
+        err.message,
+        'failed to load svg',
+        'correct err message'
+      );
       assert.ok(err.ev, 'should have original error event attached');
     }
   });
