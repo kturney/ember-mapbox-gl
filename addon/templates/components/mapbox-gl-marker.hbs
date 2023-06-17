@@ -2,6 +2,7 @@
   {{yield
     (hash
       popup=(component 'mapbox-gl-popup' marker=this.marker MapboxGl=this.MapboxGl)
+      on=(component 'mapbox-gl-on' eventSource=this.marker)
     )
   }}
 {{/in-element}}
